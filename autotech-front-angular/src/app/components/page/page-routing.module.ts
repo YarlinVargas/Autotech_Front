@@ -12,9 +12,10 @@ import { CreateOrUpdateUserComponent } from './usuario/gestor-usuario/create-or-
 import { GestorClienteComponent } from './usuario/cliente/gestor-cliente/gestor-cliente.component';
 import { GestorTrabajadorComponent } from './usuario/trabajador/gestor-trabajador/gestor-trabajador.component';
 import { GestorNotificacionComponent } from './usuario/notificacion/gestor-notificacion/gestor-notificacion.component';
-import { GestorRequerimientosComponent } from './usuario/requerimiento/gestor-requerimientos/gestor-requerimientos.component';
+import { GestorRequerimientosComponent } from './usuario/requerimiento/gestor-requerimientos.component';
 import { GestorOrdenTrabajoComponent } from './usuario/orden-trabajo/gestor-orden-trabajo/gestor-orden-trabajo.component';
 import { ConocenosMasComponent } from './usuario/conocenos-mas/conocenos-mas/conocenos-mas.component';
+import { CreateOrUpdateRequirenmentComponent } from './usuario/requerimiento/create-or-update-requirenment/create-or-update-requirenment/create-or-update-requirenment.component';
 
 const routes: Routes = [
   // {
@@ -86,6 +87,16 @@ const routes: Routes = [
     path: 'requirement',
     component: GestorRequerimientosComponent,
     title: 'Vista requerimientos'
+  },
+  {
+    path: 'createRequirement',
+    component: CreateOrUpdateRequirenmentComponent,
+    title: 'Crear Requerimiento'
+  },
+  {
+    path: 'updateRequirement/:id',
+    component: CreateOrUpdateRequirenmentComponent,
+    title: 'Editar Requerimiento'
   },
   {
     path: 'orders',
