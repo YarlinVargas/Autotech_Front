@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
-
+import { AuthModel, ReplyTokens } from '../../models/auth/auth.model';
 import { RespService } from '../../models/general/resp-service.model';
 import { ConfigService } from '../config/config.service';
-
+import { PasswordModel } from '../../models/auth/password.model';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { Router } from '@angular/router';
-import { AuthModel, ReplyTokens } from '../../models/general/auth/auth.model';
-import { PasswordModel } from '../../models/general/auth/password.model';
 
 @Injectable({
   providedIn: 'root'

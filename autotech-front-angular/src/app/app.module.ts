@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {DialogModule} from '@angular/cdk/dialog';
 import { InterceptorService } from './core/services/config/interceptor.service';
+import { SharedModule } from './core/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { InterceptorService } from './core/services/config/interceptor.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    SharedModule,
     FontAwesomeModule,
     HttpClientModule,
     DialogModule

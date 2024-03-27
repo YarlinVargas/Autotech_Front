@@ -11,11 +11,11 @@ export class SpinnerService {
   alert$ = this.isLoading$.asObservable();
 
   @Output() text: EventEmitter<SpinnerText> = new EventEmitter()
-
+  
   show():void{
     this.isLoading$.next(true);
   }
-
+  
   hide():void{
     this.text.emit({text:"",text1:"",text2:""})
     this.isLoading$.next(false);

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { Actions } from './core/models/general/actions-table.model';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,13 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class AppComponent {
   title = 'autotech-front-angular';
+
+  actionsTable : Actions[] = [
+    {label: 'Detalle', icon:'icon1'},
+    {label: 'Descargar PDF', icon:'icon2'},
+    {label: 'Enviar al correo', icon:'icon3'}
+  ];
+
   constructor(public router: Router) {
     this.router.events.subscribe((event: any) => {
       if(event instanceof NavigationEnd) {
