@@ -2,17 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PageRoutingModule } from './page-routing.module';
-// import { WelcomeComponent } from './paciente/welcome/welcome.component';
 
 import { SharedModule } from 'src/app/core/shared/shared.module';
-// import { WelcomeCompanyComponent } from './empresa/welcome-company/welcome-company.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-// import { ListResultadosPatientComponent } from './paciente/list-resultados-patient/list-resultados-patient.component';
-// import { PerfilComponent } from './perfil/perfil.component';
 import { GestorUsuarioComponent } from './usuario/gestor-usuario/gestor-usuario.component';
-// import { ResultComponent } from './paciente/result/result.component';
-// import { ListResultadosCompanyComponent } from './empresa/list-resultados-company/list-resultados-company.component';
-// import { DetailResultComponent } from './empresa/detail-result/detail-result.component';
 import { CreateOrUpdateUserComponent } from './usuario/gestor-usuario/create-or-update-user/create-or-update-user.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DirectivesModule } from 'src/app/core/directives/directives.module';
@@ -31,14 +24,7 @@ import { CreateOrUpdateRequirenmentComponent } from './usuario/requerimiento/cre
 
 @NgModule({
   declarations: [
-    // WelcomeComponent,
-    // WelcomeCompanyComponent,
-    // ListResultadosPatientComponent,
-    // PerfilComponent,
     GestorUsuarioComponent,
-    // ResultComponent,
-    // ListResultadosCompanyComponent,
-    // DetailResultComponent,
     CreateOrUpdateUserComponent,
     GestorClienteComponent,
     GestorTrabajadorComponent,

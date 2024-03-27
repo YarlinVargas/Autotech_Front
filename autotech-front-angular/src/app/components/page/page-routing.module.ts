@@ -16,6 +16,7 @@ import { GestorRequerimientosComponent } from './usuario/requerimiento/gestor-re
 import { GestorOrdenTrabajoComponent } from './usuario/orden-trabajo/gestor-orden-trabajo/gestor-orden-trabajo.component';
 import { ConocenosMasComponent } from './usuario/conocenos-mas/conocenos-mas/conocenos-mas.component';
 import { CreateOrUpdateRequirenmentComponent } from './usuario/requerimiento/create-or-update-requirenment/create-or-update-requirenment/create-or-update-requirenment.component';
+import { CreateOrUpdateClientComponent } from './usuario/cliente/create-or-update-client/create-or-update-client/create-or-update-client.component';
 
 const routes: Routes = [
   // {
@@ -72,6 +73,16 @@ const routes: Routes = [
     path: 'client',
     component: GestorClienteComponent,
     title: 'Vista cliente'
+  },
+  {
+    path: 'createClient',
+    component: CreateOrUpdateClientComponent,
+    title: 'Crear Cliente'
+  },
+  {
+    path: 'updateClient/:id',
+    component: CreateOrUpdateClientComponent,
+    title: 'Editar Cliente'
   },
   {
     path: 'worker',
