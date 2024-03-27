@@ -21,10 +21,11 @@ import { TooltipModule } from '@cloudfactorydk/ng2-tooltip-directive';
 import { GestorClienteComponent } from './usuario/cliente/gestor-cliente/gestor-cliente.component';
 import { GestorTrabajadorComponent } from './usuario/trabajador/gestor-trabajador/gestor-trabajador.component';
 import { GestorNotificacionComponent } from './usuario/notificacion/gestor-notificacion/gestor-notificacion.component';
-import { GestorRequerimientosComponent } from './usuario/requerimiento/gestor-requerimientos/gestor-requerimientos.component';
+import { GestorRequerimientosComponent } from './usuario/requerimiento/gestor-requerimientos.component';
 import { GestorOrdenTrabajoComponent } from './usuario/orden-trabajo/gestor-orden-trabajo/gestor-orden-trabajo.component';
 import { ConocenosMasComponent } from './usuario/conocenos-mas/conocenos-mas/conocenos-mas.component';
 import { CreateOrUpdateClientComponent } from './usuario/cliente/create-or-update-client/create-or-update-client/create-or-update-client.component';
+import { CreateOrUpdateRequirenmentComponent } from './usuario/requerimiento/create-or-update-requirenment/create-or-update-requirenment/create-or-update-requirenment.component';
 
 
 
@@ -46,6 +47,7 @@ import { CreateOrUpdateClientComponent } from './usuario/cliente/create-or-updat
     GestorOrdenTrabajoComponent,
     ConocenosMasComponent,
     CreateOrUpdateClientComponent,
+    CreateOrUpdateRequirenmentComponent,
   ],
   imports: [
     CommonModule,

@@ -95,4 +95,82 @@
     </div>
   </div>
 </nav>
-<p>gestor-requerimientos works!</p>
+<div #content class=" flex flex-col p-4 md:p-2 bottom-4 overflow-scroll md:overflow-y-auto">
+  <div class="w-full h-full bg-white lg:p-5 xl:py-6 xl:px-12">
+
+    <div class="gestor-requirenment-titulo w-full h-30 text-neutral700 flex items-center justify-center p-4 pt-9 md:p-4 lg:px-7 lg:pb-7 lg:pt-0">
+      <p class="font-bold text-xl xl:text-2xl animate-fade-top">
+        Gestor de Requerimientos
+      </p>
+    </div>
+
+    <div class="w-full h-30 text-neutral700 py-4 flex justify-between md:justify-end items-end">
+      <h2 class="md:hidden font-bold text-lg">
+        Listado
+      </h2>
+      <app-buttons class="text-right animate-fade-right" typeBtn="button" [color]="'primary'" [button]="15" label="Agregar requerimiento"
+        (click)="navigate('createRequirement')">
+      </app-buttons>
+    </div>
+
+    <form [formGroup]="formRequerimiento" class="block md:flex md:flex-row md:items-center animate-fade-down">
+      <app-field-input [parentForm]="formRequerimiento" fieldName="search" formControlName="search" class="w-full md:w-6/12"
+        type="text" holder="Búsqueda" [permitirIcono]="true" [sugerencias]="optionsSearch" (selectSuggestion)="setSuggestion($event)"></app-field-input>
+      <hr class="w-full my-5 md:my-0 md:ml-5 border-2 border-transparent border-b-neutral500 md:w-9/12">
+    </form>
+
+    <app-toggle-list (changeView)="toggleView()" class="animate-fade-down" />
+
+    <div [ngClass]="{'hidden': currentView == false, 'block': currentView == true}"
+      class="md-overflow-scroll gestor-requirenment-table animate-fade-down">
+      <app-card-view
+        [headers]="['N° Requerimiento', 'Fecha ingreso', 'Placa', 'Cedula', 'Editar', 'Eliminar', 'Activo']"
+        [data]="(listRequerimientos | filterRequeriments: formRequerimiento.get('search')!.value)?.results"
+        [keyMap]="{
+            'idRequirenment': 'idRequirenment',
+            'N° Requerimiento': 'requirenmentNumber',
+            'Fecha ingreso': 'dateInitial',
+            'Placa': 'placa',
+            'Cedula': 'identificationNumber',
+            'Activo': 'active'
+          }"
+          [cantidadFilas]="2"
+          [cantidadColumnas]="2"
+          nombreCampoAEmitir="idRequirenment"
+          (activeChange)="changeStatus($event)"
+          [acortadorTexto]="currentLargeTextCard"
+          [opcionesParaTooltip]="tooltip"
+          (resultWithHeader)="navigate('updateRequirement', $event)"
+        >
+        </app-card-view>
+      </div>
+
+      <div [ngClass]="{'hidden': currentView == true, 'block': currentView == false}"
+        class="md-overflow-scroll gestor-requirenment-table pr-3 animate-fade-down">
+        <div class="w-full">
+          <app-table [headers]="['N° Requerimiento', 'Fecha ingreso', 'Placa', 'Cedula', 'Editar', 'Eliminar', 'Activo']"
+            [data]="(listRequerimientos | filterRequeriments: formRequerimiento.get('search')!.value)?.results"
+            [keyMap]="{
+            'idRequirenment': 'idRequirenment',
+            'N° Requerimiento': 'requirenmentNumber',
+            'Fecha ingreso': 'dateInitial',
+            'Placa': 'placa',
+            'Cedula': 'identificationNumber',
+            'Activo': 'active'
+            }"
+            positionTable='left'
+            maxWidthTable='98%'
+            nombreCampoAEmitir="idRequirenment"
+            [acortadorTexto]="currentLargeTextTable"
+            [opcionesParaTooltip]="tooltip"
+            (activeChange)="changeStatus($event)"
+            (resultWithHeader)="navigate('updateRequirenment', $event)">
+          </app-table>
+        </div>
+      </div>
+  </div>
+</div>
+
+<app-go-up [elementToTop]="content"/>
+<app-footer/>
+
