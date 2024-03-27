@@ -1,0 +1,158 @@
+<div #content  class="w-full h-full absolute flex flex-col p-4 md:p-2 bottom-4 overflow-scroll md:overflow-auto">
+  <div class="flex flex-col w-full max-w-full md:h-full relative bg-white py-5 lg:p-5 xl:py-6 xl:px-12">
+    <div class="w-full flex flex-row justify-end mt-5 md:mt-1">
+      <app-buttons [typeBtn]="'submit'" [color]="'borderCyan'" [button]="14" label="Cerrar sesión" class="animate-fade-right">
+      </app-buttons>
+    </div>
+
+    <div class="editar-usuario-titulo w-full h-30 text-neutral700 flex items-center justify-center p-4 pt-9 md:p-4 lg:px-7 lg:pb-6 lg:pt-0">
+      <p class="font-bold text-xl xl:text-2xl animate-fade-top">
+        <ng-container *ngIf="isEdit">
+          Editar usuario
+        </ng-container>
+        <ng-container *ngIf="!isEdit">
+          Crear usuario
+        </ng-container>
+      </p>
+    </div>
+
+    <form [formGroup]="form" class="items-end grid grid-cols-1 grid-rows-7 gap-y-6 mt-4 md:mt-0 md:grid-cols-4 md:grid-rows-2 lg:gap-y-6 lg:gap-x-8 xl:gap-x-12 animate-fade-down">
+      <div *ngIf="listDocument?.length">
+        <app-field-select [options]="listDocument" [parentForm]="form"
+          fieldName="idIdentificationType" formControlName="idIdentificationType"
+          [defaultSelectOption]="userToUpdate.idIdentificationType">
+          Tipo de documento
+        </app-field-select>
+      </div>
+
+      <div>
+        <app-field-input [parentForm]="form" fieldName="identificationNumber" formControlName="identificationNumber"
+          holder="Escribir número" directive="Numbers">
+          Número de documento
+        </app-field-input>
+      </div>
+
+      <div>
+        <app-field-input [parentForm]="form" fieldName="name" formControlName="name" holder="Escribir nombres" directive="NumbersLettersDot">
+          Nombres
+        </app-field-input>
+      </div>
+
+      <div>
+        <app-field-input [parentForm]="form" fieldName="lastName" formControlName="lastName" holder="Escribir apellidos"  directive="NumbersLettersDot">
+          Apellidos
+        </app-field-input>
+      </div>
+
+      <div>
+        <app-field-input-email [parentForm]="form" fieldName="email" formControlName="email" holder="Escribir correo electrónico">
+          Correo electrónico
+        </app-field-input-email>
+      </div>
+
+      <div>
+        <app-field-input [parentForm]="form" fieldName="telephoneNumber" formControlName="telephoneNumber" holder="Escribir número" directive="Numbers">
+          Teléfono
+        </app-field-input>
+      </div>
+
+      <div *ngIf="listThird?.length">
+        <app-field-select
+          [options]="listThird" [parentForm]="form"
+          fieldName="idCompany" formControlName="idCompany" holder="Seleccione una opción"
+          [defaultSelectOption]="userToUpdate.idCompany" (valor)="changeSelectCompany($event)">
+          Tercero
+        </app-field-select>
+      </div>
+
+      <div *ngIf="currentCompanyNit" class="md:text-sm xl:text-base text-center self-center md:mt-4 text-sky700 font-bold">
+        <span>Nit:</span> {{ currentCompanyNit }}
+      </div>
+    </form>
+
+    <hr class="w-full mt-12 md:mt-4 mb-3 border-2 border-transparent border-b-neutral500">
+
+    <div class="text-neutral500 font-bold w-full animate-fade-down">
+      <p>Planes asociados</p>
+      <div *ngIf="listPlans?.length" class="mt-2 flex flex-col md:flex-row justify-between md:mb-2 md:gap-x-3 items-end flex-wrap xl:flex-nowrap gap-y-4">
+        <form class="mt-5 md:mt-0 w-full md:w-5/12 xl:w-4/12" [formGroup]="formPlan">
+          <app-field-select [options]="listPlans" [parentForm]="formPlan" fieldName="selectPlan" formControlName="selectPlan" holder="Seleccione una opción">
+            Plan
+          </app-field-select>
+        </form>
+
+        <div class="hidden md:w-6/12 xl:w-5/12 md:flex items-end justify-center">
+          <div class="flex shadow-md py-2 px-2 items-center rounded-xl">
+            <div class="inline-flex gap-x-2 border border-l-0 border-t-0 border-b-0 border-r-neutral400 pr-3">
+              <span class="title-toggle md:text-xs xl:text-sm">En espera de resultados</span>
+              <app-toggle [identity]="'waitingResult'" [active]="filters.waitingResult"
+                (getValue)="changeStatus($event, 'waitingResult')"></app-toggle>
+            </div>
+            <div class="inline-flex gap-x-2 border border-l-0 border-t-0 border-b-0 border-r-neutral400 px-3">
+              <span class="title-toggle md:text-xs xl:text-sm">Resultado parcial</span>
+              <app-toggle [identity]="'partialResult'" [active]="filters.partialResult"
+                (getValue)="changeStatus($event, 'partialResult')"></app-toggle>
+            </div>
+            <div class="inline-flex gap-x-2 pl-3">
+              <span class="title-toggle md:text-xs xl:text-sm">Finalizado</span>
+              <app-toggle [identity]="'finishedResult'" [active]="filters.finishedResult"
+                (getValue)="changeStatus($event, 'finishedResult')"></app-toggle>
+            </div>
+          </div>
+        </div>
+        <div class="w-full xl:w-3/12 flex self-center mt-4 justify-center xl:self-end gap-x-4 md:mt-0">
+          <app-buttons [typeBtn]="'submit'" [button]="16"  [color]="allPlans.length === listPlans.length ? 'neutral' : colorsLinks.associate"
+            label="Asociar todos" [disable]="form.invalid" [width]="'10'" [height]="'10'" (click)="selectAllOrNonePlans('all')" ></app-buttons>
+          <app-buttons [typeBtn]="'submit'" [color]="allPlans.length ? colorsLinks.disassociate : 'neutral'" [button]="16"
+            label="Desasociar todos" [disable]="form.invalid" [width]="'10'" [height]="'10'" (click)="selectAllOrNonePlans('none')"></app-buttons>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full h-full pb-3 block mt-8 md:mt-0 pr-3 animate-fade-down"
+      [ngClass]="{ 'md-overflow-scroll': listPlans.length }"
+    >
+      <div class="flex flex-col w-full h-full" [ngClass]="{ 'hidden': !listPlans.length}">
+        <app-table [headers]="['Código', 'Plan',  'Estado en espera de resultados', 'Estado resultado parcial', 'Estado finalizado', 'Desasociar']"
+          [data]="allPlans"
+          [keyMap]="{
+            'Código': 'code',
+            'Plan': 'plan',
+            'Estado en espera de resultados': 'waitingResult',
+            'Estado resultado parcial': 'partialResult',
+            'Estado finalizado': 'finishedResult',
+            'Desasociar': 'active'
+          }"
+          positionTable='left'
+          nombreCampoAEmitir="code"
+          maxWidthTable='98%'
+          [acortadorTexto]="currentLargeText"
+          [opcionesParaTooltip]="tooltip"
+          (changeWithHeader)="changeToggle($event)"
+          (result)="activeOrInactivePlan($event)"
+          >
+        </app-table>
+        <ng-container *ngIf="!allPlans?.length">
+          <div class="w-full h-full flex flex-col justify-center items-center gap-y-2 min-h-10">
+            <div class=" flex justify-center rounded-tr-lg rounded-tl-lg">
+              <img class="w-10 h-10 filter grayscale opacity-60" src="/assets/img/modal/Advertencia.png">
+            </div>
+            <p class="text-zinc200 font-bold text-center">
+              Seleccione los planes que desea asociar
+            </p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="flex justify-center gap-x-4 mt-5 md:mt-2 items-end animate-fade-down">
+      <app-buttons [typeBtn]="'submit'" [color]="'sky'" [width]="'32'" [height]="'8'" [button]="2"
+        label="Cancelar" (click)="back()" ></app-buttons>
+      <app-buttons [typeBtn]="'submit'" [color]="'primary'" [width]="'32'" [height]="'8'" [button]="2"
+        [label]="isEdit ? 'Actualizar' : 'Crear'" (click)="updateOrCreateUser()"></app-buttons>
+    </div>
+    <app-footer/>
+  </div>
+</div>
+
+<app-go-up [elementToTop]="content"/>
