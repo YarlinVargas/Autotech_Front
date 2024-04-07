@@ -22,6 +22,7 @@ import { RequirenmentService } from 'src/app/core/services/requirenment/requiren
 })
 export class GestorRequerimientosComponent {
   public currentView:boolean=true;
+  public isOpen:boolean=false;
   public allOptions = ToggleListEnum;
   public formRequerimiento: FormGroup = new FormGroup({});
   public tooltip: TootilpOption = {
@@ -120,6 +121,10 @@ export class GestorRequerimientosComponent {
 
   public toggleView(){
     this.currentView = !this.currentView
+  }
+
+  public OpenMenu(){
+    this.isOpen = !this.isOpen;
   }
 
   public changeStatus(event: [boolean, number]) {

@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./conocenos-mas.component.scss']
 })
 export class ConocenosMasComponent {
+  public isOpen:boolean=false;
 
+  public OpenMenu(){
+    this.isOpen = !this.isOpen;
+  }
 }

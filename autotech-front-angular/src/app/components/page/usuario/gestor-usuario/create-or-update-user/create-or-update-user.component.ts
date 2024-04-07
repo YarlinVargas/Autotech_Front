@@ -46,19 +46,22 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
   };
 
   public userToUpdate: CreateUpdateUser = {
-    idUser: 0,
-    identificationNumber: '',
-    name: '',
-    lastName: '',
-    telephoneNumber: '',
-    email: '',
-    contracts: []
-  };
+    id_usuario: 0,
+    cedula:'',
+    nombres: '',
+    apellidos: '',
+    celular: '',
+    correo: '',
+    direccion:'',
+    id_tipo_documento: 0,
+    id_perfil: 0,
+    id_estado: 0,
+    login:'',
+    password:''
 
+
+  };
   public form: FormGroup = new FormGroup({});
-  public formPlan: FormGroup = new FormGroup({
-    selectPlan: new FormControl('', Validators.required)
-  });
 
   private genSvc = inject(GeneralService);
   private userService = inject(UserService);
@@ -74,7 +77,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
 
   constructor(public dialog: Dialog) {
     this.setFormUser(this.userToUpdate);
-    const allDocuments = this.genSvc.ListDocumentType();
+    const allDocuments = this.genSvc.getTiposDocumento();
     const allCompanies = this.genSvc.ListCompanies();
 
     forkJoin([allDocuments, allCompanies])
@@ -90,10 +93,8 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
     if (this.router.url.includes('updateUser')) {
       this.isEdit = true;
       this.GetUser();
-    } else
-      this.watchChangesSelect();
+    }
 
-    this.changeSelectPlan();
     this.validateUser();
   }
 
@@ -107,81 +108,24 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
 
     this.lastIndexCompany = evt;
     this.setCompanyNit(evt);
-    this.getPlansByCompany(evt)
-      .pipe(
-        map((resp: RespService) => resp.data),
-        tap(() => this.allPlans = [])
-      )
-      .subscribe((data: any) => {
-        this.listPlans = data;
-        this.validateLinks();
-      });
   }
 
-  public changeSelectPlan() {
-    this.formPlan.get('selectPlan')?.valueChanges
-      .pipe(
-        takeUntil(this.destroy$),
-        map((value: string) => this.listPlans.find(plan => plan.id === parseInt(value))),
-        filter((newSelectedPlan: ListModel | undefined) => newSelectedPlan != undefined || newSelectedPlan != null)
-      )
-      .subscribe((newSelectedPlan) => {
-        if (this.allPlans.length) {
-          if (this.allPlans.find(plan => plan.code === newSelectedPlan!.id.toString())) {
-            this.openModal.Open(
-              2,
-              [],
-              '¡Este plan ya se encuentra seleccionado!',
-              '25rem'
-            );
-            return;
-          }
-        }
 
-        this.allPlans.push({
-          code: newSelectedPlan!.id.toString(),
-          plan: newSelectedPlan!.name || '',
-          waitingResult: true,
-          finishedResult: true,
-          partialResult: true,
-        });
-
-        this.filters['waitingResult'] = this.allFilterSelected('waitingResult');
-        this.filters['partialResult'] = this.allFilterSelected('partialResult');
-        this.filters['finishedResult'] = this.allFilterSelected('finishedResult');
-        this.validateLinks();
-      });
-  }
 
   public validateUser() {
-    this.form.get('identificationNumber')?.statusChanges
+    this.form.get('cedula')?.statusChanges
       .pipe(
         takeUntil(this.destroy$),
         filter((status) => status === 'VALID'),
       )
       .subscribe((status) => {
-        this.form.get('idIdentificationType')?.setErrors({ 'showWithoutMessage': null });
-        this.form.get('idIdentificationType')?.updateValueAndValidity();
+        this.form.get('id_tipo_documento')?.setErrors({ 'showWithoutMessage': null });
+        this.form.get('id_tipo_documento')?.updateValueAndValidity();
       });
   }
 
   public setCompanyNit(id: string | any) {
     this.currentCompanyNit = this.listThird?.find(company => company.id === id)?.NIT || '';
-  }
-
-  private watchChangesSelect(): void {
-    this.form.get('idCompany')?.valueChanges
-      .pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged(),
-        tap(companySelected => this.setCompanyNit(companySelected)),
-        switchMap((value: string) => this.getPlansByCompany(value)),
-        map((resp: RespService) => resp.data)
-      )
-      .subscribe((data: any) => {
-        this.listPlans = data;
-        this.allPlans = [];
-      });
   }
 
   private GetUser(): void {
@@ -201,45 +145,44 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
             this.setFormUser(this.userToUpdate);
           }
         }),
-        switchMap((resp: RespService) =>
-          this.getPlansByCompany(this.userToUpdate.idCompany!.toString())
-        ),
-        map((resp: RespService) => resp.data),
-        tap((resp2: any) => {
-          this.listPlans = resp2;
-        }),
+
         finalize(() => {
           this.spinnerSvc.hide();
         })
       )
       .subscribe((resp2: any) => {
-        this.allPlans = this.associatePlan();
+
         this.filters['waitingResult'] = this.allFilterSelected('waitingResult');
         this.filters['partialResult'] = this.allFilterSelected('partialResult');
         this.filters['finishedResult'] = this.allFilterSelected('finishedResult');
         this.validateLinks();
         this.setFormUser(this.userToUpdate);
-        this.setCompanyNit(this.userToUpdate.idCompany);
+
       });
   }
 
   public setFormUser(user: CreateUpdateUser) {
     this.form = this.fb.group({
-      idUser: [user.idUser],
-      idIdentificationType: [user.idIdentificationType == null || user.idIdentificationType == undefined ? '' : user.idIdentificationType, [Validators.required]],
-      identificationNumber: [user.identificationNumber, Validators.required],
-      name: [user.name, [Validators.required, Validators.minLength(1)]],
-      lastName: [user.lastName, [Validators.required, Validators.minLength(1)]],
-      telephoneNumber: [user.telephoneNumber, Validators.required],
-      email: [
-        user.email,
+      id_usuario: [user.id_usuario],
+      cedula: [user.cedula, Validators.required],
+      nombres: [user.nombres, [Validators.required, Validators.minLength(1)]],
+      apellidos: [user.apellidos, [Validators.required, Validators.minLength(1)]],
+      celular: [user.celular, Validators.required],
+      correo: [
+        user.correo,
         [
           Validators.required,
           Validators.email,
         ]
       ],
-      idCompany: [user.idCompany == null || user.idCompany == undefined ? "" : user.idCompany, Validators.required]
+      direccion: [user.direccion, Validators.required],
+      id_tipo_documento: [user.id_tipo_documento == null || user.id_tipo_documento == undefined ? '' : user.id_tipo_documento, [Validators.required]],
+      id_perfil: [user.id_perfil],
+      id_estado: [user.id_estado],
+      login: [user.login, Validators.required],
+      password: [user.password, Validators.required],
     });
+    debugger
   }
 
   public back = () => this.router.navigateByUrl('gestionUsuario');
@@ -250,25 +193,8 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.allPlans.length) {
-      this.openModal.Open(
-        2,
-        [],
-        '¡Debe seleccionar al menos un plan!',
-        '25rem'
-      );
-      return;
-    }
 
     let request: CreateUpdateUser = this.form.value;
-    request.contracts = this.allPlans.map(({ code, waitingResult, partialResult, finishedResult }) =>
-      ({
-        contractCode: code,
-        waitingResult: +waitingResult,
-        partialResult: +partialResult,
-        finishedResult: +finishedResult,
-      })
-    );
 
     this.spinnerSvc.show();
     this.userService.CreateOrUpate(request)
@@ -390,20 +316,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  private getPlansByCompany = (idCompany: string) => this.genSvc.ListPlans(idCompany);
 
-  private associatePlan() {
-    return this.userToUpdate.contracts.map(contract => {
-      return {
-        active: true,
-        code: contract.idContract!.toString(),
-        plan: contract.contractName,
-        waitingResult: contract.waitingResult ? true : false,
-        finishedResult: contract.finishedResult ? true : false,
-        partialResult: contract.partialResult ? true : false,
-      }
-    });
-  }
 
   private validateLinks(): void {
     const planSelected = this.quantityPlansActive();

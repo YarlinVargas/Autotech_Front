@@ -13,6 +13,7 @@ import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { finalize } from 'rxjs';
 import { IndexDbService } from 'src/app/core/services/gen/index-db.service';
 import { ValueSelect } from 'src/app/core/models/general/value-select.model';
+import { UsuarioService } from 'src/app/core/services/usuario/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -59,7 +60,8 @@ export class LoginComponent implements OnInit {
     private genSvc: GeneralService,
     public dialog: Dialog,
     private spinnerSvc: SpinnerService,
-    private indexDbService: IndexDbService
+    private indexDbService: IndexDbService,
+    private _usuarioService: UsuarioService
   ) {
     this.initialForm();
     if (localStorage.getItem('remember') !=null) {
@@ -155,7 +157,16 @@ export class LoginComponent implements OnInit {
     //       next: (r: RespService) => {
     //         if (r?.ok) {
     //           sessionStorage.setItem('auth', JSON.stringify(r.data));
-                this.router.navigateByUrl(`gestionUsuario`);
+                   // Realizar la petición POST para autenticar el usuario
+    this._usuarioService.authenticateUsuario(data.userName, data.password).subscribe(
+      () => {
+        console.log('Usuario logueado correctamente');
+        this.router.navigateByUrl(`gestionUsuario`);
+      },
+      error => {
+        console.error('Error al loguear el usuario', error);
+      }
+    );
     //         } else {
     //           if (r.message == "Autenticación por primera vez") {
     //             const dialogRef = this.openModal.Open(5, ['Esta es la primera vez que ingresas a nuestro sistema,', 'para continuar es necesario que cambie su contraseña'],

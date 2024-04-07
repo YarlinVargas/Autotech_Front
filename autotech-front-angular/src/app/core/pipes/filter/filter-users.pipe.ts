@@ -1,13 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ListUsuario } from '../../models/user/list-user.model';
+import { Usuario } from '../../services/usuario/usuario.service';
 
 @Pipe({
   name: 'filterUsers'
 })
 export class FilterUsersPipe implements PipeTransform {
 
-  transform(users: ListUsuario[], ...args: any[]): any {
-    let results: ListUsuario[] = [];
+  transform(users: Usuario[], ...args: any[]): any {
+    let results: Usuario[] = [];
     let foundFields: string[] = [];
 
     if (users?.length) {
@@ -19,25 +20,25 @@ export class FilterUsersPipe implements PipeTransform {
       for (const user of users) {
         let found = false;
 
-        if (user.name.toLowerCase().includes(args[0].trim().toLowerCase())) {
+        if (user.nombres.toLowerCase().includes(args[0].trim().toLowerCase())) {
           !found && results.push(user);
           found = true;
-          foundFields.push("name");
+          foundFields.push("nombres");
         }
-        if(user.lastName.toLowerCase().includes(args[0].trim().toLowerCase())) {
+        if(user.apellidos.toLowerCase().includes(args[0].trim().toLowerCase())) {
           !found && results.push(user);
           found = true;
-          foundFields.push("lastName");
+          foundFields.push("apellidos");
         }
-        if(user.email.toLowerCase().includes(args[0].trim().toLowerCase())) {
+        if(user.correo.toLowerCase().includes(args[0].trim().toLowerCase())) {
           !found && results.push(user);
           found = true;
-          foundFields.push("email");
+          foundFields.push("correo");
         }
-        if(user.userName.toLowerCase().includes(args[0].trim().toLowerCase())) {
+        if(user.login.toLowerCase().includes(args[0].trim().toLowerCase())) {
           !found && results.push(user);
           found = true;
-          foundFields.push("userName");
+          foundFields.push("login");
         }
       }
     }

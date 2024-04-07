@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./gestor-orden-trabajo.component.scss']
 })
 export class GestorOrdenTrabajoComponent {
+  public isOpen:boolean=false;
 
+  public OpenMenu(){
+    this.isOpen = !this.isOpen;
+  }
 }

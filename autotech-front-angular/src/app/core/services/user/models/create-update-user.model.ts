@@ -1,15 +1,18 @@
 ﻿export interface CreateUpdateUser {
-  idUser: number;
-  idIdentificationType?: number;
-  identificationNumber: string;
-  name: string;
-  lastName: string;
-  email: string;
-  telephoneNumber: string;
-  idCompany?: number;
-  contracts: Partial<ContractWithFilter>[];
-}
+  id_usuario: number;
+  cedula: string;
+  nombres: string;
+  apellidos: string;
+  celular: string;
+  correo: string;
+  direccion:string;
+  id_tipo_documento?: number;
+  id_perfil: number;
+  id_estado: number;
+  login: string;
+  password:string;
 
+}
 export interface ContractWithFilter {
   idContract: number;
   contractCode: number;
