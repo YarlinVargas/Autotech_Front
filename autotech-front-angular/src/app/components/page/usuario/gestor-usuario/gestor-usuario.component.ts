@@ -13,6 +13,7 @@ import { ListUser, ListUsuario } from 'src/app/core/models/user/list-user.model'
 import { FilterUsersPipe } from 'src/app/core/pipes/filter/filter-users.pipe';
 import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
 import { ModalDetalleUsuarioComponent } from 'src/app/core/shared/modals/modal-detalle-usuario/modal-detalle-usuario.component';
 
 @Component({
@@ -23,6 +24,7 @@ import { ModalDetalleUsuarioComponent } from 'src/app/core/shared/modals/modal-d
 export class GestorUsuarioComponent implements OnInit, OnDestroy {
 
   public currentView:boolean=true;
+  public isOpen:boolean=false;
   public allOptions = ToggleListEnum;
   public form: FormGroup = new FormGroup({});
   public tooltip: TootilpOption = {
@@ -37,13 +39,9 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   private userService = inject(UserService);
   private spinnerSvc = inject(SpinnerService);
 
-  public listUsers: ListUser[] = [];
+  public listUsuarios: ListUsuario[] = [];
+  public listUser: Usuario[] = [];
 
-  listUsusarios:ListUsuario[] = [
-    { idUser: 1, userName:'ximena.vargas', name: 'ximena', lastName: 'vargas', identificationNumber: '111111', dateBirthday: '26/10/1994', email: 'yarlin@hotmail.com', active:true},
-    { idUser: 2, userName:'daniela.agudelo',name: 'Daniela', lastName: 'agudelo', identificationNumber: '222222', dateBirthday: '26/10/1994', email: 'daniela@hotmail.com', active:true},
-    { idUser: 3, userName:'melissa.arias',name: 'melissa', lastName: 'arias', identificationNumber: '333333', dateBirthday: '26/10/1994', email: 'melissa@hotmail.com', active:true }
-  ];
   public optionsSearch: string[] = [];
 
   public currentLargeTextCard = 10;
@@ -75,7 +73,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   }
 
 
-  constructor(public dialog: Dialog, public pipe: FilterUsersPipe, private eRef: ElementRef) {
+  constructor(public dialog: Dialog, public pipe: FilterUsersPipe, private eRef: ElementRef, private _usuarioService: UsuarioService) {
     this.form = this.fb.group({
       search: ['']
     });
@@ -89,6 +87,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    this.getUsuarios();
     this.form.get('search')?.valueChanges
       .pipe(
         takeUntil(this.destroy$),
@@ -98,7 +97,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
         filter((value: string) => value.length > 2),
       )
       .subscribe((value: string) => {
-        var resultPipe: any = this.pipe.transform(this.listUsusarios, value);
+        var resultPipe: any = this.pipe.transform(this.listUser, value);
         this.optionsSearch = resultPipe.results.map((user: any) =>
           resultPipe.foundFields.map((field: string) => user[field])
         ).flat();
@@ -119,6 +118,16 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
     // });
   }
 
+  public getUsuarios(){
+    this._usuarioService.getUsuarios().subscribe((r: any) => {
+        if (r.length > 0) {
+          this.listUser = r;
+
+        } else {
+          console.log("No hay usuarios registrados en el sistema");
+        }
+      });
+  }
   public setSuggestion(event: any) {
     this.form.get('search')?.setValue(event);
     this.optionsSearch = [];
@@ -127,13 +136,16 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   public toggleView(){
     this.currentView = !this.currentView
   }
+  public OpenMenu(){
+    this.isOpen = !this.isOpen;
+  }
 
   public changeStatus(event: [boolean, number]) {
     if (event[1] == undefined) return;
 
     if (event[0] == false) {
       const dialog = this.openModal.OpenLogout(
-        [`El usuario "${this.listUsusarios[event[1]].userName}" no podrá acceder al sistema`],
+        [`El usuario "${this.listUsuarios[event[1]].userName}" no podrá acceder al sistema`],
         '30rem',
         '¿Esta seguro de deshabilitar este usuario?',
       );
@@ -145,11 +157,11 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   }
 
   public ActiveOrDeactiveUser(index: number, status: boolean): void {
-    this.userService.ActiveOrDeactive(this.listUsusarios[index].idUser)
+    this.userService.ActiveOrDeactive(this.listUsuarios[index].idUser)
       .pipe(
         tap((resp: RespService) => {
           if (resp.ok) {
-            this.listUsers[index].active = status;
+            this.listUsuarios[index].active = status;
           }
         }),
         finalize(() => {
@@ -186,7 +198,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   }
 
   public deleteUser(idUser: number) {
-    const currentUser = this.listUsers.find((user: ListUser) => user.idUser == idUser);
+    const currentUser = this.listUsuarios.find((user: ListUsuario) => user.idUser == idUser);
     if (!currentUser) return;
 
     const dialog = this.openModal.OpenLogout(
@@ -201,7 +213,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
         .pipe(
           tap((resp: RespService) => {
             if (resp.ok) {
-              this.listUsers = this.listUsers.filter((user: ListUser) => user.idUser != idUser);
+              this.listUsuarios = this.listUsuarios.filter((user: ListUsuario) => user.idUser != idUser);
             }
           }),
           finalize(() => {
@@ -278,4 +290,5 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
+
 }

@@ -3,16 +3,19 @@ import { Injectable } from '@angular/core';
 import { ConfigService } from '../config/config.service';
 import { Observable, zip } from 'rxjs';
 import { RespService } from '../../models/general/resp-service.model';
+import { TipoDocumento } from '../../models/general/tipo_documento.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeneralService {
+  private readonly apiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient, private config: ConfigService) { }
 
-  ListDocumentType(): Observable<any> {
-    return this.http.get<RespService>(`${this.config.base}general/listTypeDocuments`);
+  //Servicio que trae los tipos de documentos
+  getTiposDocumento(): Observable<TipoDocumento[]> {
+    return this.http.get<TipoDocumento[]>(`${this.apiUrl}/tipos-documento`);
   }
 
   ListCompanies(): Observable<any> {
@@ -29,7 +32,7 @@ export class GeneralService {
   ListFiltersConsult(): Observable<RespService[]>{
     return zip(
       this.ImgEnterprise(),
-      this.ListDocumentType(),
+      this.getTiposDocumento(),
     )
   }
 }

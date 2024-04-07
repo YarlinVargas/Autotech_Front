@@ -10,13 +10,14 @@ import { GestorUsuarioComponent } from './usuario/gestor-usuario/gestor-usuario.
 // import { DetailResultComponent } from './empresa/detail-result/detail-result.component';
 import { CreateOrUpdateUserComponent } from './usuario/gestor-usuario/create-or-update-user/create-or-update-user.component';
 import { GestorClienteComponent } from './usuario/cliente/gestor-cliente/gestor-cliente.component';
-import { GestorTrabajadorComponent } from './usuario/trabajador/gestor-trabajador/gestor-trabajador.component';
+
 import { GestorNotificacionComponent } from './usuario/notificacion/gestor-notificacion/gestor-notificacion.component';
 import { GestorRequerimientosComponent } from './usuario/requerimiento/gestor-requerimientos.component';
 import { GestorOrdenTrabajoComponent } from './usuario/orden-trabajo/gestor-orden-trabajo/gestor-orden-trabajo.component';
 import { ConocenosMasComponent } from './usuario/conocenos-mas/conocenos-mas/conocenos-mas.component';
 import { CreateOrUpdateRequirenmentComponent } from './usuario/requerimiento/create-or-update-requirenment/create-or-update-requirenment/create-or-update-requirenment.component';
 import { CreateOrUpdateClientComponent } from './usuario/cliente/create-or-update-client/create-or-update-client/create-or-update-client.component';
+import { GestorProductosComponent } from './usuario/productos/gestor-productos/gestor-productos.component';
 
 const routes: Routes = [
   // {
@@ -85,11 +86,6 @@ const routes: Routes = [
     title: 'Editar Cliente'
   },
   {
-    path: 'worker',
-    component: GestorTrabajadorComponent,
-    title: 'Vista trabajador'
-  },
-  {
     path: 'notification',
     component: GestorNotificacionComponent,
     title: 'Vista notificaciones'
@@ -118,6 +114,11 @@ const routes: Routes = [
     path: 'conocenos',
     component: ConocenosMasComponent,
     title: 'Vista conocenos mas'
+  },
+  {
+    path:'productos',
+    component: GestorProductosComponent,
+    title:'Lista de productos'
   }
 ];
 
