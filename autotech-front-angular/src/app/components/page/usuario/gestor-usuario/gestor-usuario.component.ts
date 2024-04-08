@@ -121,6 +121,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   public getUsuarios(){
     this._usuarioService.getUsuarios().subscribe((r: any) => {
         if (r.length > 0) {
+          debugger
           this.listUser = r;
 
         } else {
@@ -198,6 +199,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   }
 
   public deleteUser(idUser: number) {
+    debugger
     const currentUser = this.listUsuarios.find((user: ListUsuario) => user.idUser == idUser);
     if (!currentUser) return;
 

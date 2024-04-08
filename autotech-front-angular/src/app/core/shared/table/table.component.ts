@@ -29,7 +29,7 @@ export class TableComponent implements OnInit {
   @Input({
     required: false,
     alias: 'nombreCampoAEmitir'
-  }) idOut: string = 'id';
+  }) idOut: string = 'id_usuario';
   @Input()
   listaEmitir!: 'listPaciente' | 'detalleResultado';
   @Input({ required: false }) close: boolean = false;
