@@ -17,3 +17,7 @@ export class SpinnerText{
     text2?:string;
     class?:string;
 }
+export interface ListTipoDocumento {
+  id_documento: number | string;
+  descripcion: string;
+}

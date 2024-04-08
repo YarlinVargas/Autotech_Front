@@ -7,8 +7,8 @@
   correo: string;
   direccion:string;
   id_tipo_documento?: number;
-  id_perfil: number;
-  id_estado: number;
+  // id_perfil: number;
+  // id_estado: number;
   login: string;
   password:string;
 
