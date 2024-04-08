@@ -129,7 +129,7 @@
         [headers]="['Usuario', 'Correo electrónico', 'Nombres', 'Apellidos', 'Detalles', 'Editar', 'Eliminar']"
         [data]="(listUser | filterUsers: form.get('search')!.value)?.results"
         [keyMap]="{
-            'id_cliente': 'id_cliente',
+            'id_usuario': 'id_usuario',
             'Usuario': 'login',
             'Correo electrónico': 'correo',
             'Nombres': 'nombres',
@@ -137,7 +137,7 @@
           }"
           [cantidadFilas]="2"
           [cantidadColumnas]="2"
-          nombreCampoAEmitir="id_cliente"
+          nombreCampoAEmitir="id_usuario"
           (activeChange)="changeStatus($event)"
           [acortadorTexto]="currentLargeTextCard"
           [opcionesParaTooltip]="tooltip"
@@ -152,7 +152,7 @@
           <app-table [headers]="['Usuario', 'Correo electrónico', 'Nombres', 'Apellidos', 'Detalles', 'Editar', 'Eliminar']"
             [data]="(listUser | filterUsers: form.get('search')!.value)?.results"
             [keyMap]="{
-            'id_cliente': 'id_cliente',
+            'id_usuario': 'id_usuario',
             'Usuario': 'login',
             'Correo electrónico': 'correo',
             'Nombres': 'nombres',
@@ -160,7 +160,7 @@
             }"
             positionTable='left'
             maxWidthTable='98%'
-            nombreCampoAEmitir="idUser"
+            nombreCampoAEmitir="id_usuario"
             [acortadorTexto]="currentLargeTextTable"
             [opcionesParaTooltip]="tooltip"
             (activeChange)="changeStatus($event)"
