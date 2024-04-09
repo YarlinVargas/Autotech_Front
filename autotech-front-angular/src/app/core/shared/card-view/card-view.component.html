@@ -84,6 +84,16 @@
                 </fa-icon>
               </div>
             </ng-container>
+            <ng-container *ngSwitchCase="'DetalleProducto'">
+              <div (click)="resultWithHeader.emit({ header: 'DetalleProducto', id: row[keyMap[idOut]] })"
+                class="bg-indigo600 text-white px-2 py-1 rounded-xl cursor-pointer text-sm hover:bg-lavenderBlue flex gap-x-1 items-center">
+                <span>
+                  Detalle producto
+                </span>
+                <fa-icon [icon]="iconDetails" class="text-base leading-none">
+                </fa-icon>
+              </div>
+            </ng-container>
             <ng-container *ngSwitchCase="'Eliminar'">
               <div (click)="resultWithHeader.emit({ header: 'Eliminar', id: row[keyMap[idOut]] })"
                 class="bg-red-500 text-white px-2 py-1 rounded-xl cursor-pointer text-sm hover:bg-red-300 flex gap-x-1 items-center">

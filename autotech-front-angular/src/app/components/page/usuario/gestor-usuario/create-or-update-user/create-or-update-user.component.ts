@@ -30,6 +30,8 @@ interface FiltersContracts {
 })
 export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
 
+
+  public idUser: number = 0;
   public listDocument!: ListTipoDocumento[];
   public isEdit: boolean = false;
   public destroy$: Subject<boolean> = new Subject<boolean>();
@@ -110,13 +112,15 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       });
   }
   private GetUser(): void {
+    debugger
     const idUser = this.activatedRoute.snapshot.paramMap.get('id');
-
+    this.idUser = parseInt(idUser!);
     if (!idUser)
       this.router.navigateByUrl('/gestionUsuario');
 
     this._usuarioService.getUsuarioById(parseInt(idUser!) ).subscribe(
       (r:any) => {
+        debugger
         console.log('Usuarios actualizado correctamente');
         this.setFormUser(r);
       },
@@ -158,16 +162,26 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       this.form.markAllAsTouched();
       return;
     }
-
     let request: Usuario = this.form.value;
+  if(this.idUser != null){
+    this._usuarioService.updateUsuarioById(this.idUser, request).subscribe((r: any) => {
+    debugger
+      console.log("Usuarios actualizado correctamente");
+      this.router.navigateByUrl(`/gestionUsuario`);
+    });
+  }else{
 
     // this.spinnerSvc.show();
     this._usuarioService.createNewUsuario(request).subscribe((r: any) => {
-
+ debugger
         console.log("Usuarios creado correctamente");
         this.router.navigateByUrl(`/gestionUsuario`);
 
       });
+  }
+
+
+
   }
 
   public getForm = (control: string) => this.form.get(control);

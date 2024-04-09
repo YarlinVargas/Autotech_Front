@@ -18,6 +18,7 @@ import { ConocenosMasComponent } from './usuario/conocenos-mas/conocenos-mas/con
 import { CreateOrUpdateRequirenmentComponent } from './usuario/requerimiento/create-or-update-requirenment/create-or-update-requirenment/create-or-update-requirenment.component';
 import { CreateOrUpdateClientComponent } from './usuario/cliente/create-or-update-client/create-or-update-client/create-or-update-client.component';
 import { GestorProductosComponent } from './usuario/productos/gestor-productos/gestor-productos.component';
+import { CreateOrUpdateProductComponent } from './usuario/productos/create-or-update-product/create-or-update-product/create-or-update-product.component';
 
 const routes: Routes = [
   // {
@@ -119,7 +120,13 @@ const routes: Routes = [
     path:'productos',
     component: GestorProductosComponent,
     title:'Lista de productos'
+  },
+  {
+    path:'updateProduct:/id',
+    component:CreateOrUpdateProductComponent,
+    title:'Crear un producto'
   }
+
 ];
 
 @NgModule({
