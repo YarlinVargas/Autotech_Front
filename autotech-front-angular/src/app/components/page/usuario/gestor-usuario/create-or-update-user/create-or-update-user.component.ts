@@ -163,9 +163,9 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       return;
     }
     let request: Usuario = this.form.value;
-  if(this.idUser != null){
+  if(this.isEdit ){
     this._usuarioService.updateUsuarioById(this.idUser, request).subscribe((r: any) => {
-    debugger
+
       console.log("Usuarios actualizado correctamente");
       this.router.navigateByUrl(`/gestionUsuario`);
     });
@@ -173,7 +173,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
 
     // this.spinnerSvc.show();
     this._usuarioService.createNewUsuario(request).subscribe((r: any) => {
- debugger
+
         console.log("Usuarios creado correctamente");
         this.router.navigateByUrl(`/gestionUsuario`);
 
