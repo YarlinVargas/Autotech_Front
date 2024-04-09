@@ -121,7 +121,6 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   public getUsuarios(){
     this._usuarioService.getUsuarios().subscribe((r: any) => {
         if (r.length > 0) {
-          debugger
           this.listUser = r;
 
         } else {
@@ -199,34 +198,21 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
   }
 
   public deleteUser(idUser: number) {
-    debugger
-    const currentUser = this.listUsuarios.find((user: ListUsuario) => user.idUser == idUser);
+    const currentUser = this.listUser.find((user: Usuario) => user.id_usuario == idUser);
     if (!currentUser) return;
 
     const dialog = this.openModal.OpenLogout(
-      [`El usuario "${currentUser?.userName}" no podrá acceder al sistema`],
+      [`El usuario "${currentUser?.login}" no podrá acceder al sistema`],
       '30rem',
       '¿Esta seguro que desea eliminar este usuario?',
       'Esta acción es permanente'
     );
 
     dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-      this.userService.Delete(currentUser.idUser)
-        .pipe(
-          tap((resp: RespService) => {
-            if (resp.ok) {
-              this.listUsuarios = this.listUsuarios.filter((user: ListUsuario) => user.idUser != idUser);
-            }
-          }),
-          finalize(() => {
-            this.spinnerSvc.hide();
-          })
-        )
-        .subscribe((resp: RespService) => {
-          if (resp.ok == true)
-            this.openModal.Open(1, [], '¡Usuario eliminado correctamente!', '25rem');
-          else
-            this.openModal.Open(2, [], '¡El usuario no se ha eliminado!', '25rem');
+      this._usuarioService.deleteUsuarioById(currentUser.id_usuario)
+      .subscribe((r: any) => {
+            this.openModal.Open(1, [],`Usuario "${currentUser?.login}" eliminado correctamente!`, '25rem');
+            this.getUsuarios();
         });
     });
   }
