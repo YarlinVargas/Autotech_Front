@@ -5,19 +5,22 @@ import { ShortTextPipe } from "./short/short-text.pipe";
 import { FilterUsersPipe } from './filter/filter-users.pipe';
 import { FilterRequerimentsPipe } from "./filter/filter-requirenments.pipe";
 import { FilterClientsPipe } from "./filter/filter-clients.pipe";
+import { FilterProductoPipe } from "./filter/filter_product.pipe";
 
 @NgModule({
   providers: [
     FilterUsersPipe,
     FilterRequerimentsPipe,
-    FilterClientsPipe
+    FilterClientsPipe,
+    FilterProductoPipe
   ],
   declarations: [
     SafePipe,
     ShortTextPipe,
     FilterUsersPipe,
     FilterRequerimentsPipe,
-    FilterClientsPipe
+    FilterClientsPipe,
+    FilterProductoPipe
   ],
   imports: [CommonModule],
   exports: [
@@ -25,7 +28,8 @@ import { FilterClientsPipe } from "./filter/filter-clients.pipe";
     ShortTextPipe,
     FilterUsersPipe,
     FilterRequerimentsPipe,
-    FilterClientsPipe
+    FilterClientsPipe,
+    FilterProductoPipe
   ]
 })
 export class PipesModule { }
