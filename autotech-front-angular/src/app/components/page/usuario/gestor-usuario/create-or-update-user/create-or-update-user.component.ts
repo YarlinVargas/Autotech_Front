@@ -45,7 +45,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
   };
 
   public userToUpdate: Usuario = {
-    id_cliente: 0,
+    id_usuario: 0,
     cedula:0,
     nombres: '',
     apellidos: '',
@@ -69,7 +69,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
   private spinnerSvc = inject(SpinnerService);
 
   @Input() color = 'sky';
-  @Input() id: string = 'select';
+  @Input() id_usuario: string = 'select';
   @Input() defaultValue: string='Seleccione una opción';
 
   public allPlans: any[] = [];
@@ -90,8 +90,6 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       this.GetUser();
     }
 
-    this.validateUser();
-
   }
 
   @HostListener('window:resize', ['$event'])
@@ -99,17 +97,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
     this.currentLargeText = TextLargeWindow.get(15);
   }
 
-  public validateUser() {
-    this.form.get('cedula')?.statusChanges
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((status) => status === 'VALID'),
-      )
-      .subscribe((status) => {
-        this.form.get('id_tipo_documento');
-        this.form.get('id_tipo_documento')?.updateValueAndValidity();
-      });
-  }
+
 
   public getTiposDocumento(){
     this.genSvc.getTiposDocumento().subscribe((r: any) => {
@@ -127,32 +115,21 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
     if (!idUser)
       this.router.navigateByUrl('/gestionUsuario');
 
-    this.spinnerSvc.show();
-    this.userService.GetUser(idUser!)
-      .pipe(
-        tap((resp: RespService) => {
-          if (!Object.keys(resp.data).length)
-            this.router.navigateByUrl('/gestionUsuario');
-          else {
-            this.userToUpdate = resp.data;
-            this.setFormUser(this.userToUpdate);
-          }
-        }),
-
-        finalize(() => {
-          this.spinnerSvc.hide();
-        })
-      )
-      .subscribe((resp2: any) => {
-
-        this.setFormUser(this.userToUpdate);
-
-      });
+    this._usuarioService.getUsuarioById(parseInt(idUser!) ).subscribe(
+      (r:any) => {
+        console.log('Usuarios actualizado correctamente');
+        this.setFormUser(r);
+      },
+      error => {
+        console.error('Error al loguear el usuario', error);
+        this.router.navigateByUrl(`gestionUsuario`);
+      }
+    );
   }
 
   public setFormUser(user: Usuario) {
     this.form = this.fb.group({
-      id_usuario: [user.id_cliente],
+      id_usuario: [user.id_usuario],
       cedula: [user.cedula, Validators.required],
       nombres: [user.nombres, [Validators.required, Validators.minLength(1)]],
       apellidos: [user.apellidos, [Validators.required, Validators.minLength(1)]],

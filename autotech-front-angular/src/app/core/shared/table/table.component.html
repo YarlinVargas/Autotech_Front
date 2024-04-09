@@ -43,7 +43,7 @@
         <ng-container *ngFor="let header of headers; let i = index">
           <ng-container *ngIf="!allowHeaders.includes(header); else actionsColumn">
             <td class="text-center px-1 py-2.5 max-w-[20em] truncate" [class.rounded-r-lg]="i === headers.length - 1"
-              [class.rounded-l-lg]="i === 0" 
+              [class.rounded-l-lg]="i === 0"
               [ngClass]="{'sticky right-0 z-10 bg-white max-xl:border-l-[1.5rem] max-xl:border-white': header.includes('Accion')}">
               <ng-container *ngIf="quantityShortText">
                 <ng-container *ngIf="tooltipOptions.enable">
@@ -69,7 +69,7 @@
           <ng-template #actionsColumn>
             <ng-container *ngIf="header.includes('Estado')">
               <td class="text-center px-1 py-2.5 max-w-[20em] truncate hidden xl:table-cell" [class.rounded-r-lg]="i === headers.length - 1"
-                [class.rounded-l-lg]="i === 0" 
+                [class.rounded-l-lg]="i === 0"
                 [ngClass]="{'sticky right-0 z-10 bg-white max-xl:border-l-[1.5rem] max-xl:border-white': header.includes('Accion')}">
                 <ng-container [ngSwitch]="header">
                   <ng-container *ngSwitchCase="'Estado en espera de resultados'">
@@ -89,7 +89,7 @@
             </ng-container>
             <ng-container *ngIf="!header.includes('Estado')">
               <td class="text-center px-1 py-2.5 max-w-[20em] truncate" [class.rounded-r-lg]="i === headers.length - 1"
-                [class.rounded-l-lg]="i === 0" 
+                [class.rounded-l-lg]="i === 0"
                 [ngClass]="{'sticky right-0 z-10 bg-white max-xl:border-l-[1.5rem] max-xl:border-white': header.includes('Accion')}">
                 <ng-container [ngSwitch]="header">
                   <ng-container *ngSwitchCase="'Check'">
@@ -121,7 +121,7 @@
                         </button>
                       </div>
                     </div>
-    
+
                     <fa-icon *ngIf=" listaEmitir === 'listPaciente'" [icon]="iconChevronRight"
                       (click)="emitOutputsPatient(row[keyMap[idOut]], row, 'Resultados')"
                       class=" text-white px-1.5 pt-1 pb-1.5 rounded cursor-pointer text-sm "
@@ -129,8 +129,8 @@
                         'bg-sky500 hover:bg-sky-300' :
                         row[keyMap['Estado']] == 'Resultado parcial' ?
                           'bg-orange500 hover:bg-orange-300' :
-                          row[keyMap['Estado']]=='En espera de resultados' ? 
-                            'bg-neutral500 hover:bg-neutral-300' : 
+                          row[keyMap['Estado']]=='En espera de resultados' ?
+                            'bg-neutral500 hover:bg-neutral-300' :
                             row[keyMap['Estado']]=='Con resultado' ?
                               'bg-sky700 hover:bg-sky-300' : 'bg-orange500 hover:bg-orange-300'">
                     </fa-icon>
@@ -139,7 +139,7 @@
                     <ng-container *ngIf="row[keyMap['Activo']] == null; else validateAction">
                       <ng-container *ngTemplateOutlet="editActive"></ng-container>
                     </ng-container>
-    
+
                     <ng-template #validateAction>
                       <ng-container *ngIf="row[keyMap['Activo']]">
                         <ng-container *ngTemplateOutlet="editActive"></ng-container>
@@ -149,7 +149,7 @@
                         </fa-icon>
                       </ng-container>
                     </ng-template>
-    
+
                     <ng-template #editActive>
                       <fa-icon [icon]="iconEdit" (click)="emitOutputs(row[keyMap[idOut]], 'Editar')"
                         class="bg-blue-500 text-white px-1.5 pt-1 pb-1.5 rounded cursor-pointer text-sm hover:bg-blue-300">
@@ -166,7 +166,7 @@
                       (getValue)="changeStatus($event, idx)"></app-toggle>
                   </ng-container>
                   <ng-container *ngSwitchCase="'Acciones'" >
-                    <app-actions-table 
+                    <app-actions-table
                       [actions]="row['actions']"
                       (result)="resultAction.emit([$event, row['id'], row['requestNumber'],row['requestStatus']])"
                       (click)="changeSelectedAction(idx)"
