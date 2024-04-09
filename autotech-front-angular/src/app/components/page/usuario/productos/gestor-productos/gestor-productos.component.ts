@@ -11,11 +11,11 @@ import { dataModal } from 'src/app/core/models/modals/moda-data.model';
 import { Producto } from 'src/app/core/models/productos/producto.model';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { ListUser, ListUsuario } from 'src/app/core/models/user/list-user.model';
-import { FilterUsersPipe } from 'src/app/core/pipes/filter/filter-users.pipe';
+import { FilterProductoPipe } from 'src/app/core/pipes/filter/filter_product.pipe';
 import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { ProductoService } from 'src/app/core/services/productos/productos.service';
 import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
-import { ModalDetalleUsuarioComponent } from 'src/app/core/shared/modals/modal-detalle-usuario/modal-detalle-usuario.component';
+import { ModalDetalleProductoComponent } from 'src/app/core/shared/modals/modal-detalle-producto/modal-detalle-producto/modal-detalle-producto.component';
 
 @Component({
   selector: 'app-gestor-productos',
@@ -34,6 +34,8 @@ export class GestorProductosComponent {
     hideDelay: 0,
   };
 
+  public detail : Producto[] =[];
+
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private productoService = inject(ProductoService);
@@ -48,8 +50,8 @@ export class GestorProductosComponent {
   public openModal: openModals = new openModals(this.dialog);
   public destroy$: Subject<boolean> = new Subject<boolean>();
 
-  @ViewChild('Detalle')
-  Detalle!: TemplateRef<any>;
+  @ViewChild('DetalleProducto')
+  DetalleProducto!: TemplateRef<any>;
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
@@ -71,7 +73,8 @@ export class GestorProductosComponent {
     },100)
   }
 
-  constructor(public dialog: Dialog, public pipe: FilterUsersPipe, private eRef: ElementRef, private _usuarioService: UsuarioService) {
+
+  constructor(public dialog: Dialog, public pipe: FilterProductoPipe, private eRef: ElementRef, private _usuarioService: UsuarioService) {
     this.form = this.fb.group({
       search: ['']
     });
@@ -86,12 +89,24 @@ export class GestorProductosComponent {
 
   public ngOnInit(): void {
     this.getProductos();
-  }
-  public OpenMenu(){
-    this.isOpen = !this.isOpen;
-  }
+    this.form.get('search')?.valueChanges
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((value: string) => {
+          this.optionsSearch = [];
+        }),
+        filter((value: string) => value.length > 2),
+      )
+      .subscribe((value: string) => {
+        var resultPipe: any = this.pipe.transform(this.listProductos, value);
+        this.optionsSearch = resultPipe.results.map((product: any) =>
+          resultPipe.foundFields.map((field: string) => product[field])
+        ).flat();
+      });
 
-
+    this.currentLargeTextCard = TextLargeWindow.get(15, 20, 15, 25);
+    this.currentLargeTextTable = TextLargeWindow.get(15);
+  }
   public getProductos(){
     this.productoService.getProducts().subscribe((r: any) => {
         if (r.length > 0) {
@@ -101,5 +116,116 @@ export class GestorProductosComponent {
           console.log("No hay productos registrados en el sistema");
         }
       });
+  }
+  public setSuggestion(event: any) {
+    this.form.get('search')?.setValue(event);
+    this.optionsSearch = [];
+  }
+  public toggleView(){
+    this.currentView = !this.currentView
+  }
+  public OpenMenu(){
+    this.isOpen = !this.isOpen;
+  }
+
+
+
+  public changeStatus(event: [boolean, number]) {
+    // if (event[1] == undefined) return;
+
+    // if (event[0] == false) {
+    //   const dialog = this.openModal.OpenLogout(
+    //     [`El usuario "${this.listUsuarios[event[1]].userName}" no podrá acceder al sistema`],
+    //     '30rem',
+    //     '¿Esta seguro de deshabilitar este usuario?',
+    //   );
+
+    //   dialog.componentInstance!.logoutEvent?.subscribe(_ => {
+    //     this.ActiveOrDeactiveUser(event[1], event[0]);
+    //   });
+    // } else this.ActiveOrDeactiveUser(event[1], event[0]);
+  }
+  public getValueForm = (id: string): string => this.form.get(id)?.value;
+  public navigate(url: string, event?: any): void {
+    if (event?.header === 'Editar')
+      this.router.navigate([url, event.id]);
+    else if (event?.header === 'Eliminar')
+      this.deleteUser(event.id);
+    else if (event?.header === 'DetalleProducto')
+      this.showDetails(event.id);
+    else
+      this.router.navigateByUrl(url);
+  }
+  public deleteUser(idUser: number) {
+    // const currentUser = this.listUser.find((user: Usuario) => user.id_usuario == idUser);
+    // if (!currentUser) return;
+
+    // const dialog = this.openModal.OpenLogout(
+    //   [`El usuario "${currentUser?.login}" no podrá acceder al sistema`],
+    //   '30rem',
+    //   '¿Esta seguro que desea eliminar este usuario?',
+    //   'Esta acción es permanente'
+    // );
+
+    // dialog.componentInstance!.logoutEvent?.subscribe(_ => {
+    //   this._usuarioService.deleteUsuarioById(currentUser.id_usuario)
+    //   .subscribe((r: any) => {
+    //         this.openModal.Open(1, [],`Usuario "${currentUser?.login}" eliminado correctamente!`, '25rem');
+    //         this.getUsuarios();
+    //     });
+    // });
+  }
+
+  showDetails(id: number) {
+    debugger
+    const dataSend: any = {
+      idProducto: id,
+      firstButton: {
+        label: 'Cerrar',
+      },
+      footer: true
+   }
+
+   const isMobile = window.innerWidth < 768;
+
+    const dialogRefProm = this.dialog.open(ModalDetalleProductoComponent, {
+      width: '100%',
+      height: '100%',
+      data: dataSend,
+      maxWidth: isMobile ? '90%' : '80%',
+      maxHeight: '90%',
+      disableClose: true,
+    });
+
+    dialogRefProm.componentInstance!.primaryEvent?.subscribe(() => {
+      dialogRefProm.close();
+    });
+
+    this.Detail(id);
+    const destroy$: Subject<boolean> = new Subject<boolean>();
+
+    const data: any = {
+      content: this.DetalleProducto,
+      btn2: 'Cerrar',
+      error: false,
+      footer: true
+    };
+
+    const dialogRefPro = this.dialog.open(ModalDetalleProductoComponent, { data, width: '80em', disableClose: true });
+
+     dialogRefPro.componentInstance!.primaryEvent?.subscribe(() => {
+      dialogRefPro.close();
+    });
+  }
+
+  Detail(idProducto: number) {
+    this.spinnerSvc.show();
+    this.productoService.getProductById(idProducto)
+    .subscribe((r: any) => {
+      if (r != null) {
+        this.detail = r;
+
+      }
+    })
   }
 }

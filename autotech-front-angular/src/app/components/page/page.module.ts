@@ -21,6 +21,7 @@ import { CreateOrUpdateRequirenmentComponent } from './usuario/requerimiento/cre
 import { CreateOrUpdateOrdenComponent } from './usuario/orden-trabajo/create-or-update-orden/create-or-update-orden/create-or-update-orden.component';
 import { CreateOrUpdateNotificacionComponent } from './usuario/notificacion/create-or-update-notificacion/create-or-update-notificacion/create-or-update-notificacion.component';
 import { GestorProductosComponent } from './usuario/productos/gestor-productos/gestor-productos.component';
+import { CreateOrUpdateProductComponent } from './usuario/productos/create-or-update-product/create-or-update-product/create-or-update-product.component';
 
 
 
@@ -38,6 +39,7 @@ import { GestorProductosComponent } from './usuario/productos/gestor-productos/g
     CreateOrUpdateOrdenComponent,
     CreateOrUpdateNotificacionComponent,
     GestorProductosComponent,
+    CreateOrUpdateProductComponent,
   ],
   imports: [
     CommonModule,

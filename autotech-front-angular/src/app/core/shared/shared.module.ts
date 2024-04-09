@@ -28,6 +28,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { FieldInputEmailComponent } from './field-input-email/field-input-email.component';
 import { GoUpComponent } from './go-up/go-up.component';
 import { ModalInputComponent } from './modals/modal-input/modal-input.component';
+import { ModalDetalleProductoComponent } from './modals/modal-detalle-producto/modal-detalle-producto/modal-detalle-producto.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { ModalInputComponent } from './modals/modal-input/modal-input.component'
     FieldInputEmailComponent,
     GoUpComponent,
     ModalInputComponent,
+    ModalDetalleProductoComponent,
   ],
   imports: [
     CommonModule,
