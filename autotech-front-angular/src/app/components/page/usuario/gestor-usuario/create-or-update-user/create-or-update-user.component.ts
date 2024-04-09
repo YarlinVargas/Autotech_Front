@@ -163,7 +163,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       return;
     }
     let request: Usuario = this.form.value;
-  if(this.idUser != null){
+  if(this.isEdit){
     this._usuarioService.updateUsuarioById(this.idUser, request).subscribe((r: any) => {
     debugger
       console.log("Usuarios actualizado correctamente");
