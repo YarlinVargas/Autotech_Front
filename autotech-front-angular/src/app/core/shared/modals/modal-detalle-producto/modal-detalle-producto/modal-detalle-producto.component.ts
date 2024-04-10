@@ -32,12 +32,11 @@ export class ModalDetalleProductoComponent {
   constructor(public dialogRef: DialogRef<ModalMsjComponent>, @Inject(DIALOG_DATA) public data: any,private productoService: ProductoService)
   {
     this.primaryEvent = new EventEmitter<void>();
-    this.getDetail(data.id_producto);
+    this.getDetail(data.idProducto);
   }
 
   public getDetail(idProduct: number) {
-    // this.spinnerSvc.show();
-    debugger
+
     this.productoService.getProductById(idProduct)
     .subscribe((r: any) => {
       if (r != null) {

@@ -108,6 +108,7 @@ export class GestorProductosComponent {
     this.currentLargeTextTable = TextLargeWindow.get(15);
   }
   public getProductos(){
+
     this.productoService.getProducts().subscribe((r: any) => {
         if (r.length > 0) {
           this.listProductos = r;
@@ -128,23 +129,6 @@ export class GestorProductosComponent {
     this.isOpen = !this.isOpen;
   }
 
-
-
-  public changeStatus(event: [boolean, number]) {
-    // if (event[1] == undefined) return;
-
-    // if (event[0] == false) {
-    //   const dialog = this.openModal.OpenLogout(
-    //     [`El usuario "${this.listUsuarios[event[1]].userName}" no podrá acceder al sistema`],
-    //     '30rem',
-    //     '¿Esta seguro de deshabilitar este usuario?',
-    //   );
-
-    //   dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-    //     this.ActiveOrDeactiveUser(event[1], event[0]);
-    //   });
-    // } else this.ActiveOrDeactiveUser(event[1], event[0]);
-  }
   public getValueForm = (id: string): string => this.form.get(id)?.value;
   public navigate(url: string, event?: any): void {
     if (event?.header === 'Editar')
@@ -156,28 +140,29 @@ export class GestorProductosComponent {
     else
       this.router.navigateByUrl(url);
   }
-  public deleteUser(idUser: number) {
-    // const currentUser = this.listUser.find((user: Usuario) => user.id_usuario == idUser);
-    // if (!currentUser) return;
+  
+  public deleteUser(idProduct: number) {
+    const currentProduct = this.listProductos.find((product: Producto) => product.id_producto == idProduct);
+    if (!currentProduct) return;
 
-    // const dialog = this.openModal.OpenLogout(
-    //   [`El usuario "${currentUser?.login}" no podrá acceder al sistema`],
-    //   '30rem',
-    //   '¿Esta seguro que desea eliminar este usuario?',
-    //   'Esta acción es permanente'
-    // );
+    const dialog = this.openModal.OpenLogout(
+      [`El producto "${currentProduct?.descripcion}" no podrá ser visualizado en el sistema`],
+      '30rem',
+      '¿Esta seguro que desea eliminar este producto?',
+      'Esta acción es permanente'
+    );
 
-    // dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-    //   this._usuarioService.deleteUsuarioById(currentUser.id_usuario)
-    //   .subscribe((r: any) => {
-    //         this.openModal.Open(1, [],`Usuario "${currentUser?.login}" eliminado correctamente!`, '25rem');
-    //         this.getUsuarios();
-    //     });
-    // });
+    dialog.componentInstance!.logoutEvent?.subscribe(_ => {
+      this.productoService.deleteProductById(currentProduct.id_producto)
+      .subscribe((r: any) => {
+            this.openModal.Open(1, [],`El producto "${currentProduct?.descripcion}"  es eliminado correctamente!`, '25rem');
+            this.getProductos();
+        });
+    });
   }
 
+
   showDetails(id: number) {
-    debugger
     const dataSend: any = {
       idProducto: id,
       firstButton: {
@@ -201,21 +186,6 @@ export class GestorProductosComponent {
       dialogRefProm.close();
     });
 
-    this.Detail(id);
-    const destroy$: Subject<boolean> = new Subject<boolean>();
-
-    const data: any = {
-      content: this.DetalleProducto,
-      btn2: 'Cerrar',
-      error: false,
-      footer: true
-    };
-
-    const dialogRefPro = this.dialog.open(ModalDetalleProductoComponent, { data, width: '80em', disableClose: true });
-
-     dialogRefPro.componentInstance!.primaryEvent?.subscribe(() => {
-      dialogRefPro.close();
-    });
   }
 
   Detail(idProducto: number) {

@@ -122,6 +122,12 @@ const routes: Routes = [
     title:'Lista de productos'
   },
   {
+
+    path: 'createProduct',
+    component: CreateOrUpdateProductComponent,
+    title: 'Crear Producto'
+  },
+  {
     path:'updateProduct:/id',
     component:CreateOrUpdateProductComponent,
     title:'Crear un producto'

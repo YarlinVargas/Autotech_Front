@@ -162,7 +162,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
     }
     let request: Usuario = this.form.value;
     
-  if(this.isEdit){
+  if(this.isEdit ){
 
     this._usuarioService.updateUsuarioById(this.idUser, request).subscribe((r: any) => {
 
