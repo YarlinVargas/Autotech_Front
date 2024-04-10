@@ -36,6 +36,7 @@ export class ModalDetalleProductoComponent {
   }
 
   public getDetail(idProduct: number) {
+
     this.productoService.getProductById(idProduct)
     .subscribe((r: any) => {
       if (r != null) {
