@@ -107,9 +107,9 @@
       <h2 class="md:hidden font-bold text-lg">
         Listado
       </h2>
-      <!-- <app-buttons class="text-right animate-fade-right" typeBtn="button" [color]="'primary'" [button]="15" label="Agregar usuario"
-        (click)="navigate('createUser')">
-      </app-buttons> -->
+      <app-buttons class="text-right animate-fade-right" typeBtn="button" [color]="'primary'" [button]="15" label="Agregar producto"
+        (click)="navigate('createProduct')">
+      </app-buttons>
     </div>
 
     <form [formGroup]="form" class="block md:flex md:flex-row md:items-center animate-fade-down">
@@ -135,7 +135,6 @@
           [cantidadFilas]="2"
           [cantidadColumnas]="2"
           nombreCampoAEmitir="id_producto"
-          (activeChange)="changeStatus($event)"
           [acortadorTexto]="currentLargeTextCard"
           [opcionesParaTooltip]="tooltip"
           (resultWithHeader)="navigate('updateProduct', $event)"
@@ -159,7 +158,6 @@
             nombreCampoAEmitir="id_producto"
             [acortadorTexto]="currentLargeTextTable"
             [opcionesParaTooltip]="tooltip"
-            (activeChange)="changeStatus($event)"
             (resultWithHeader)="navigate('updateProduct', $event)">
           </app-table>
         </div>
