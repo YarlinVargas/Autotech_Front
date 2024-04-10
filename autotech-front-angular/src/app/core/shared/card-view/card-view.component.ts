@@ -71,7 +71,7 @@ export class CardViewComponent {
   @Output() button: EventEmitter<number[] | string[]> = new EventEmitter();
   @Output() activeChange: EventEmitter<[boolean, number]> = new EventEmitter();
 
-  public allowHeaders: string[] = ['Editar', 'Resultados', 'Activo', 'Eliminar', 'Detalles', 'Detalle', 'Descargar', 'Enviar al correo'];
+  public allowHeaders: string[] = ['Editar', 'Resultados', 'Activo', 'Eliminar', 'Detalles','DetalleProducto', 'Detalle', 'Descargar', 'Enviar al correo'];
   public iconEdit = faPen;
   public iconDelete = faXmark;
   public iconDetails = faList;

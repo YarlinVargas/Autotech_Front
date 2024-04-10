@@ -87,6 +87,7 @@ export class TableComponent implements OnInit {
       'Acciones',
       'Eliminar',
       'Detalles',
+      'DetalleProducto',
       'Desasociar',
       'ResultPatient',
       'Estado en espera de resultados',
