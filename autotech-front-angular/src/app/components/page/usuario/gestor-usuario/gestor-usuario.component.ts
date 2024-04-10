@@ -117,7 +117,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
     //   this.listUsers = resp.data;
     // });
   }
-
+// trae la lista de usuarios
   public getUsuarios(){
     this._usuarioService.getUsuarios().subscribe((r: any) => {
         if (r.length > 0) {
