@@ -112,7 +112,6 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       });
   }
   private GetUser(): void {
-    debugger
     const idUser = this.activatedRoute.snapshot.paramMap.get('id');
     this.idUser = parseInt(idUser!);
     if (!idUser)
@@ -120,7 +119,6 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
 
     this._usuarioService.getUsuarioById(parseInt(idUser!) ).subscribe(
       (r:any) => {
-        debugger
         console.log('Usuarios actualizado correctamente');
         this.setFormUser(r);
       },

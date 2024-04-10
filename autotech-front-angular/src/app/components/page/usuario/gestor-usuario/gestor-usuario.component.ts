@@ -191,8 +191,6 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
       this.router.navigate([url, event.id]);
     else if (event?.header === 'Eliminar')
       this.deleteUser(event.id);
-    else if (event?.header === 'Detalles')
-      this.showDetails(event.id);
     else
       this.router.navigateByUrl(url);
   }
@@ -217,62 +215,6 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
     });
   }
 
-  showDetails(id: number) {
-    const dataSend: any = {
-      idUser: id,
-      firstButton: {
-        label: 'Cerrar',
-      },
-      footer: true
-   }
-
-   const isMobile = window.innerWidth < 768;
-
-    const dialogRef = this.dialog.open(ModalDetalleUsuarioComponent, {
-      width: '100%',
-      height: '100%',
-      data: dataSend,
-      maxWidth: isMobile ? '90%' : '80%',
-      maxHeight: '90%',
-      disableClose: true,
-    });
-
-    dialogRef.componentInstance!.primaryEvent?.subscribe(() => {
-      dialogRef.close();
-    });
-
-    // this.Detail(id);
-    // const destroy$: Subject<boolean> = new Subject<boolean>();
-
-    // const data: any = {
-    //   content: this.Detalle,
-    //   btn2: 'Cerrar',
-    //   error: false,
-    //   footer: true
-    // };
-
-    // const dialogRef = this.dialog.open(ModalDetalleUsuarioComponent, { data, width: '80em', disableClose: true });
-
-    // dialogRef.componentInstance!. secondaryEvent?.pipe(takeUntil(destroy$)).subscribe(() => {
-    //   dialogRef.close();
-    // });
-  }
-
-  // Detail(idUser: number) {
-  //   this.spinnerSvc.show();
-  //   this.userService.GetDetails(idUser)
-  //   .pipe(
-  //     finalize(() => {
-  //       this.spinnerSvc.hide();
-  //     })
-  //   )
-  //   .subscribe((resp: RespService) => {
-  //     if (resp.data != null) {
-  //       this.listDetail = resp.data.data;
-  //       this.listPlans = resp.data.plans;
-  //     }
-  //   })
-  // }
 
   public ngOnDestroy(): void {
     this.destroy$.next(true);

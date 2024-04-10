@@ -166,10 +166,10 @@
                       class="bg-indigo600 text-white px-1.5 pt-1 pb-1.5 rounded cursor-pointer text-sm hover:bg-lavenderBlue">
                     </fa-icon>
                   </ng-container>
-                  <ng-container *ngSwitchCase="'Activo'">
+                  <!-- <ng-container *ngSwitchCase="'Activo'">
                     <app-toggle [identity]="idx.toString()" [active]="row[keyMap[header]]"
                       (getValue)="changeStatus($event, idx)"></app-toggle>
-                  </ng-container>
+                  </ng-container> -->
                   <ng-container *ngSwitchCase="'Acciones'" >
                     <app-actions-table
                       [actions]="row['actions']"

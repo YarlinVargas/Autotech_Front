@@ -126,7 +126,7 @@
     <div [ngClass]="{'hidden': currentView == false, 'block': currentView == true}"
       class="md-overflow-scroll gestor-usuario-table animate-fade-down">
       <app-card-view
-        [headers]="['Usuario', 'Correo electrónico', 'Nombres', 'Apellidos', 'Detalles', 'Editar', 'Eliminar']"
+        [headers]="['Usuario', 'Correo electrónico', 'Nombres', 'Apellidos', 'Editar', 'Eliminar']"
         [data]="(listUser | filterUsers: form.get('search')!.value)?.results"
         [keyMap]="{
             'id_usuario': 'id_usuario',
@@ -138,7 +138,6 @@
           [cantidadFilas]="2"
           [cantidadColumnas]="2"
           nombreCampoAEmitir="id_usuario"
-          (activeChange)="changeStatus($event)"
           [acortadorTexto]="currentLargeTextCard"
           [opcionesParaTooltip]="tooltip"
           (resultWithHeader)="navigate('updateUser', $event)"
@@ -149,7 +148,7 @@
       <div [ngClass]="{'hidden': currentView == true, 'block': currentView == false}"
         class="md-overflow-scroll gestor-usuario-table pr-3 animate-fade-down">
         <div class="w-full">
-          <app-table [headers]="['Usuario', 'Correo electrónico', 'Nombres', 'Apellidos', 'Detalles', 'Editar', 'Eliminar']"
+          <app-table [headers]="['Usuario', 'Correo electrónico', 'Nombres', 'Apellidos', 'Editar', 'Eliminar']"
             [data]="(listUser | filterUsers: form.get('search')!.value)?.results"
             [keyMap]="{
             'id_usuario': 'id_usuario',
@@ -163,7 +162,6 @@
             nombreCampoAEmitir="id_usuario"
             [acortadorTexto]="currentLargeTextTable"
             [opcionesParaTooltip]="tooltip"
-            (activeChange)="changeStatus($event)"
             (resultWithHeader)="navigate('updateUser', $event)">
           </app-table>
         </div>
