@@ -85,7 +85,7 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
       this.currentView=true
     }
   }
-
+//inicializar componente
   public ngOnInit(): void {
     this.getUsuarios();
     this.form.get('search')?.valueChanges
@@ -106,16 +106,6 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
     this.currentLargeTextCard = TextLargeWindow.get(15, 20, 15, 25);
     this.currentLargeTextTable = TextLargeWindow.get(15);
 
-    // this.spinnerSvc.show();
-    //   this.userService.Consult().
-    //   pipe(
-    //     finalize(() => {
-    //       this.spinnerSvc.hide();
-    //     })
-    //   ).
-    // subscribe((resp: RespService) => {
-    //   this.listUsers = resp.data;
-    // });
   }
 // trae la lista de usuarios
   public getUsuarios(){
