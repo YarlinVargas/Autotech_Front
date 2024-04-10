@@ -123,11 +123,11 @@
           </ng-container>
         </ng-container>
       </div>
-      <div *ngIf="type==1"
+      <!-- <div *ngIf="type==1"
         class="card-view-container-active flex justify-end order-2 pr-3 pt-3 md:pt-0 md:before:border-l-2 md:order-3 md:items-center">
         <app-toggle [identity]="indexData.toString()" [active]="row[keyMap['Activo']]"
           (getValue)="changeStatus($event, indexData)"></app-toggle>
-      </div>
+      </div> -->
 
       <div *ngIf="type==2" class="absolute top-2 right-2">
         <input type="checkbox" id="checkbox-{{indexData}}" [checked]="row['selected']"
