@@ -140,6 +140,7 @@ export class GestorProductosComponent {
     else
       this.router.navigateByUrl(url);
   }
+  
   public deleteUser(idProduct: number) {
     const currentProduct = this.listProductos.find((product: Producto) => product.id_producto == idProduct);
     if (!currentProduct) return;
@@ -159,6 +160,7 @@ export class GestorProductosComponent {
         });
     });
   }
+
 
   showDetails(id: number) {
     const dataSend: any = {
@@ -183,6 +185,7 @@ export class GestorProductosComponent {
     dialogRefProm.componentInstance!.primaryEvent?.subscribe(() => {
       dialogRefProm.close();
     });
+
   }
 
   Detail(idProducto: number) {

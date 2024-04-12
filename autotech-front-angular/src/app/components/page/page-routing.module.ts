@@ -122,6 +122,7 @@ const routes: Routes = [
     title:'Lista de productos'
   },
   {
+
     path: 'createProduct',
     component: CreateOrUpdateProductComponent,
     title: 'Crear Producto'
