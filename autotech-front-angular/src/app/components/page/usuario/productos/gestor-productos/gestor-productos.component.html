@@ -123,14 +123,14 @@
     <div [ngClass]="{'hidden': currentView == false, 'block': currentView == true}"
       class="md-overflow-scroll gestor-usuario-table animate-fade-down">
       <app-card-view
-        [headers]="['Imagen', 'Descripcion', 'Marca', 'Precio', 'DetalleProducto', 'Editar', 'Eliminar']"
+        [headers]="['Imagen', 'Descripcion', 'Marca', 'Codigo', 'DetalleProducto', 'Editar', 'Eliminar']"
         [data]="(listProductos | filterProducto: form.get('search')!.value)?.results"
         [keyMap]="{
             'id_producto': 'id_producto',
             'Imagen' : 'imagen',
             'Descripcion': 'descripcion',
             'Marca': 'marca',
-            'Precio': 'precio_venta',
+            'Codigo': 'codigo',
           }"
           [cantidadFilas]="2"
           [cantidadColumnas]="2"
@@ -144,14 +144,14 @@
       <div [ngClass]="{'hidden': currentView == true, 'block': currentView == false}"
         class="md-overflow-scroll gestor-usuario-table pr-3 animate-fade-down">
         <div class="w-full">
-          <app-table [headers]="['Imagen', 'Descripcion', 'Marca', 'Precio', 'DetalleProducto', 'Editar', 'Eliminar']"
+          <app-table [headers]="['Imagen', 'Descripcion', 'Marca', 'Codigo', 'DetalleProducto', 'Editar', 'Eliminar']"
             [data]="(listProductos | filterProducto: form.get('search')!.value)?.results"
             [keyMap]="{
             'id_producto': 'id_producto',
             'Imagen' : 'imagen',
             'Descripcion': 'descripcion',
             'Marca': 'marca',
-            'Precio': 'precio_venta',
+            'Codigo': 'codigo',
             }"
             positionTable='left'
             maxWidthTable='98%'

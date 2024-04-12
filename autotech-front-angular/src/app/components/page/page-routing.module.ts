@@ -127,11 +127,10 @@ const routes: Routes = [
     title: 'Crear Producto'
   },
   {
-    path:'updateProduct:/id',
+    path:'updateProduct/:id',
     component:CreateOrUpdateProductComponent,
     title:'Crear un producto'
   }
-
 ];
 
 @NgModule({
