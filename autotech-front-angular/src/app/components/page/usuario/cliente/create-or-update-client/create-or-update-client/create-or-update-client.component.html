@@ -13,24 +13,42 @@
     </div>
 
     <form [formGroup]="form" class="items-end grid grid-cols-1 grid-rows-7 gap-y-6 mt-4 md:mt-0 md:grid-cols-4 md:grid-rows-2 lg:gap-y-6 lg:gap-x-8 xl:gap-x-12 animate-fade-down">
-
       <div>
-        <app-field-input [parentForm]="form" fieldName="identificationNumber" formControlName="identificationNumber"
+        <app-field-input [parentForm]="form" fieldName="documento_identidad" formControlName="documento_identidad"
           holder="Escribir número" directive="Numbers">
           Número de documento
         </app-field-input>
       </div>
 
       <div>
-        <app-field-input [parentForm]="form" fieldName="name" formControlName="name" holder="Escribir nombres" directive="NumbersLettersDot">
+        <app-field-input [parentForm]="form" fieldName="nombres" formControlName="nombres" holder="Escribir nombres" directive="NumbersLettersDot">
           Nombres
         </app-field-input>
       </div>
-
       <div>
-        <app-field-input [parentForm]="form" fieldName="phoneNumber" formControlName="phoneNumber" holder="Escribir número" directive="Numbers">
+        <app-field-input [parentForm]="form" fieldName="apellidos" formControlName="apellidos" holder="Escribir apellidos" directive="NumbersLettersDot">
+          Apellidos
+        </app-field-input>
+      </div>
+      <div>
+        <app-field-input [parentForm]="form" fieldName="direccion" formControlName="direccion" holder="Escribir direccion">
+          Direccion
+        </app-field-input>
+      </div>
+      <div>
+        <app-field-input [parentForm]="form" fieldName="telefono" formControlName="telefono" holder="Escribir número" directive="Numbers">
           Teléfono
         </app-field-input>
+      </div>
+      <div>
+        <app-field-input-email [parentForm]="form" fieldName="email" formControlName="email" holder="Escribir correo electrónico">
+          Correo electrónico
+        </app-field-input-email>
+      </div>
+      <div>
+        <app-field-input-email [parentForm]="form" fieldName="fecha_nacimiento" formControlName="fecha_nacimiento" holder="Escribir fecha nacimiento">
+          Fecha nacimiento
+        </app-field-input-email>
       </div>
     </form>
 

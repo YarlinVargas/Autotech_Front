@@ -1,39 +1,55 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RespService } from '../../models/general/resp-service.model';
-import { ConfigService } from '../config/config.service';
-import { CreateUpdateClient } from './models/create-update-client.model';
 
+export interface Cliente {
+  id: string;
+  nombres:string;
+  apellidos: string;
+  direccion: string;
+  telefono:string;
+  email: string;
+  documento_identidad: string;
+  fecha_nacimiento:String;
+}
+export interface ClienteReq {
+  id_cliente: string;
+  nombres:string;
+  apellidos: string;
+  direccion: string;
+  telefono:string;
+  email: string;
+  documento_identidad: string;
+  fecha_nacimiento:String;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClientService {
 
-  constructor(private http: HttpClient, private config: ConfigService) { }
+    private readonly apiUrl = 'http://localhost:3000/api';
 
-  // public GetDetails(id: number): Observable<any> {
-  //   return this.http.get<RespService>(`${this.config.base}user/detail/${id}`);
-  // }
+    constructor(private http: HttpClient) { }
 
-  public GetClients(id: string): Observable<any> {
-    return this.http.get<RespService>(`${this.config.base}client/${id}`);
-  }
+    getClientes(): Observable<Cliente[]> {
+      return this.http.get<Cliente[]>(`${this.apiUrl}/clientes`);
+    }
 
-  public CreateOrUpate(client: CreateUpdateClient): Observable<any> {
-    return this.http.post<RespService>(`${this.config.base}client/createUpdate`, client);
-  }
+    getClienteById(id: number): Observable<Cliente> {
+      return this.http.get<Cliente>(`${this.apiUrl}/clientes/${id}`);
+    }
 
-  public Consult(): Observable<any> {
-    return this.http.get<RespService>(`${this.config.base}client/consult`);
-  }
+    createNewCliente(client: Cliente): Observable<Cliente> {
+      return this.http.post<Cliente>(`${this.apiUrl}/clientes`, client);
+    }
 
-  public ActiveOrDeactive(idClient: number): Observable<any> {
-    return this.http.put<RespService>(`${this.config.base}client/ActivateDeactivate`, { id: idClient });
-  }
+    updateClienteById(id: number, client: Cliente): Observable<void> {
+      return this.http.put<void>(`${this.apiUrl}/clientes/${id}`, client);
+    }
 
-  public Delete(idClient: number): Observable<any> {
-    return this.http.delete<RespService>(`${this.config.base}client`, { body: { id: idClient } });
-  }
+    deleteClienteById(id: string): Observable<void> {
+      return this.http.delete<void>(`${this.apiUrl}/clientes/${id}`);
+    }
+
 }

@@ -161,7 +161,7 @@ export class LoginComponent implements OnInit {
     this._usuarioService.authenticateUsuario(data.userName, data.password).subscribe(
       () => {
         console.log('Usuario logueado correctamente');
-        this.router.navigateByUrl(`gestionUsuario`);
+        this.router.navigateByUrl(`conocenos`);
       },
       error => {
         console.error('Error al loguear el usuario', error);

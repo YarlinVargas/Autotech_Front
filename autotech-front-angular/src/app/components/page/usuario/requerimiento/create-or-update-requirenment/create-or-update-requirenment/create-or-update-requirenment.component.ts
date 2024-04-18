@@ -1,21 +1,16 @@
-import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
-import { ListModel } from 'src/app/core/models/general/general.model';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
-import { Subject, distinctUntilChanged, filter, finalize, forkJoin, map, switchMap, takeUntil, tap } from 'rxjs';
-import { UserService } from 'src/app/core/services/user/user.service';
-import { Company } from 'src/app/core/models/general/company.model';
-import { CreateUpdateUser } from 'src/app/core/services/user/models/create-update-user.model';
-import { PlansByCompany } from 'src/app/core/services/user/models/plans-by-company.model';
+import { Component, HostListener, Input, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subject} from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { openModals } from 'src/app/core/global/modals/openModal';
 import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
-import { CreateUpdateRequirenment } from 'src/app/core/services/requirenment/models/create-update-requirenment.model';
+import { Requirenment } from 'src/app/core/services/requirenment/models/requirenment';
 import { RequirenmentService } from 'src/app/core/services/requirenment/requirenment.service';
-import { GeneralService } from 'src/app/core/services/gen/general.service';
+import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
+import { ClientService, Cliente, ClienteReq } from 'src/app/core/services/client/client.service';
 
 @Component({
   selector: 'app-create-or-update-requirenment',
@@ -24,11 +19,16 @@ import { GeneralService } from 'src/app/core/services/gen/general.service';
 })
 export class CreateOrUpdateRequirenmentComponent {
 
+  public idRequirenment: number = 0;
   public isEdit: boolean = false;
   public destroy$: Subject<boolean> = new Subject<boolean>();
   public currentCompanyNit: string = '';
   public colorsLinks: { associate: any, disassociate: any } = { associate: 'cyan', disassociate: 'neutral' };
   public lastIndexCompany!: number;
+
+  listRequerimientos:Requirenment[] = [];
+  public listUser: Usuario[] = [];
+  public listClients:ClienteReq[] = [];
 
   public tooltip: TootilpOption = {
     enable: true,
@@ -37,24 +37,26 @@ export class CreateOrUpdateRequirenmentComponent {
     hideDelay: 0,
   };
 
-  public requirenmentToUpdate: CreateUpdateRequirenment = {
-    idRequirenment: 0,
-    identificationNumber: '',
-    requirenmentNumber: '',
-    dateInitial: '',
-    placa: '',
-    requirenment:'',
+  public requirenmentToUpdate: Requirenment = {
+    id_requerimiento: 0,
+    fecha: new Date(),
+    id_cliente: 0,
+    id_usuario: 0,
+    id_estado: 0,
+    descripcion_requerimiento: '',
   };
 
   public form: FormGroup = new FormGroup({});
 
-  private genSvc = inject(GeneralService);
+  private clientService = inject(ClientService);
+  private _usuarioService = inject(UsuarioService);
   private requirenmentService = inject(RequirenmentService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private activatedRoute = inject(ActivatedRoute);
-  private spinnerSvc = inject(SpinnerService);
 
+  @Input() color = 'sky';
+  @Input() id_requirenment: string = 'select';
+  @Input() defaultValue: string='Seleccione una opción';
 
   public openModal: openModals = new openModals(this.dialog);
   public currentLargeText = 10;
@@ -65,11 +67,13 @@ export class CreateOrUpdateRequirenmentComponent {
   }
 
   public ngOnInit(): void {
+    this.getRequerimientos();
+    this.getUsuarios();
+    this.getClientes();
     this.currentLargeText = TextLargeWindow.get(15);
 
     if (this.router.url.includes('updateRequirement')) {
       this.isEdit = true;
-      this.GetRequirenment();
     }
   }
 
@@ -77,28 +81,49 @@ export class CreateOrUpdateRequirenmentComponent {
   onWindowResize() {
     this.currentLargeText = TextLargeWindow.get(15);
   }
+// trae la lista de usuarios
+public getUsuarios(){
+  this._usuarioService.getUsuarios().subscribe((r: any) => {
+      if (r.length > 0) {
+        this.listUser = r;
 
-  private GetRequirenment(): void {
-    const idRequirenment = this.activatedRoute.snapshot.paramMap.get('id');
+      } else {
+        console.log("No hay usuarios registrados en el sistema");
+      }
+    });
+}
+// trae la lista de clientes
+public getClientes(){
+  this.clientService.getClientes().subscribe((r: any) => {
+      if (r.length > 0) {
+        this.listClients = r;
 
-    if (!idRequirenment)
-      this.router.navigateByUrl('/requirement');
+      } else {
+        console.log("No hay clientes registrados en el sistema");
+      }
+    });
+}
+//trae la lista de requerimientos
+public getRequerimientos(){
+  this.requirenmentService.getRequerimientos().subscribe((r: any) => {
+      if (r.length > 0) {
+        this.listRequerimientos = r;
 
-    this.spinnerSvc.show();
-    this.requirenmentService.GetRequirenments(idRequirenment!)
-      .subscribe((resp2: any) => {
-        this.setFormRequirenment(this.requirenmentToUpdate);
-      });
-  }
+      } else {
+        console.log("No hay requerimientos registrados en el sistema");
+      }
+    });
+}
 
-  public setFormRequirenment(requirenment: CreateUpdateRequirenment) {
+  public setFormRequirenment(requirenment: Requirenment) {
     this.form = this.fb.group({
-      idRequirenment: [requirenment.idRequirenment],
-      identificationNumber: [requirenment.identificationNumber, Validators.required],
-      requirenmentNumber: [requirenment.requirenmentNumber, [Validators.required, Validators.minLength(1)]],
-      placa: [requirenment.placa, [Validators.required, Validators.minLength(1)]],
-      dateInitial: [requirenment.dateInitial, Validators.required],
-      requirenment: [requirenment.requirenment, Validators.required],
+      id: [requirenment.id_requerimiento],
+      fecha: [requirenment.fecha],
+      id_cliente: [requirenment.id_cliente, Validators.required],
+      id_usuario: [requirenment.id_usuario, [Validators.required, Validators.minLength(1)]],
+      id_estado: 1,
+      descripcion_requerimiento: [requirenment.descripcion_requerimiento, [Validators.required, Validators.minLength(1)]],
+
     });
   }
 
@@ -109,67 +134,26 @@ export class CreateOrUpdateRequirenmentComponent {
       this.form.markAllAsTouched();
       return;
     }
+    let request: Requirenment = this.form.value;
 
-    let request: CreateUpdateRequirenment = this.form.value;
+    if(this.isEdit ){
 
+      this.requirenmentService.updateRequerimientoById(this.idRequirenment, request).subscribe((r: any) => {
 
-    this.spinnerSvc.show();
-    this.requirenmentService.CreateOrUpate(request)
-      .pipe(
-        finalize(() => {
-          this.spinnerSvc.hide();
-        })
-      )
-      .subscribe((resp: RespService) => {
-        let message = '';
-        let status = 1;
-
-        if (this.isEdit) {
-          if (resp.ok === true)
-            message = '¡Requerimiento actualizado correctamente!';
-          else {
-            status = 3;
-
-            if (resp.message.trim().toLowerCase() === 'requirenmentNumber already exists') {
-              message = '¡Los datos del requerimiento ya existen! Por favor verifique e intente de nuevo';
-              this.form.get('identificationNumber')?.setErrors({ 'IdentificationExists': true });
-              this.form.get('idIdentificationType')?.setErrors({ 'showWithoutMessage': true });
-            } else if (resp.message.trim().toLowerCase() === 'email already exists') {
-              this.form.get('email')?.setErrors({ 'EmailIsTaken': true });
-            }
-          }
-        } else {
-          if (resp.ok === true)
-            message = '¡Usuario creado correctamente!';
-          else {
-            status = 3;
-
-            if (resp.message.trim().toLowerCase() === 'username already exists') {
-              message = '¡Los datos del usuario ya existen! Por favor verifique e intente de nuevo';
-              this.form.get('identificationNumber')?.setErrors({ 'IdentificationExists': true });
-              this.form.get('idIdentificationType')?.setErrors({ '': true });
-            } else if (resp.message.trim().toLowerCase() === 'email already exists') {
-              this.form.get('email')?.setErrors({ 'EmailIsTaken': true });
-            }
-          }
-        }
-
-        if (message) {
-          const dialogRef = this.openModal.Open(
-            status,
-            [],
-            message,
-            '25rem',
-            status === 3 ? 'amber400': ''
-          );
-
-          dialogRef.componentInstance!.acceptEvent?.subscribe(_ => {
-            if (status === 1)
-              this.router.navigateByUrl(`/requirement`);
-            dialogRef.close();
-          });
-        }
+        console.log("Requerimiento actualizado correctamente");
+        this.router.navigateByUrl(`/requirement`);
       });
+    }else{
+
+      // this.spinnerSvc.show();
+      this.requirenmentService.createNewRequerimiento(request).subscribe((r: any) => {
+
+          console.log("Requerimiento creado correctamente");
+          this.router.navigateByUrl(`/requirement`);
+
+        });
+    }
+
   }
 
   public getForm = (control: string) => this.form.get(control);

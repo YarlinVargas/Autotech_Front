@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { RespService } from '../../models/general/resp-service.model';
-import { ConfigService } from '../config/config.service';
-import { CreateUpdateRequirenment } from './models/create-update-requirenment.model';
+import { Requirenment } from './models/requirenment';
 
 
 @Injectable({
@@ -11,29 +9,27 @@ import { CreateUpdateRequirenment } from './models/create-update-requirenment.mo
 })
 export class RequirenmentService {
 
-  constructor(private http: HttpClient, private config: ConfigService) { }
+  private readonly apiUrl = 'http://localhost:3000/api';
 
-  // public GetDetails(id: number): Observable<any> {
-  //   return this.http.get<RespService>(`${this.config.base}user/detail/${id}`);
-  // }
+  constructor(private http: HttpClient) { }
 
-  public GetRequirenments(id: string): Observable<any> {
-    return this.http.get<RespService>(`${this.config.base}requirenment/${id}`);
+  getRequerimientos(): Observable<Requirenment[]> {
+    return this.http.get<Requirenment[]>(`${this.apiUrl}/requerimientos`);
   }
 
-  public CreateOrUpate(requirenment: CreateUpdateRequirenment): Observable<any> {
-    return this.http.post<RespService>(`${this.config.base}requirenment/createUpdate`, requirenment);
+  getRequerimientoById(id: number): Observable<Requirenment> {
+    return this.http.get<Requirenment>(`${this.apiUrl}/requerimientos/${id}`);
   }
 
-  public Consult(): Observable<any> {
-    return this.http.get<RespService>(`${this.config.base}requirenment/consult`);
+  createNewRequerimiento(requirenment: Requirenment): Observable<Requirenment> {
+    return this.http.post<Requirenment>(`${this.apiUrl}/requerimientos`, requirenment);
   }
 
-  public ActiveOrDeactive(idRequirenment: number): Observable<any> {
-    return this.http.put<RespService>(`${this.config.base}requirenment/ActivateDeactivate`, { id: idRequirenment });
+  updateRequerimientoById(id: number, requirenment: Requirenment): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/requerimientos/${id}`, requirenment);
   }
 
-  public Delete(idRequirenment: number): Observable<any> {
-    return this.http.delete<RespService>(`${this.config.base}requirenment`, { body: { id: idRequirenment } });
+  deleteRequerimientoById(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/requerimientos/${id}`);
   }
 }

@@ -10,7 +10,7 @@ import { ToggleListEnum } from 'src/app/core/models/enums/toggleList.enum';
 import { RespService } from 'src/app/core/models/general/resp-service.model';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { FilterClientsPipe } from 'src/app/core/pipes/filter/filter-clients.pipe';
-import { ClientService } from 'src/app/core/services/client/client.service';
+import { ClientService, Cliente } from 'src/app/core/services/client/client.service';
 import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 
 @Component({
@@ -36,11 +36,7 @@ export class GestorClienteComponent {
   private clientService = inject(ClientService);
   private spinnerSvc = inject(SpinnerService);
 
-  listClients:ListClients[] = [
-    { idClient: 1, name:'Felipe Lopez', identificationNumber: '12345678', phoneNumber: '9452687',   active:true},
-    { idClient: 2, name:'Juliana Ramirez', identificationNumber: '87654321', phoneNumber: '98848888',  active:true},
-    { idClient: 3, name:'Susana Cardenas', identificationNumber: '876123321', phoneNumber: '8818049',   active:true }
-  ];
+  listClients:Cliente[] = [];
   public optionsSearch: string[] = [];
 
   public currentLargeTextCard = 10;
@@ -83,6 +79,7 @@ export class GestorClienteComponent {
   }
 
   public ngOnInit(): void {
+    this.getClientes();
     this.formClient.get('search')?.valueChanges
       .pipe(
         takeUntil(this.destroy$),
@@ -100,19 +97,18 @@ export class GestorClienteComponent {
 
     this.currentLargeTextCard = TextLargeWindow.get(15, 20, 15, 25);
     this.currentLargeTextTable = TextLargeWindow.get(15);
-
-    // this.spinnerSvc.show();
-    //   this.userService.Consult().
-    //   pipe(
-    //     finalize(() => {
-    //       this.spinnerSvc.hide();
-    //     })
-    //   ).
-    // subscribe((resp: RespService) => {
-    //   this.listUsers = resp.data;
-    // });
   }
+// trae la lista de clientes
+public getClientes(){
+  this.clientService.getClientes().subscribe((r: any) => {
+      if (r.length > 0) {
+        this.listClients = r;
 
+      } else {
+        console.log("No hay clientes registrados en el sistema");
+      }
+    });
+}
   public setSuggestion(event: any) {
     this.formClient.get('search')?.setValue(event);
     this.optionsSearch = [];
@@ -129,44 +125,22 @@ export class GestorClienteComponent {
 
     if (event[0] == false) {
       const dialog = this.openModal.OpenLogout(
-        [`El cliente "${this.listClients[event[1]].name}" no podrá ser accesible en el sistema`],
+        [`El cliente "${this.listClients[event[1]].nombres}" no podrá acceder al sistema`],
         '30rem',
-        '¿Esta seguro de deshabilitar este cliente?',
+        '¿Esta seguro de deshabilitar este usuario?',
       );
 
       dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-        this.ActiveOrDeactiveClient(event[1], event[0]);
+        this.ActiveOrDeactiveUser(event[1], event[0]);
       });
-    } else this.ActiveOrDeactiveClient(event[1], event[0]);
+    } else this.ActiveOrDeactiveUser(event[1], event[0]);
   }
 
-  public ActiveOrDeactiveClient(index: number, status: boolean): void {
-    this.clientService.ActiveOrDeactive(this.listClients[index].idClient)
-      .pipe(
-        tap((resp: RespService) => {
-          if (resp.ok) {
-            this.listClients[index].active = status;
-          }
-        }),
-        finalize(() => {
-          this.spinnerSvc.hide();
-        })
-      )
-      .subscribe((resp: RespService) => {
-        if (resp.ok == true) {
-          if (status)
-            this.openModal.Open(1, [], 'Cliente habilitado con éxito!', '25rem');
-          else
-            this.openModal.Open(3, [], '¡Cliente deshabilitado correctamente!', '25rem', 'amber');
-        } else
-          this.openModal.Open(
-            2,
-            [],
-            status ? `¡El cliente no se ha habilitado!`: '¡El cliente no se ha deshabilitado!',
-            '25rem'
-          );
-      });
+  public ActiveOrDeactiveUser(index: number, status: boolean): void {
   }
+
+
+
 
   public getValueForm = (id: string): string => this.formClient.get(id)?.value;
 
@@ -181,37 +155,26 @@ export class GestorClienteComponent {
       this.router.navigateByUrl(url);
   }
 
-  public deleteClient(idClient: number) {
-    const currentClient = this.listClients.find((client: ListClients) => client.idClient == idClient);
-    if (!currentClient) return;
+ // Eliminar cliente
+ public deleteClient(idClient: string) {
+  const currentClient = this.listClients.find((client: Cliente) => client.id == idClient);
+  if (!currentClient) return;
 
-    const dialog = this.openModal.OpenLogout(
-      [`El cliente "${currentClient?.name}" no podrá ser accesible en el sistema`],
-      '30rem',
-      '¿Esta seguro que desea eliminar este cliente?',
-      'Esta acción es permanente'
-    );
+  const dialog = this.openModal.OpenLogout(
+    [`El Cliente "${currentClient?.nombres}" no podrá acceder al sistema`],
+    '30rem',
+    '¿Esta seguro que desea eliminar este cliente?',
+    'Esta acción es permanente'
+  );
 
-    dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-      this.clientService.Delete(currentClient.idClient)
-        .pipe(
-          tap((resp: RespService) => {
-            if (resp.ok) {
-              this.listClients = this.listClients.filter((client: ListClients) => client.idClient != idClient);
-            }
-          }),
-          finalize(() => {
-            this.spinnerSvc.hide();
-          })
-        )
-        .subscribe((resp: RespService) => {
-          if (resp.ok == true)
-            this.openModal.Open(1, [], '¡Cliente eliminado correctamente!', '25rem');
-          else
-            this.openModal.Open(2, [], '¡El Cliente no se ha eliminado!', '25rem');
-        });
-    });
-  }
+  dialog.componentInstance!.logoutEvent?.subscribe(_ => {
+    this.clientService.deleteClienteById(currentClient.id)
+    .subscribe((r: any) => {
+          this.openModal.Open(1, [],`Cliente "${currentClient?.nombres}" eliminado correctamente!`, '25rem');
+          this.getClientes();
+      });
+  });
+}
 
   public ngOnDestroy(): void {
     this.destroy$.next(true);

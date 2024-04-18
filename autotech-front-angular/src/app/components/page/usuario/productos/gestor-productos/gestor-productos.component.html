@@ -85,12 +85,13 @@
   <div class="sm:hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="#" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Usuarios</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Notificaciones</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
+      <a routerLink="/gestionUsuario" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Usuarios</a>
+      <a routerLink="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
+      <a routerLink="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Notificaciones</a>
+      <a routerLink="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
+      <a routerLink="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
+      <a routerLink="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
+      <a routerLink="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Productos</a>
     </div>
   </div>
 </nav>
@@ -107,7 +108,7 @@
       <h2 class="md:hidden font-bold text-lg">
         Listado
       </h2>
-      
+
       <app-buttons class="text-right animate-fade-right" typeBtn="button" [color]="'primary'" [button]="15" label="Agregar producto"
         (click)="navigate('createProduct')">
       </app-buttons>
