@@ -1,1 +1,68 @@
-<p>create-or-update-orden works!</p>
+<div #content  class="w-full h-full absolute flex flex-col p-4 md:p-2 bottom-4 overflow-scroll md:overflow-auto">
+  <div class="flex flex-col w-full max-w-full md:h-full relative bg-white py-5 lg:p-5 xl:py-6 xl:px-12">
+
+    <div class="editar-cliente-titulo w-full h-30 text-neutral700 flex items-center justify-center p-4 pt-9 md:p-4 lg:px-7 lg:pb-6 lg:pt-0">
+      <p class="font-bold text-xl xl:text-2xl animate-fade-top">
+        <ng-container *ngIf="isEdit">
+          Editar orden de trabajo
+        </ng-container>
+        <ng-container *ngIf="!isEdit">
+          Crear orden de trabajo
+        </ng-container>
+      </p>
+    </div>
+
+    <form [formGroup]="form" class="items-end grid grid-cols-1 grid-rows-7 gap-y-6 mt-4 md:mt-0 md:grid-cols-4 md:grid-rows-2 lg:gap-y-6 lg:gap-x-8 xl:gap-x-12 animate-fade-down">
+      <div>
+        <app-field-input [parentForm]="form" fieldName="documento_identidad" formControlName="documento_identidad"
+          holder="Escribir número" directive="Numbers">
+          Número de documento
+        </app-field-input>
+      </div>
+
+      <div>
+        <app-field-input [parentForm]="form" fieldName="nombres" formControlName="nombres" holder="Escribir nombres" directive="NumbersLettersDot">
+          Nombres
+        </app-field-input>
+      </div>
+      <div>
+        <app-field-input [parentForm]="form" fieldName="apellidos" formControlName="apellidos" holder="Escribir apellidos" directive="NumbersLettersDot">
+          Apellidos
+        </app-field-input>
+      </div>
+      <div>
+        <app-field-input [parentForm]="form" fieldName="direccion" formControlName="direccion" holder="Escribir direccion">
+          Direccion
+        </app-field-input>
+      </div>
+      <div>
+        <app-field-input [parentForm]="form" fieldName="telefono" formControlName="telefono" holder="Escribir número" directive="Numbers">
+          Teléfono
+        </app-field-input>
+      </div>
+      <div>
+        <app-field-input-email [parentForm]="form" fieldName="email" formControlName="email" holder="Escribir correo electrónico">
+          Correo electrónico
+        </app-field-input-email>
+      </div>
+      <div>
+        <app-field-input-email [parentForm]="form" fieldName="fecha_nacimiento" formControlName="fecha_nacimiento" holder="Escribir fecha nacimiento">
+          Fecha nacimiento
+        </app-field-input-email>
+      </div>
+    </form>
+
+    <hr class="w-full mt-12 md:mt-4 mb-3 border-2 border-transparent border-b-neutral500">
+
+    <div class="flex justify-center gap-x-4 mt-5 md:mt-2 items-end animate-fade-down">
+      <app-buttons [typeBtn]="'submit'" [color]="'sky'" [width]="'32'" [height]="'8'" [button]="2"
+        label="Cancelar" (click)="back()" ></app-buttons>
+      <app-buttons [typeBtn]="'submit'" [color]="'primary'" [width]="'32'" [height]="'8'" [button]="2"
+        [label]="isEdit ? 'Actualizar' : 'Crear'" (click)="updateOrCreateClient()"></app-buttons>
+    </div>
+    <app-footer/>
+  </div>
+</div>
+
+<app-go-up [elementToTop]="content"/>
+

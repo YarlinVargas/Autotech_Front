@@ -13,7 +13,7 @@ export interface Cliente {
   fecha_nacimiento:String;
 }
 export interface ClienteReq {
-  id_cliente: string;
+  id_cliente: number;
   nombres:string;
   apellidos: string;
   direccion: string;
