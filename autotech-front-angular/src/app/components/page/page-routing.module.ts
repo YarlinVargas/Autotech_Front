@@ -19,43 +19,9 @@ import { CreateOrUpdateRequirenmentComponent } from './usuario/requerimiento/cre
 import { CreateOrUpdateClientComponent } from './usuario/cliente/create-or-update-client/create-or-update-client/create-or-update-client.component';
 import { GestorProductosComponent } from './usuario/productos/gestor-productos/gestor-productos.component';
 import { CreateOrUpdateProductComponent } from './usuario/productos/create-or-update-product/create-or-update-product/create-or-update-product.component';
+import { CreateOrUpdateOrdenComponent } from './usuario/orden-trabajo/create-or-update-orden/create-or-update-orden/create-or-update-orden.component';
 
 const routes: Routes = [
-  // {
-  //   path: 'welcomePatient',
-  //   component: WelcomeComponent,
-  //   title: 'Bienvenid@ paciente'
-  // },
-  // {
-  //   path:'welcomeCompany',
-  //   component: WelcomeCompanyComponent,
-  //   title: 'Bienvenido'
-  // },
-  // {
-  //   path:'patientResult',
-  //   component: ListResultadosPatientComponent,
-  //   title: 'Resultado paciente'
-  // },
-  // {
-  //   path:'result/:id:/:request',
-  //   component: ResultComponent,
-  //   title: 'Detalle resultado'
-  // },
-  // {
-  //   path:'listcompanyResult',
-  //   component: ListResultadosCompanyComponent,
-  //   title: 'Lista empresas'
-  // },
-  // {
-  //   path:'detailResultCompany/:id/:request/:status',
-  //   component: DetailResultComponent,
-  //   title: 'Detalle resultado'
-  // },
-  // {
-  //   path:'perfil',
-  //   component: PerfilComponent,
-  //   title: 'Perfil'
-  // },
   {
     path: 'gestionUsuario',
     component: GestorUsuarioComponent,
@@ -110,6 +76,16 @@ const routes: Routes = [
     path: 'orders',
     component: GestorOrdenTrabajoComponent,
     title: 'Vista ordenes de trabajo'
+  },
+  {
+    path: 'createOrdenes',
+    component: CreateOrUpdateOrdenComponent,
+    title: 'Crear orden trabajo'
+  },
+  {
+    path: 'updateordenes/:id',
+    component: CreateOrUpdateOrdenComponent,
+    title: 'Editar orden trabajo'
   },
   {
     path: 'conocenos',

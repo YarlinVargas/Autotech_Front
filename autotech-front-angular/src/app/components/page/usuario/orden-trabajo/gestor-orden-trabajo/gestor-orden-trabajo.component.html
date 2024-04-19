@@ -85,13 +85,91 @@
   <div class="sm:hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="#" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Usuarios</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Notificaciones</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
+      <a routerLink="/gestionUsuario" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Usuarios</a>
+      <a routerLink="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
+      <a routerLink="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Notificaciones</a>
+      <a routerLink="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
+      <a routerLink="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
+      <a routerLink="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
+      <a routerLink="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Productos</a>
     </div>
   </div>
 </nav>
-<p>gestor-orden-trabajo works!</p>
+<div #content class=" flex flex-col p-4 md:p-2 bottom-4 overflow-scroll md:overflow-y-auto">
+  <div class="w-full h-full bg-white lg:p-5 xl:py-6 xl:px-12">
+
+    <div class="gestor-clients-titulo w-full h-30 text-neutral700 flex items-center justify-center p-4 pt-9 md:p-4 lg:px-7 lg:pb-7 lg:pt-0">
+      <p class="font-bold text-xl xl:text-2xl animate-fade-top">
+        Gestor ordenes de trabajo
+      </p>
+    </div>
+
+    <div class="w-full h-30 text-neutral700 py-4 flex justify-between md:justify-end items-end">
+      <h2 class="md:hidden font-bold text-lg">
+        Listado
+      </h2>
+      <app-buttons class="text-right animate-fade-right" typeBtn="button" [color]="'primary'" [button]="15" label="Agregar cliente"
+        (click)="navigate('createOrdenes')">
+      </app-buttons>
+    </div>
+
+    <form [formGroup]="formClient" class="block md:flex md:flex-row md:items-center animate-fade-down">
+      <app-field-input [parentForm]="formClient" fieldName="search" formControlName="search" class="w-full md:w-6/12"
+        type="text" holder="Búsqueda" [permitirIcono]="true" [sugerencias]="optionsSearch" (selectSuggestion)="setSuggestion($event)"></app-field-input>
+      <hr class="w-full my-5 md:my-0 md:ml-5 border-2 border-transparent border-b-neutral500 md:w-9/12">
+    </form>
+
+    <app-toggle-list (changeView)="toggleView()" class="animate-fade-down" />
+
+    <div [ngClass]="{'hidden': currentView == false, 'block': currentView == true}"
+      class="md-overflow-scroll gestor-clients-table animate-fade-down">
+      <app-card-view
+        [headers]="['Orden trabajo', 'Cliente','vehiculo', 'Usuario','Tipo orden','Soporte','Requerimiento', 'Editar', 'Eliminar', 'Activo']"
+        [data]="(listClients | filterClients: formClient.get('search')!.value)?.results"
+        [keyMap]="{
+            'id': 'id',
+            'Nombre': 'nombres',
+            'Apellidos': 'apellidos',
+            'Numero de documento': 'cedula',
+            'Numero de celular': 'telefono',
+            'Activo': 'active'
+          }"
+          [cantidadFilas]="2"
+          [cantidadColumnas]="2"
+          nombreCampoAEmitir="idClient"
+          (activeChange)="changeStatus($event)"
+          [acortadorTexto]="currentLargeTextCard"
+          [opcionesParaTooltip]="tooltip"
+          (resultWithHeader)="navigate('updateordenes', $event)"
+        >
+        </app-card-view>
+      </div>
+
+      <div [ngClass]="{'hidden': currentView == true, 'block': currentView == false}"
+        class="md-overflow-scroll gestor-clients-table pr-3 animate-fade-down">
+        <div class="w-full">
+          <app-table [headers]="['Orden trabajo', 'Cliente','vehiculo', 'Usuario','Tipo orden','Soporte','Requerimiento', 'Editar', 'Eliminar', 'Activo']"
+            [data]="(listClients | filterClients: formClient.get('search')!.value)?.results"
+            [keyMap]="{
+            'id': 'id',
+            'Nombre': 'nombres',
+            'Apellidos': 'apellidos',
+            'Numero de documento': 'cedula',
+            'Numero de celular': 'telefono',
+            'Activo': 'active'
+            }"
+            positionTable='left'
+            maxWidthTable='98%'
+            nombreCampoAEmitir="idClient"
+            [acortadorTexto]="currentLargeTextTable"
+            [opcionesParaTooltip]="tooltip"
+            (activeChange)="changeStatus($event)"
+            (resultWithHeader)="navigate('updateordenes', $event)">
+          </app-table>
+        </div>
+      </div>
+  </div>
+</div>
+
+<app-go-up [elementToTop]="content"/>
+<app-footer/>

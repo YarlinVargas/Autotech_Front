@@ -142,31 +142,31 @@ export class GestorNotificacionComponent {
   }
 
   public ActiveOrDeactiveClient(index: number, status: boolean): void {
-    this.clientService.ActiveOrDeactive(this.listNotification[index].id_recordatorio)
-      .pipe(
-        tap((resp: RespService) => {
-          if (resp.ok) {
-            this.listNotification[index].active = status;
-          }
-        }),
-        finalize(() => {
-          this.spinnerSvc.hide();
-        })
-      )
-      .subscribe((resp: RespService) => {
-        if (resp.ok == true) {
-          if (status)
-            this.openModal.Open(1, [], 'Cliente habilitado con éxito!', '25rem');
-          else
-            this.openModal.Open(3, [], '¡Cliente deshabilitado correctamente!', '25rem', 'amber');
-        } else
-          this.openModal.Open(
-            2,
-            [],
-            status ? `¡El cliente no se ha habilitado!`: '¡El cliente no se ha deshabilitado!',
-            '25rem'
-          );
-      });
+    // this.clientService.ActiveOrDeactive(this.listNotification[index].id_recordatorio)
+    //   .pipe(
+    //     tap((resp: RespService) => {
+    //       if (resp.ok) {
+    //         this.listNotification[index].active = status;
+    //       }
+    //     }),
+    //     finalize(() => {
+    //       this.spinnerSvc.hide();
+    //     })
+    //   )
+    //   .subscribe((resp: RespService) => {
+    //     if (resp.ok == true) {
+    //       if (status)
+    //         this.openModal.Open(1, [], 'Cliente habilitado con éxito!', '25rem');
+    //       else
+    //         this.openModal.Open(3, [], '¡Cliente deshabilitado correctamente!', '25rem', 'amber');
+    //     } else
+    //       this.openModal.Open(
+    //         2,
+    //         [],
+    //         status ? `¡El cliente no se ha habilitado!`: '¡El cliente no se ha deshabilitado!',
+    //         '25rem'
+    //       );
+    //   });
   }
 
   public getValueForm = (id: string): string => this.formClient.get(id)?.value;
@@ -183,35 +183,35 @@ export class GestorNotificacionComponent {
   }
 
   public deleteClient(id_recordatorio: number) {
-    const currentClient = this.listNotification.find((notification: ListNotifications) => notification.id_recordatorio == id_recordatorio);
-    if (!currentClient) return;
+    // const currentClient = this.listNotification.find((notification: ListNotifications) => notification.id_recordatorio == id_recordatorio);
+    // if (!currentClient) return;
 
-    const dialog = this.openModal.OpenLogout(
-      [`El cliente "${currentClient?.name}" no podrá ser accesible en el sistema`],
-      '30rem',
-      '¿Esta seguro que desea eliminar este cliente?',
-      'Esta acción es permanente'
-    );
+    // const dialog = this.openModal.OpenLogout(
+    //   [`El cliente "${currentClient?.name}" no podrá ser accesible en el sistema`],
+    //   '30rem',
+    //   '¿Esta seguro que desea eliminar este cliente?',
+    //   'Esta acción es permanente'
+    // );
 
-    dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-      this.clientService.Delete(currentClient.id_recordatorio)
-        .pipe(
-          tap((resp: RespService) => {
-            if (resp.ok) {
-              this.listNotification = this.listNotification.filter((notification: ListNotifications) => notification.id_recordatorio != id_recordatorio);
-            }
-          }),
-          finalize(() => {
-            this.spinnerSvc.hide();
-          })
-        )
-        .subscribe((resp: RespService) => {
-          if (resp.ok == true)
-            this.openModal.Open(1, [], '¡Cliente eliminado correctamente!', '25rem');
-          else
-            this.openModal.Open(2, [], '¡El Cliente no se ha eliminado!', '25rem');
-        });
-    });
+    // dialog.componentInstance!.logoutEvent?.subscribe(_ => {
+    //   this.clientService.deleteClienteById(currentClient.id_recordatorio)
+    //     .pipe(
+    //       // tap((resp: RespService) => {
+    //       //   if (resp.ok) {
+    //       //     this.listNotification = this.listNotification.filter((notification: ListNotifications) => notification.id_recordatorio != id_recordatorio);
+    //       //   }
+    //       // }),
+    //       finalize(() => {
+    //         this.spinnerSvc.hide();
+    //       })
+    //     )
+    //     .subscribe((resp: RespService) => {
+    //       if (resp.ok == true)
+    //         this.openModal.Open(1, [], '¡Cliente eliminado correctamente!', '25rem');
+    //       else
+    //         this.openModal.Open(2, [], '¡El Cliente no se ha eliminado!', '25rem');
+    //     });
+    // });
   }
 
   public ngOnDestroy(): void {

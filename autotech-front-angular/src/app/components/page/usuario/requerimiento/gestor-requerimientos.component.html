@@ -37,6 +37,7 @@
             <a routerLink="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
             <a routerLink="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
             <a routerLink="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
+            <a routerLink="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Productos</a>
           </div>
         </div>
       </div>
@@ -84,12 +85,13 @@
   <div class="sm:hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="#" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Usuarios</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Notificaciones</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
-            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
+      <a routerLink="/gestionUsuario" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Usuarios</a>
+      <a routerLink="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
+      <a routerLink="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Notificaciones</a>
+      <a routerLink="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
+      <a routerLink="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
+      <a routerLink="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
+      <a routerLink="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Productos</a>
     </div>
   </div>
 </nav>
@@ -122,20 +124,17 @@
     <div [ngClass]="{'hidden': currentView == false, 'block': currentView == true}"
       class="md-overflow-scroll gestor-requirenment-table animate-fade-down">
       <app-card-view
-        [headers]="['N° Requerimiento', 'Fecha ingreso', 'Placa', 'Cedula', 'Editar', 'Eliminar', 'Activo']"
+        [headers]="['N° Requerimiento', 'Fecha ingreso', 'Descripcion', 'Editar', 'Eliminar']"
         [data]="(listRequerimientos | filterRequeriments: formRequerimiento.get('search')!.value)?.results"
         [keyMap]="{
-            'idRequirenment': 'idRequirenment',
-            'N° Requerimiento': 'requirenmentNumber',
-            'Fecha ingreso': 'dateInitial',
-            'Placa': 'placa',
-            'Cedula': 'identificationNumber',
-            'Activo': 'active'
+            'id_requerimiento': 'id_requerimiento',
+            'N° Requerimiento': 'id_requerimiento',
+            'Fecha ingreso': 'fecha',
+            'Descripcion': 'descripcion_requerimiento',
           }"
           [cantidadFilas]="2"
           [cantidadColumnas]="2"
-          nombreCampoAEmitir="idRequirenment"
-          (activeChange)="changeStatus($event)"
+          nombreCampoAEmitir="id_requerimiento"
           [acortadorTexto]="currentLargeTextCard"
           [opcionesParaTooltip]="tooltip"
           (resultWithHeader)="navigate('updateRequirement', $event)"
@@ -146,19 +145,17 @@
       <div [ngClass]="{'hidden': currentView == true, 'block': currentView == false}"
         class="md-overflow-scroll gestor-requirenment-table pr-3 animate-fade-down">
         <div class="w-full">
-          <app-table [headers]="['N° Requerimiento', 'Fecha ingreso', 'Placa', 'Cedula', 'Editar', 'Eliminar', 'Activo']"
+          <app-table [headers]="['N° Requerimiento', 'Fecha ingreso', 'Descripcion', 'Editar', 'Eliminar']"
             [data]="(listRequerimientos | filterRequeriments: formRequerimiento.get('search')!.value)?.results"
             [keyMap]="{
-            'idRequirenment': 'idRequirenment',
-            'N° Requerimiento': 'requirenmentNumber',
-            'Fecha ingreso': 'dateInitial',
-            'Placa': 'placa',
-            'Cedula': 'identificationNumber',
-            'Activo': 'active'
+            'id_requerimiento': 'id_requerimiento',
+            'N° Requerimiento': 'id_requerimiento',
+            'Fecha ingreso': 'fecha',
+            'Descripcion': 'descripcion_requerimiento',
             }"
             positionTable='left'
             maxWidthTable='98%'
-            nombreCampoAEmitir="idRequirenment"
+            nombreCampoAEmitir="id_requerimiento"
             [acortadorTexto]="currentLargeTextTable"
             [opcionesParaTooltip]="tooltip"
             (activeChange)="changeStatus($event)"

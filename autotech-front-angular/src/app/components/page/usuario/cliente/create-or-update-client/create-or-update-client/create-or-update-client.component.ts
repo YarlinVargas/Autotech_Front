@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, inject } from '@angular/core';
 
 import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
 import { CreateUpdateClient } from 'src/app/core/services/client/models/create-update-client.model';
-import { ClientService } from 'src/app/core/services/client/client.service';
+import { ClientService, Cliente } from 'src/app/core/services/client/client.service';
 
 
 @Component({
@@ -20,6 +20,7 @@ import { ClientService } from 'src/app/core/services/client/client.service';
 })
 export class CreateOrUpdateClientComponent {
 
+  public idClient: number = 0;
   public isEdit: boolean = false;
   public destroy$: Subject<boolean> = new Subject<boolean>();
   public currentCompanyNit: string = '';
@@ -33,25 +34,33 @@ export class CreateOrUpdateClientComponent {
     hideDelay: 0,
   };
 
-  public clientToUpdate: CreateUpdateClient = {
-    idClient: 0,
-    identificationNumber: '',
-    name: '',
-    phoneNumber: '',
+  public clientToUpdate: Cliente = {
+    id: '',
+    nombres:'',
+    apellidos: '',
+    direccion: '',
+    telefono:'',
+    email: '',
+    documento_identidad: '',
+    fecha_nacimiento:'',
   };
+
 
   public form: FormGroup = new FormGroup({});
 
-  private clientService = inject(ClientService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
   private spinnerSvc = inject(SpinnerService);
 
+  @Input() color = 'sky';
+  @Input() id_client: string = 'select';
+  @Input() defaultValue: string='Seleccione una opción';
+
   public openModal: openModals = new openModals(this.dialog);
   public currentLargeText = 10;
 
-  constructor(public dialog: Dialog) {
+  constructor(public dialog: Dialog, public clientService: ClientService) {
     this.setFormClient(this.clientToUpdate);
   }
 
@@ -71,87 +80,72 @@ export class CreateOrUpdateClientComponent {
 
   private GetClient(): void {
     const idClient = this.activatedRoute.snapshot.paramMap.get('id');
-
+    this.idClient = parseInt(idClient!);
     if (!idClient)
       this.router.navigateByUrl('/client');
 
-    this.spinnerSvc.show();
-    this.clientService.GetClients(idClient!)
-      .pipe(
-        tap((resp: RespService) => {
-          if (!Object.keys(resp.data).length)
-            this.router.navigateByUrl('/client');
-          else {
-            this.clientToUpdate = resp.data;
-            this.setFormClient(this.clientToUpdate);
-          }
-        }),
-        finalize(() => {
-          this.spinnerSvc.hide();
-        })
-      )
-      .subscribe((resp2: any) => {
-        this.setFormClient(this.clientToUpdate);
-      });
+    this.clientService.getClienteById(parseInt(idClient!) ).subscribe(
+      (r:any) => {
+        console.log('Cliente actualizado correctamente');
+        this.setFormClient(r);
+      },
+      error => {
+        console.error('Error al actualizar el cliente', error);
+        this.router.navigateByUrl(`client`);
+      }
+    );
   }
 
-  public setFormClient(client: CreateUpdateClient) {
+
+
+  public setFormClient(client: Cliente) {
     this.form = this.fb.group({
-      idClient: [client.idClient],
-      identificationNumber: [client.identificationNumber, Validators.required],
-      name: [client.name, [Validators.required, Validators.minLength(1)]],
-      phoneNumber: [client.phoneNumber, Validators.required],
+      id: [client.id],
+      nombres: [client.nombres, [Validators.required, Validators.minLength(1)]],
+      apellidos: [client.apellidos, [Validators.required, Validators.minLength(1)]],
+      direccion: [client.direccion, Validators.required],
+      telefono: [client.telefono, Validators.required],
+      email: [
+        client.email,
+        [
+          Validators.required,
+          Validators.email,
+        ]
+      ],
+      documento_identidad: [client.documento_identidad, Validators.required],
+      fecha_nacimiento: [client.fecha_nacimiento, Validators.required],
+
     });
   }
 
   public back = () => this.router.navigateByUrl('client');
 
   public updateOrCreateClient(): void {
+    debugger
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
+    let request: Cliente = this.form.value;
 
-    let request: CreateUpdateClient = this.form.value;
+    if(this.isEdit ){
 
-    this.spinnerSvc.show();
-    this.clientService.CreateOrUpate(request)
-      .pipe(
-        finalize(() => {
-          this.spinnerSvc.hide();
-        })
-      )
-      .subscribe((resp: RespService) => {
-        let message = '';
-        let status = 1;
+      this.clientService.updateClienteById(this.idClient, request).subscribe((r: any) => {
 
-        if (this.isEdit) {
-          if (resp.ok === true)
-            message = '¡Cliente actualizado correctamente!';
-
-        } else {
-          if (resp.ok === true)
-            message = '¡Cliente creado correctamente!';
-        }
-
-        if (message) {
-          const dialogRef = this.openModal.Open(
-            status,
-            [],
-            message,
-            '25rem',
-            status === 3 ? 'amber400': ''
-          );
-
-          dialogRef.componentInstance!.acceptEvent?.subscribe(_ => {
-            if (status === 1)
-              this.router.navigateByUrl(`/client`);
-            dialogRef.close();
-          });
-        }
+        console.log("Cliente actualizado correctamente");
+        this.router.navigateByUrl(`/client`);
       });
-  }
+    }else{
 
+      // this.spinnerSvc.show();
+      this.clientService.createNewCliente(request).subscribe((r: any) => {
+
+          console.log("Cliente creado correctamente");
+          this.router.navigateByUrl(`/client`);
+
+        });
+    }
+  }
   public getForm = (control: string) => this.form.get(control);
 
   public ngOnDestroy(): void {
