@@ -20,6 +20,7 @@ import { CreateOrUpdateClientComponent } from './usuario/cliente/create-or-updat
 import { GestorProductosComponent } from './usuario/productos/gestor-productos/gestor-productos.component';
 import { CreateOrUpdateProductComponent } from './usuario/productos/create-or-update-product/create-or-update-product/create-or-update-product.component';
 import { CreateOrUpdateOrdenComponent } from './usuario/orden-trabajo/create-or-update-orden/create-or-update-orden/create-or-update-orden.component';
+import { ReportesComponent } from './usuario/reportes/reportes.component';
 
 const routes: Routes = [
   {
@@ -98,7 +99,6 @@ const routes: Routes = [
     title:'Lista de productos'
   },
   {
-
     path: 'createProduct',
     component: CreateOrUpdateProductComponent,
     title: 'Crear Producto'
@@ -107,6 +107,11 @@ const routes: Routes = [
     path:'updateProduct/:id',
     component:CreateOrUpdateProductComponent,
     title:'Crear un producto'
+  },
+  {
+    path:'reportes',
+    component:ReportesComponent,
+    title:'Crear un reporte'
   }
 ];
 

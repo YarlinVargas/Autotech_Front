@@ -6,15 +6,12 @@ import { Subject, filter, finalize, takeUntil, tap } from 'rxjs';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
 import { openModals } from 'src/app/core/global/modals/openModal';
 import { ToggleListEnum } from 'src/app/core/models/enums/toggleList.enum';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
-import { dataModal } from 'src/app/core/models/modals/moda-data.model';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
-import { ListUser, ListUsuario } from 'src/app/core/models/user/list-user.model';
+import { ListUsuario } from 'src/app/core/models/user/list-user.model';
 import { FilterUsersPipe } from 'src/app/core/pipes/filter/filter-users.pipe';
 import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
-import { ModalDetalleUsuarioComponent } from 'src/app/core/shared/modals/modal-detalle-usuario/modal-detalle-usuario.component';
 
 @Component({
   selector: 'app-gestor-usuario',
@@ -130,49 +127,6 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
     this.isOpen = !this.isOpen;
   }
 
-  public changeStatus(event: [boolean, number]) {
-    if (event[1] == undefined) return;
-
-    if (event[0] == false) {
-      const dialog = this.openModal.OpenLogout(
-        [`El usuario "${this.listUsuarios[event[1]].userName}" no podrá acceder al sistema`],
-        '30rem',
-        '¿Esta seguro de deshabilitar este usuario?',
-      );
-
-      dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-        this.ActiveOrDeactiveUser(event[1], event[0]);
-      });
-    } else this.ActiveOrDeactiveUser(event[1], event[0]);
-  }
-
-  public ActiveOrDeactiveUser(index: number, status: boolean): void {
-    this.userService.ActiveOrDeactive(this.listUsuarios[index].idUser)
-      .pipe(
-        tap((resp: RespService) => {
-          if (resp.ok) {
-            this.listUsuarios[index].active = status;
-          }
-        }),
-        finalize(() => {
-          this.spinnerSvc.hide();
-        })
-      )
-      .subscribe((resp: RespService) => {
-        if (resp.ok == true) {
-          if (status)
-            this.openModal.Open(1, [], '¡Usuario habilitado con éxito!', '25rem');
-          else
-            this.openModal.Open(3, [], '¡Usuario deshabilitado correctamente!', '25rem', 'amber');
-        } else
-          this.openModal.Open(
-            2,
-            [],
-            status ? `¡El usuario no se ha habilitado!`: '¡El usuario no se ha deshabilitado!',
-            '25rem'
-          );
-      });
-  }
 
   public getValueForm = (id: string): string => this.form.get(id)?.value;
 
@@ -211,4 +165,4 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-} ///sdsfsdfsdfsdjshgdfsdhgfd
+}

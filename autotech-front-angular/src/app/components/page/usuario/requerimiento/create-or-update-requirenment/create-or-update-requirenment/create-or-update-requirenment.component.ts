@@ -1,16 +1,15 @@
 import { Component, HostListener, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject} from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { openModals } from 'src/app/core/global/modals/openModal';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
 import { Requirenment } from 'src/app/core/services/requirenment/models/requirenment';
 import { RequirenmentService } from 'src/app/core/services/requirenment/requirenment.service';
 import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
-import { ClientService, Cliente, ClienteReq } from 'src/app/core/services/client/client.service';
+import { ClientService, ClienteReq } from 'src/app/core/services/client/client.service';
 
 @Component({
   selector: 'app-create-or-update-requirenment',
@@ -53,6 +52,7 @@ export class CreateOrUpdateRequirenmentComponent {
   private requirenmentService = inject(RequirenmentService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
 
   @Input() color = 'sky';
   @Input() id_requirenment: string = 'select';
@@ -67,13 +67,14 @@ export class CreateOrUpdateRequirenmentComponent {
   }
 
   public ngOnInit(): void {
-    this.getRequerimientos();
+    // this.getRequerimientos();
     this.getUsuarios();
     this.getClientes();
     this.currentLargeText = TextLargeWindow.get(15);
 
     if (this.router.url.includes('updateRequirement')) {
       this.isEdit = true;
+      this.GetRequerimientos();
     }
   }
 
@@ -104,20 +105,27 @@ public getClientes(){
     });
 }
 //trae la lista de requerimientos
-public getRequerimientos(){
-  this.requirenmentService.getRequerimientos().subscribe((r: any) => {
-      if (r.length > 0) {
-        this.listRequerimientos = r;
+private GetRequerimientos(): void {
+  const idRequerimiento = this.activatedRoute.snapshot.paramMap.get('id');
+  this.idRequirenment = parseInt(idRequerimiento!);
+  if (!idRequerimiento)
+    this.router.navigateByUrl('/requirement');
 
-      } else {
-        console.log("No hay requerimientos registrados en el sistema");
-      }
-    });
+  this.requirenmentService.getRequerimientoById(parseInt(idRequerimiento!) ).subscribe(
+    (r:any) => {
+      console.log('Requerimiento actualizado correctamente');
+      this.setFormRequirenment(r);
+    },
+    error => {
+      console.error('Error al buscar el requerimiento', error);
+      this.router.navigateByUrl(`requirement`);
+    }
+  );
 }
 
   public setFormRequirenment(requirenment: Requirenment) {
     this.form = this.fb.group({
-      id: [requirenment.id_requerimiento],
+      id_requerimiento: [requirenment.id_requerimiento],
       fecha: [requirenment.fecha],
       id_cliente: [requirenment.id_cliente, Validators.required],
       id_usuario: [requirenment.id_usuario, [Validators.required, Validators.minLength(1)]],
@@ -139,7 +147,6 @@ public getRequerimientos(){
     if(this.isEdit ){
 
       this.requirenmentService.updateRequerimientoById(this.idRequirenment, request).subscribe((r: any) => {
-
         console.log("Requerimiento actualizado correctamente");
         this.router.navigateByUrl(`/requirement`);
       });

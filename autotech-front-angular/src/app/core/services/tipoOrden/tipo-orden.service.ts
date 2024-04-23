@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface TipoOrdenModel {
-  id: number;
+  id_tipo_orden: number;
   descripcion:string;
 }
 

@@ -3,14 +3,23 @@
     <div class="relative flex h-16 items-center justify-between">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
         <!-- Mobile menu button-->
-        <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+        <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false" (click)="OpenMenu()">
           <span class="absolute -inset-0.5"></span>
           <span class="sr-only">Open main menu</span>
+          <!--
+            Icon when menu is closed.
+
+            Menu open: "hidden", Menu closed: "block"
+          -->
 
           <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
           </svg>
+          <!--
+            Icon when menu is open.
 
+            Menu open: "block", Menu closed: "hidden"
+          -->
           <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -46,14 +55,14 @@
         <!-- Profile dropdown -->
         <div class="relative ml-3">
           <div>
-            <button type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true" (click)="OpenMenu()">
+            <button type="button" class="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
               <span class="absolute -inset-1.5"></span>
               <span class="sr-only">Open user menu</span>
               <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
             </button>
           </div>
 
-          <div [ngClass]="{'hidden': isOpen == false, 'block absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none': isOpen == true} " role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+          <div [ngClass]="{'hidden': isOpen == false, 'block absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none': isOpen == true}" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
             <!-- Active: "bg-gray-100", Not Active: "" -->
             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
@@ -79,45 +88,3 @@
     </div>
   </div>
 </nav>
-<div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-6xl mb-8">
-  <div class="md:flex">
-    <div class="md:flex-shrink-0">
-      <img class="h-48 w-full object-cover md:h-full md:max-w-md" src="assets/img/logoAutotech.png" alt="Man looking at item at a store">
-    </div>
-    <div class="p-8">
-      <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">AUTOTECH</div>
-      <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Proyecto en curso "Software para un taller mecánico" </a>
-      <p class="mt-2 text-gray-500">Este proyecto busca mejorar el servicio del taller mecánico Autotech a los usuarios,
-        prestando la función a través de un aplicativo que sirve como intermediario entre
-        cliente y prestador de servicio, donde tanto el cliente como el taller mecánico Autotech
-        podrán optimizar de manera satisfactoria la adquisición y prestación de productos y
-        servicios que les brinden una mejora en los procesos donde el cliente tendrá la
-        oportunidad de acceder al aplicativo para encontrar variedad de opciones de
-        productos y servicios que necesite para su vehículo que se ajusten a sus necesidades
-        y al mismo tiempo el taller mecánico Autotech contará con la oportunidad de
-        administrar la información necesaria para la comercialización de sus productos y
-        servicios.</p>
-      <!-- <p class="mt-2 text-gray-500">Nuestro objetivo principal es permitir a las empresas ser mas agiles y eficientes a traves de la plataforma
-        de automatizacion de procesos TeamSoft DYM a lo largo de estos 5 años.</p> -->
-    </div>
-  </div>
-</div>
-<div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-6xl">
-  <div class="md:flex">
-    <div class="md:flex-shrink-0">
-      <img class="h-48 w-full object-cover md:h-full md:max-w-96" src="assets/img/solution.jpeg" alt="Man looking at item at a store">
-    </div>
-    <div class="p-8">
-      <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">AUTOTECH SOLUTION</div>
-      <p class="mt-2 text-gray-500">Nosotros somos una empresa de desarrollo de software TeamSoft DYM con 5 años de experiencia en el mercado.</p>
-      <p class="mt-2 text-gray-500">Nuestro objetivo principal es permitir a las empresas ser mas agiles y eficientes a traves de la plataforma
-        de automatizacion de procesos TeamSoft DYM a lo largo de estos 5 años.</p>
-      <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Direccion de la empresa </a>
-      <p class="mt-2 text-gray-500">Estamos ubicados en la ciudad de manizales en la direccion carrera 25A # 45 - 21</p>
-
-    </div>
-  </div>
-</div>
-
-
-<app-footer/>
