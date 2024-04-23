@@ -13,42 +13,125 @@
     </div>
 
     <form [formGroup]="form" class="items-end grid grid-cols-1 grid-rows-7 gap-y-6 mt-4 md:mt-0 md:grid-cols-4 md:grid-rows-2 lg:gap-y-6 lg:gap-x-8 xl:gap-x-12 animate-fade-down">
-      <div>
-        <app-field-input [parentForm]="form" fieldName="documento_identidad" formControlName="documento_identidad"
-          holder="Escribir número" directive="Numbers">
-          Número de documento
-        </app-field-input>
-      </div>
 
       <div>
-        <app-field-input [parentForm]="form" fieldName="nombres" formControlName="nombres" holder="Escribir nombres" directive="NumbersLettersDot">
-          Nombres
+        <app-field-input [parentForm]="form" fieldName="descripcion" formControlName="descripcion" holder="Escribir requerimiento" directive="NumbersLettersDot">
+          Requerimiento
         </app-field-input>
       </div>
       <div>
-        <app-field-input [parentForm]="form" fieldName="apellidos" formControlName="apellidos" holder="Escribir apellidos" directive="NumbersLettersDot">
-          Apellidos
-        </app-field-input>
+        <label class="block text-xs xl:text-sm 3xl:text-lg font-medium leading-6 pl-3 text-sky500 ring-sky500 focus:ring-sky500">
+          Cliente
+        </label>
+        <div class="relative mt-1 rounded-md shadow-sm">
+          <select fieldName="id_cliente" formControlName="id_cliente"
+            class="block w-full rounded-3xl border-0 py-1.5 pl-4 pr-11 text-xs xl:text-sm 3xl:text-lg sm:leading-6 text-neutral700 ring-1 ring-inset placeholder:text-neutral400"
+          >
+            <option *ngIf="defaultValue" selected>{{ defaultValue }}</option>
+            <ng-container *ngIf="listClients?.length" >
+              <ng-container *ngFor="let select of listClients">
+                <option [value]="select.id_cliente">
+                  {{ select.nombres }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
       </div>
       <div>
-        <app-field-input [parentForm]="form" fieldName="direccion" formControlName="direccion" holder="Escribir direccion">
-          Direccion
-        </app-field-input>
+        <label class="block text-xs xl:text-sm 3xl:text-lg font-medium leading-6 pl-3 text-sky500 ring-sky500 focus:ring-sky500">
+          Vehiculo
+        </label>
+        <div class="relative mt-1 rounded-md shadow-sm">
+          <select fieldName="id_vehiculo" formControlName="id_vehiculo"
+            class="block w-full rounded-3xl border-0 py-1.5 pl-4 pr-11 text-xs xl:text-sm 3xl:text-lg sm:leading-6 text-neutral700 ring-1 ring-inset placeholder:text-neutral400"
+          >
+            <option *ngIf="defaultValue" selected>{{ defaultValue }}</option>
+            <ng-container *ngIf="listVehiculo?.length" >
+              <ng-container *ngFor="let select of listVehiculo">
+                <option [value]="select.id_vehiculo">
+                  {{ select.modelo }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
       </div>
       <div>
-        <app-field-input [parentForm]="form" fieldName="telefono" formControlName="telefono" holder="Escribir número" directive="Numbers">
-          Teléfono
-        </app-field-input>
+        <label class="block text-xs xl:text-sm 3xl:text-lg font-medium leading-6 pl-3 text-sky500 ring-sky500 focus:ring-sky500">
+          usuario
+        </label>
+        <div class="relative mt-1 rounded-md shadow-sm">
+          <select fieldName="id_usuario" formControlName="id_usuario"
+            class="block w-full rounded-3xl border-0 py-1.5 pl-4 pr-11 text-xs xl:text-sm 3xl:text-lg sm:leading-6 text-neutral700 ring-1 ring-inset placeholder:text-neutral400"
+          >
+            <option *ngIf="defaultValue" selected>{{ defaultValue }}</option>
+            <ng-container *ngIf="listUsuario?.length" >
+              <ng-container *ngFor="let select of listUsuario">
+                <option [value]="select.id_usuario">
+                  {{ select.nombres }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
       </div>
       <div>
-        <app-field-input-email [parentForm]="form" fieldName="email" formControlName="email" holder="Escribir correo electrónico">
-          Correo electrónico
-        </app-field-input-email>
+        <label class="block text-xs xl:text-sm 3xl:text-lg font-medium leading-6 pl-3 text-sky500 ring-sky500 focus:ring-sky500">
+          Tipo orden
+        </label>
+        <div class="relative mt-1 rounded-md shadow-sm">
+          <select fieldName="id_tipo_orden" formControlName="id_tipo_orden"
+            class="block w-full rounded-3xl border-0 py-1.5 pl-4 pr-11 text-xs xl:text-sm 3xl:text-lg sm:leading-6 text-neutral700 ring-1 ring-inset placeholder:text-neutral400"
+          >
+            <option *ngIf="defaultValue" selected>{{ defaultValue }}</option>
+            <ng-container *ngIf="listTipoOrden?.length" >
+              <ng-container *ngFor="let select of listTipoOrden">
+                <option [value]="select.id_tipo_orden">
+                  {{ select.descripcion }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
       </div>
       <div>
-        <app-field-input-email [parentForm]="form" fieldName="fecha_nacimiento" formControlName="fecha_nacimiento" holder="Escribir fecha nacimiento">
-          Fecha nacimiento
-        </app-field-input-email>
+        <label class="block text-xs xl:text-sm 3xl:text-lg font-medium leading-6 pl-3 text-sky500 ring-sky500 focus:ring-sky500">
+          Soporte
+        </label>
+        <div class="relative mt-1 rounded-md shadow-sm">
+          <select fieldName="id_soporte" formControlName="id_soporte"
+            class="block w-full rounded-3xl border-0 py-1.5 pl-4 pr-11 text-xs xl:text-sm 3xl:text-lg sm:leading-6 text-neutral700 ring-1 ring-inset placeholder:text-neutral400"
+          >
+            <option *ngIf="defaultValue" selected>{{ defaultValue }}</option>
+            <ng-container *ngIf="listSoportes?.length" >
+              <ng-container *ngFor="let select of listSoportes">
+                <option [value]="select.id_soporte">
+                  {{ select.descripcion_soporte }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs xl:text-sm 3xl:text-lg font-medium leading-6 pl-3 text-sky500 ring-sky500 focus:ring-sky500">
+          Requerimiento
+        </label>
+        <div class="relative mt-1 rounded-md shadow-sm">
+          <select fieldName="id_requerimiento" formControlName="id_requerimiento"
+            class="block w-full rounded-3xl border-0 py-1.5 pl-4 pr-11 text-xs xl:text-sm 3xl:text-lg sm:leading-6 text-neutral700 ring-1 ring-inset placeholder:text-neutral400"
+          >
+            <option *ngIf="defaultValue" selected>{{ defaultValue }}</option>
+            <ng-container *ngIf="listRequerimientos?.length" >
+              <ng-container *ngFor="let select of listRequerimientos">
+                <option [value]="select.id_requerimiento">
+                  {{ select.descripcion_requerimiento }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
       </div>
     </form>
 
@@ -58,7 +141,7 @@
       <app-buttons [typeBtn]="'submit'" [color]="'sky'" [width]="'32'" [height]="'8'" [button]="2"
         label="Cancelar" (click)="back()" ></app-buttons>
       <app-buttons [typeBtn]="'submit'" [color]="'primary'" [width]="'32'" [height]="'8'" [button]="2"
-        [label]="isEdit ? 'Actualizar' : 'Crear'" (click)="updateOrCreateClient()"></app-buttons>
+        [label]="isEdit ? 'Actualizar' : 'Crear'" (click)="updateOrCreateOrden()"></app-buttons>
     </div>
     <app-footer/>
   </div>

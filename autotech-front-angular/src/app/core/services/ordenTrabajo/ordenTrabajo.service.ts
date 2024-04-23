@@ -3,10 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { OrdenTrabajoModel } from '../../models/orden-trabajo/orden-trabajo.model';
 
-export interface TipoOrdenModel {
-  id_tipo_orden: number;
-  descripcion:string;
-}
 
 @Injectable({
   providedIn: 'root'

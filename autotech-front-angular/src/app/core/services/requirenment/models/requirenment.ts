@@ -7,7 +7,9 @@ export interface Requirenment {
   descripcion_requerimiento: string;
 }
 export interface ListRequirenment {
-  id_requerimiento: string;
+  id_requerimiento: number;
   fecha: Date;
+  cliente: string;
+  usuario: string
   descripcion_requerimiento: string;
 }

@@ -72,11 +72,11 @@ module.exports = {
         '138': '64rem',
         '148': '80rem',
       },
-      screens: {
-        'sm': '425px',
-        'lg': '768px',
-        'xl': '1280px',
-      },
+      // screens: {
+      //   'sm': '425px',
+      //   'lg': '768px',
+      //   'xl': '1280px',
+      // },
       padding: {
         '116': '448px',
       },

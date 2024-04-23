@@ -9,8 +9,8 @@ import { openModals } from 'src/app/core/global/modals/openModal';
 import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
-import { CreateUpdateClient } from 'src/app/core/services/client/models/create-update-client.model';
-import { ClientService, Cliente } from 'src/app/core/services/client/client.service';
+import { OrdenTrabajoService } from 'src/app/core/services/ordenTrabajo/ordenTrabajo.service';
+import { ClientService, Cliente, ClienteReq } from 'src/app/core/services/client/client.service';
 import { SoporteModel, SoporteService } from 'src/app/core/services/soporte/soporte.service';
 import { VehiculoModel } from 'src/app/core/models/vehiculo/vehiculo.model';
 import { ListOrdenTrabajo, OrdenTrabajoModel } from 'src/app/core/models/orden-trabajo/orden-trabajo.model';
@@ -27,14 +27,14 @@ import { RequirenmentService } from 'src/app/core/services/requirenment/requiren
 })
 export class CreateOrUpdateOrdenComponent {
 
-  public idClient: number = 0;
+  public idOrden: number = 0;
   public isEdit: boolean = false;
   public destroy$: Subject<boolean> = new Subject<boolean>();
   public currentCompanyNit: string = '';
   public colorsLinks: { associate: any, disassociate: any } = { associate: 'cyan', disassociate: 'neutral' };
   public lastIndexCompany!: number;
 
-  listClients:Cliente[] = [];
+  listClients:ClienteReq[] = [];
   listSoportes:SoporteModel[] = [];
   listVehiculo: VehiculoModel[] = [];
   listOrdenTrabajo: OrdenTrabajoModel[] = [];
@@ -50,17 +50,17 @@ export class CreateOrUpdateOrdenComponent {
     hideDelay: 0,
   };
 
-  public ordenToUpdate: ListOrdenTrabajo = {
+  public ordenToUpdate: OrdenTrabajoModel = {
     id_orden_trabajo: 0,
-    descripcion: '',
-    cliente: '',
-    vehiculo: '',
-    usuario: '',
-    tipo_orden: '',
-    soporte: '',
-    requerimiento: ''
+    descripcion:'',
+    id_estado:0,
+    id_cliente: 0,
+    id_vehiculo: 0,
+    id_usuario: 0,
+    id_tipo_orden: 0,
+    id_soporte: 0,
+    id_requerimiento: 0,
   };
-
 
   public form: FormGroup = new FormGroup({});
 
@@ -72,6 +72,9 @@ export class CreateOrUpdateOrdenComponent {
   private vehiculoService = inject(VehiculoService);
   private tipoOrdenService = inject(TipoOrdenTrabajoService);
   private requirenmentService = inject(RequirenmentService);
+  private ordenTrabajoService = inject(OrdenTrabajoService);
+  private activatedRoute = inject(ActivatedRoute);
+
 
   @Input() color = 'sky';
   @Input() id_client: string = 'select';
@@ -81,20 +84,20 @@ export class CreateOrUpdateOrdenComponent {
   public currentLargeText = 10;
 
   constructor(public dialog: Dialog) {
-    this.setFormClient(this.ordenToUpdate);
+    this.setFormOrden(this.ordenToUpdate);
   }
 
   public ngOnInit(): void {
     this.currentLargeText = TextLargeWindow.get(15);
-
-    if (this.router.url.includes('updateClient')) {
+    this.getClientes();
+    this.getRequerimientos();
+    this.getSoportes();
+    this.getTiposOrdenes();
+    this.getUsuarios();
+    this.getVehiculos();
+    if (this.router.url.includes('updateordenes')) {
       this.isEdit = true;
-      this.getClientes();
-      this.getRequerimientos();
-      this.getSoportes();
-      this.getTiposOrdenes();
-      this.getUsuarios();
-      this.getVehiculos();
+      this.GetOrdenes();
     }
   }
 
@@ -120,7 +123,7 @@ public getVehiculos(){
       if (r.length > 0) {
         this.listVehiculo = r;
       } else {
-        console.log("No hay clientes registrados en el sistema");
+        console.log("No hay vehiculos registrados en el sistema");
       }
     });
 }
@@ -131,7 +134,7 @@ public getUsuarios(){
       if (r.length > 0) {
         this.listUsuario = r;
       } else {
-        console.log("No hay clientes registrados en el sistema");
+        console.log("No hay usuarios registrados en el sistema");
       }
     });
 }
@@ -142,7 +145,7 @@ public getTiposOrdenes(){
       if (r.length > 0) {
         this.listTipoOrden = r;
       } else {
-        console.log("No hay clientes registrados en el sistema");
+        console.log("No hay tipos de orden registrados en el sistema");
       }
     });
 }
@@ -162,57 +165,67 @@ public getRequerimientos(){
       if (r.length > 0) {
         this.listRequerimientos = r;
       } else {
-        console.log("No hay clientes registrados en el sistema");
+        console.log("No hay requerimientos registrados en el sistema");
       }
     });
 }
 
+private GetOrdenes(): void {
+  const idOrden = this.activatedRoute.snapshot.paramMap.get('id');
+  this.idOrden = parseInt(idOrden!);
+  if (!idOrden)
+    this.router.navigateByUrl('/orders');
+
+  this.ordenTrabajoService.getOrdenTrabajoById(parseInt(idOrden!) ).subscribe(
+    (r:any) => {
+      console.log('Orden de trabajo actualizado correctamente');
+      this.setFormOrden(r);
+    },
+    error => {
+      console.error('Error al traer la orden de trabajo', error);
+      this.router.navigateByUrl(`orders`);
+    }
+  );
+}
 
 
-  public setFormClient(orden: ListOrdenTrabajo) {
+  public setFormOrden(orden: OrdenTrabajoModel) {
     this.form = this.fb.group({
       id_orden_trabajo: [orden.id_orden_trabajo],
-      // nombres: [client.nombres, [Validators.required, Validators.minLength(1)]],
-      // apellidos: [client.apellidos, [Validators.required, Validators.minLength(1)]],
-      // direccion: [client.direccion, Validators.required],
-      // telefono: [client.telefono, Validators.required],
-      // email: [
-      //   client.email,
-      //   [
-      //     Validators.required,
-      //     Validators.email,
-      //   ]
-      // ],
-      // documento_identidad: [client.documento_identidad, Validators.required],
-      // fecha_nacimiento: [client.fecha_nacimiento, Validators.required],
-
+      descripcion:[orden.descripcion, Validators.required],
+      id_estado:1,
+      id_cliente:  [Number(orden.id_cliente) , Validators.required],
+      id_vehiculo:  [Number(orden.id_vehiculo), Validators.required],
+      id_usuario:  [Number(orden.id_usuario), Validators.required],
+      id_tipo_orden:  [Number(orden.id_tipo_orden), Validators.required],
+      id_soporte:  [Number(orden.id_soporte), Validators.required],
+      id_requerimiento:  [Number(orden.id_requerimiento), Validators.required],
     });
   }
 
-  public back = () => this.router.navigateByUrl('client');
+  public back = () => this.router.navigateByUrl('orders');
 
-  public updateOrCreateClient(): void {
-    debugger
+  public updateOrCreateOrden(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    let request: Cliente = this.form.value;
+    let request: OrdenTrabajoModel = this.form.value;
 
     if(this.isEdit ){
 
-      this.clientService.updateClienteById(this.idClient, request).subscribe((r: any) => {
+      this.ordenTrabajoService.updateOrdenTrabajoById(this.idOrden, request).subscribe((r: any) => {
 
-        console.log("Cliente actualizado correctamente");
-        this.router.navigateByUrl(`/client`);
+        console.log("Orden actualizado correctamente");
+        this.router.navigateByUrl(`/orders`);
       });
     }else{
 
       // this.spinnerSvc.show();
-      this.clientService.createNewCliente(request).subscribe((r: any) => {
+      this.ordenTrabajoService.createNewOrdenTrabajo(request).subscribe((r: any) => {
 
-          console.log("Cliente creado correctamente");
-          this.router.navigateByUrl(`/client`);
+          console.log("Orden creado correctamente");
+          this.router.navigateByUrl(`/orders`);
 
         });
     }

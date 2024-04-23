@@ -121,7 +121,6 @@ export class CreateOrUpdateClientComponent {
   public back = () => this.router.navigateByUrl('client');
 
   public updateOrCreateClient(): void {
-    debugger
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

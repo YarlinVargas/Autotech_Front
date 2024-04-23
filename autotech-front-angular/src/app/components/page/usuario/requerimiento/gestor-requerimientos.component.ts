@@ -8,7 +8,7 @@ import { openModals } from 'src/app/core/global/modals/openModal';
 import { ToggleListEnum } from 'src/app/core/models/enums/toggleList.enum';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { FilterRequerimentsPipe } from 'src/app/core/pipes/filter/filter-requirenments.pipe';
-import { ClientService, Cliente } from 'src/app/core/services/client/client.service';
+import { ClientService, Cliente, ClienteReq } from 'src/app/core/services/client/client.service';
 import { ListRequirenment, Requirenment } from 'src/app/core/services/requirenment/models/requirenment';
 import { RequirenmentService } from 'src/app/core/services/requirenment/requirenment.service';
 import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
@@ -24,7 +24,7 @@ export class GestorRequerimientosComponent {
   public currentView:boolean=true;
   public isOpen:boolean=false;
   public allOptions = ToggleListEnum;
-  public formRequerimiento: FormGroup = new FormGroup({});
+  public form: FormGroup = new FormGroup({});
   public tooltip: TootilpOption = {
     enable: true,
     placement: 'top',
@@ -35,16 +35,23 @@ export class GestorRequerimientosComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private requirenmentService = inject(RequirenmentService);
+  private clientService = inject(ClientService);
+  private usuarioService = inject(UsuarioService);
 
   listRequerimientos:Requirenment[] = [];
+  listReq:ListRequirenment[] = [];
+  listaReq:ListRequirenment[] = [];
   public optionsSearch: string[] = [];
   public listUser: Usuario[] = [];
-  public listClients:Cliente[] = [];
+  public listClients:ClienteReq[] = [];
 
   public currentLargeTextCard = 10;
   public currentLargeTextTable = 10;
   public openModal: openModals = new openModals(this.dialog);
   public destroy$: Subject<boolean> = new Subject<boolean>();
+
+  cliente:string= "";
+  usuario:string= "";
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
@@ -68,7 +75,7 @@ export class GestorRequerimientosComponent {
 
 
   constructor(public dialog: Dialog, public pipe: FilterRequerimentsPipe, private eRef: ElementRef) {
-    this.formRequerimiento = this.fb.group({
+    this.form = this.fb.group({
       search: ['']
     });
     this.calcularCarta()
@@ -81,8 +88,10 @@ export class GestorRequerimientosComponent {
   }
 
   public ngOnInit(): void {
-    this.getRequerimientos();
-    this.formRequerimiento.get('search')?.valueChanges
+
+    this.getClientes();
+
+    this.form.get('search')?.valueChanges
       .pipe(
         takeUntil(this.destroy$),
         tap((value: string) => {
@@ -91,7 +100,7 @@ export class GestorRequerimientosComponent {
         filter((value: string) => value.length > 2),
       )
       .subscribe((value: string) => {
-        var resultPipe: any = this.pipe.transform(this.listRequerimientos, value);
+        var resultPipe: any = this.pipe.transform(this.listaReq, value);
         this.optionsSearch = resultPipe.results.map((requirenment: any) =>
           resultPipe.foundFields.map((field: string) => requirenment[field])
         ).flat();
@@ -102,59 +111,78 @@ export class GestorRequerimientosComponent {
 
   }
 
+// trae la lista de clientes
+public getClientes(){
+  this.clientService.getClientes().subscribe((r: any) => {
+      if (r.length > 0) {
+        this.listClients = r;
+        this.getUsuarios();
+      } else {
+        console.log("No hay clientes registrados en el sistema");
+      }
+    });
+}
+
+// trae la lista de usuarios
+public getUsuarios(){
+  this.usuarioService.getUsuarios().subscribe((r: any) => {
+      if (r.length > 0) {
+        this.listUser = r;
+        this.getRequerimientos();
+      } else {
+        console.log("No hay usuarios registrados en el sistema");
+      }
+    });
+}
+
 //trae la lista de requerimientos
 public getRequerimientos(){
+
   this.requirenmentService.getRequerimientos().subscribe((r: any) => {
       if (r.length > 0) {
         this.listRequerimientos = r;
+
+        for (let index = 0; index < this.listRequerimientos.length; index++) {
+          for (let c = 0; c < this.listClients.length; c++) {
+            if(this.listClients[c].id_cliente == this.listRequerimientos[index].id_cliente){
+              this.cliente = this.listClients[c].nombres + " " + this.listClients[c].apellidos;
+            }
+          }
+
+          for (let u = 0; u < this.listUser.length; u++) {
+            if(this.listUser[u].id_usuario == this.listRequerimientos[index].id_usuario){
+            this.usuario = this.listUser[u].nombres + " " + this.listUser[u].apellidos;
+            }
+          }
+
+          this.listReq.push({id_requerimiento:this.listRequerimientos[index].id_requerimiento, fecha:this.listRequerimientos[index].fecha ,cliente:this.cliente, usuario:this.usuario, descripcion_requerimiento:this.listRequerimientos[index].descripcion_requerimiento});
+          this.listaReq=this.listReq;
+        }
       } else {
         console.log("No hay requerimientos registrados en el sistema");
       }
     });
 }
 
-  public setSuggestion(event: any) {
-    this.formRequerimiento.get('search')?.setValue(event);
-    this.optionsSearch = [];
-  }
+public setSuggestion(event: any) {
+  this.form.get('search')?.setValue(event);
+  this.optionsSearch = [];
+}
 
-  public toggleView(){
-    this.currentView = !this.currentView
-  }
+public toggleView(){
+  this.currentView = !this.currentView
+}
+public OpenMenu(){
+  this.isOpen = !this.isOpen;
+}
 
-  public OpenMenu(){
-    this.isOpen = !this.isOpen;
-  }
-
-  public changeStatus(event: [boolean, number]) {
-    if (event[1] == undefined) return;
-
-    if (event[0] == false) {
-      const dialog = this.openModal.OpenLogout(
-        [`El requerimiento "${this.listRequerimientos[event[1]].id_requerimiento}" no podrá ser accesible en el sistema`],
-        '30rem',
-        '¿Esta seguro de deshabilitar este requerimiento?',
-      );
-
-      dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-        this.ActiveOrDeactiveRequerimiento(event[1], event[0]);
-      });
-    } else this.ActiveOrDeactiveRequerimiento(event[1], event[0]);
-  }
-
-  public ActiveOrDeactiveRequerimiento(index: number, status: boolean): void {
-
-  }
-
-  public getValueForm = (id: string): string => this.formRequerimiento.get(id)?.value;
+  public getValueForm = (id: string): string => this.form.get(id)?.value;
 
   public navigate(url: string, event?: any): void {
     if (event?.header === 'Editar')
       this.router.navigate([url, event.id]);
     else if (event?.header === 'Eliminar')
       this.deleteRequirenment(event.id);
-    // else if (event?.header === 'Detalles')
-    //   this.showDetails(event.id);
     else
       this.router.navigateByUrl(url);
   }
@@ -180,11 +208,106 @@ public getRequerimientos(){
     });
   }
 
-
-
   public ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
 }
 
+// public currentView:boolean=true;
+// public isOpen:boolean=false;
+// public allOptions = ToggleListEnum;
+// public form: FormGroup = new FormGroup({});
+// public tooltip: TootilpOption = {
+//   enable: true,
+//   placement: 'top',
+//   showDelay: 0,
+//   hideDelay: 0,
+// };
+
+// private fb = inject(FormBuilder);
+// private router = inject(Router);
+// private userService = inject(UserService);
+// private spinnerSvc = inject(SpinnerService);
+
+// public listUsuarios: ListUsuario[] = [];
+// public listUser: Usuario[] = [];
+
+// public optionsSearch: string[] = [];
+
+// public currentLargeTextCard = 10;
+// public currentLargeTextTable = 10;
+// public openModal: openModals = new openModals(this.dialog);
+// public destroy$: Subject<boolean> = new Subject<boolean>();
+
+// @ViewChild('Detalle')
+// Detalle!: TemplateRef<any>;
+
+// @HostListener('window:resize', ['$event'])
+// onWindowResize() {
+//   this.currentLargeTextCard = TextLargeWindow.get(15, 20, 15, 25);
+//   this.currentLargeTextTable = TextLargeWindow.get(15);
+// }
+
+// @HostListener('document:click', ['$event'])
+// clickout(event: any) {
+//   if(this.eRef.nativeElement.contains(event.target)) {
+//     this.optionsSearch = [];
+//   }
+// }
+
+// @HostListener('window:resize',['$event'])
+// Resolucion(event:any): void{
+//   setTimeout(()=>{
+//     this.calcularCarta()
+//   },100)
+// }
+
+
+// constructor(public dialog: Dialog, public pipe: FilterUsersPipe, private eRef: ElementRef, private _usuarioService: UsuarioService) {
+//   this.form = this.fb.group({
+//     search: ['']
+//   });
+//   this.calcularCarta()
+// }
+
+// calcularCarta() {
+//   if (window.innerWidth < 768) {
+//     this.currentView=true
+//   }
+// }
+// //inicializar componente
+// public ngOnInit(): void {
+//   this.getUsuarios();
+//   this.form.get('search')?.valueChanges
+//     .pipe(
+//       takeUntil(this.destroy$),
+//       tap((value: string) => {
+//         this.optionsSearch = [];
+//       }),
+//       filter((value: string) => value.length > 2),
+//     )
+//     .subscribe((value: string) => {
+//       var resultPipe: any = this.pipe.transform(this.listUser, value);
+//       this.optionsSearch = resultPipe.results.map((user: any) =>
+//         resultPipe.foundFields.map((field: string) => user[field])
+//       ).flat();
+//     });
+
+//   this.currentLargeTextCard = TextLargeWindow.get(15, 20, 15, 25);
+//   this.currentLargeTextTable = TextLargeWindow.get(15);
+
+// }
+
+
+
+
+//
+
+
+
+
+
+
+
+// }

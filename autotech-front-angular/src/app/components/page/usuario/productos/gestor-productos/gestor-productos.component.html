@@ -26,18 +26,19 @@
       </div>
       <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
         <div class="flex flex-shrink-0 items-center">
-          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+          <img class="h-24 w-auto" src="assets/img/logosolution.png?color=indigo&shade=500" alt="Your Company">
         </div>
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a routerLink="/gestionUsuario" routerLinkActive="activebutton" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Usuarios</a>
-            <a routerLink="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
-            <a routerLink="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Notificaciones</a>
-            <a routerLink="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
-            <a routerLink="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
-            <a routerLink="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
-            <a routerLink="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Productos</a>
+            <a href="/gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
+            <a href="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
+            <a href="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+            <a href="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
+            <a href="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
+            <a href="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
+            <a href="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+            <a href="/reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
           </div>
         </div>
       </div>
@@ -60,16 +61,7 @@
             </button>
           </div>
 
-          <!--
-            Dropdown menu, show/hide based on menu state.
 
-            Entering: "transition ease-out duration-100"
-              From: "transform opacity-0 scale-95"
-              To: "transform opacity-100 scale-100"
-            Leaving: "transition ease-in duration-75"
-              From: "transform opacity-100 scale-100"
-              To: "transform opacity-0 scale-95"
-          -->
           <div [ngClass]="{'hidden': isOpen == false, 'block absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none': isOpen == true}" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
             <!-- Active: "bg-gray-100", Not Active: "" -->
             <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
@@ -85,13 +77,14 @@
   <div class="sm:hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a routerLink="/gestionUsuario" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Usuarios</a>
-      <a routerLink="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Clientes</a>
-      <a routerLink="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Notificaciones</a>
-      <a routerLink="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Requerimientos</a>
-      <a routerLink="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Ordenes de trabajo</a>
-      <a routerLink="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Conocenos mas</a>
-      <a routerLink="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Productos</a>
+      <a href="/gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
+      <a href="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
+      <a href="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+      <a href="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
+      <a href="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
+      <a href="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
+      <a href="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+      <a href="/reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
     </div>
   </div>
 </nav>
