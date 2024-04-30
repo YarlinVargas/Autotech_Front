@@ -1,16 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { WelcomeComponent } from './paciente/welcome/welcome.component';
-// import { WelcomeCompanyComponent } from './empresa/welcome-company/welcome-company.component';
-// import { ListResultadosPatientComponent } from './paciente/list-resultados-patient/list-resultados-patient.component';
-// import { PerfilComponent } from './perfil/perfil.component';
 import { GestorUsuarioComponent } from './usuario/gestor-usuario/gestor-usuario.component';
-// import { ResultComponent } from './paciente/result/result.component';
-// import { ListResultadosCompanyComponent } from './empresa/list-resultados-company/list-resultados-company.component';
-// import { DetailResultComponent } from './empresa/detail-result/detail-result.component';
 import { CreateOrUpdateUserComponent } from './usuario/gestor-usuario/create-or-update-user/create-or-update-user.component';
 import { GestorClienteComponent } from './usuario/cliente/gestor-cliente/gestor-cliente.component';
-
 import { GestorNotificacionComponent } from './usuario/notificacion/gestor-notificacion/gestor-notificacion.component';
 import { GestorRequerimientosComponent } from './usuario/requerimiento/gestor-requerimientos.component';
 import { GestorOrdenTrabajoComponent } from './usuario/orden-trabajo/gestor-orden-trabajo/gestor-orden-trabajo.component';
@@ -21,6 +13,7 @@ import { GestorProductosComponent } from './usuario/productos/gestor-productos/g
 import { CreateOrUpdateProductComponent } from './usuario/productos/create-or-update-product/create-or-update-product/create-or-update-product.component';
 import { CreateOrUpdateOrdenComponent } from './usuario/orden-trabajo/create-or-update-orden/create-or-update-orden/create-or-update-orden.component';
 import { ReportesComponent } from './usuario/reportes/reportes.component';
+import { CreateOrUpdateNotificacionComponent } from './usuario/notificacion/create-or-update-notificacion/create-or-update-notificacion/create-or-update-notificacion.component';
 
 const routes: Routes = [
   {
@@ -57,6 +50,16 @@ const routes: Routes = [
     path: 'notification',
     component: GestorNotificacionComponent,
     title: 'Vista notificaciones'
+  },
+  {
+    path: 'createNotification',
+    component: CreateOrUpdateNotificacionComponent,
+    title: 'Crear Notificacion'
+  },
+  {
+    path: 'updateNotification/:id',
+    component: CreateOrUpdateNotificacionComponent,
+    title: 'Editar Notificacion'
   },
   {
     path: 'requirement',

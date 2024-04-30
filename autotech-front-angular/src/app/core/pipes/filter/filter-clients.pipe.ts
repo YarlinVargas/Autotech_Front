@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ListClients } from '../../models/client/list-client.model';
 import { Cliente } from '../../services/client/client.service';
 
 @Pipe({
@@ -30,10 +29,10 @@ export class FilterClientsPipe implements PipeTransform {
           found = true;
           foundFields.push("apellidos");
         }
-        if (client.direccion.toLowerCase().includes(args[0].trim().toLowerCase())) {
+        if (client.Direccion.toLowerCase().includes(args[0].trim().toLowerCase())) {
           !found && results.push(client);
           found = true;
-          foundFields.push("direccion");
+          foundFields.push("Direccion");
         }
         if(client.documento_identidad.toLowerCase().includes(args[0].trim().toLowerCase())) {
           !found && results.push(client);

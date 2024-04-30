@@ -2,16 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faBuilding, faUserGroup, faGear } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { AuthModel } from 'src/app/core/models/auth/auth.model';
-import { GeneralService } from 'src/app/core/services/gen/general.service';
 import { ListModel } from 'src/app/core/models/general/general.model';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
 import { Dialog } from '@angular/cdk/dialog';
 import { openModals } from 'src/app/core/global/modals/openModal';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
-import { finalize } from 'rxjs';
-import { IndexDbService } from 'src/app/core/services/gen/index-db.service';
 import { ValueSelect } from 'src/app/core/models/general/value-select.model';
 import { UsuarioService } from 'src/app/core/services/usuario/usuario.service';
 
@@ -56,11 +50,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authSvc: AuthService,
-    private genSvc: GeneralService,
     public dialog: Dialog,
-    private spinnerSvc: SpinnerService,
-    private indexDbService: IndexDbService,
     private _usuarioService: UsuarioService
   ) {
     this.initialForm();
@@ -69,7 +59,6 @@ export class LoginComponent implements OnInit {
 
       if (data) {
         this.openTab = data.id;
-
         if (this.openTab === data.id) {
           this.form.controls['idIdentificationType'].setValue(data.idIdentificationType);
           this.form.controls['userName'].setValue(data.userName);
@@ -81,37 +70,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.indexDbService.getAllImages().then((r: any) => {
-    //   if (!r?.length) {
-        // this.genSvc.ImgEnterprise().subscribe((r: RespService) => {
-        //   this.indexDbService.addImage(r.data);
-        //   debugger
-        //   this.imgEnterprise = r.data;
-        // })
-      // } else {
-      //   this.imgEnterprise = r[0].data;
-      // }
-    // });
-    // this.genSvc.ListFiltersConsult().subscribe((r: RespService) => {
-    //   this.listDocument = r.data;
-    // });
-    //this.ListFiltersConsult();
+
   }
 
-  private ListFiltersConsult() {
-    this.spinnerSvc.show();
-    this.genSvc.ListFiltersConsult()
-      .pipe(
-        finalize(() => {
-          this.spinnerSvc.hide();
-        })
-      )
-      .subscribe((resp: RespService[]) => {
-        this.indexDbService.addImage(resp[0].data);
-        this.imgEnterprise =resp[0].data;
-        this.listDocument = resp[1].data;
-      })
-  }
+
 
   private initialForm() {
     this.form = this.fb.group({
@@ -139,53 +101,21 @@ export class LoginComponent implements OnInit {
   }
 
   Auth() {
-    //if (this.form.valid) {
+
       const data: AuthModel = {...this.form.value};
-    //   data.loginType = this.openTab == 1 ? 3 : this.openTab == 3 ? 1 : this.openTab;
-    //   data.idIdentificationType = data.idIdentificationType == "" || data.idIdentificationType == undefined ? null : data.idIdentificationType;
 
-    //   const object = this.tabs.find(item => item.id === this.openTab);
-    //   this.RememberData(this.openTab, object!.rememberData);
-
-    //   this.spinnerSvc.show();
-    //   this.authSvc.Auth(data).pipe(
-    //     finalize(() => {
-    //       this.spinnerSvc.hide();
-    //     })
-    //   ).subscribe(
-    //     {
-    //       next: (r: RespService) => {
-    //         if (r?.ok) {
-    //           sessionStorage.setItem('auth', JSON.stringify(r.data));
-                   // Realizar la petición POST para autenticar el usuario
-    this._usuarioService.authenticateUsuario(data.userName, data.password).subscribe(
-      () => {
+    this._usuarioService.authenticateUsuario(data.userName, data.password).subscribe((r: any) => {
+        if (r != null) {
+          localStorage.setItem('perfilUser', JSON.stringify(r.usuario.id_perfil));
         console.log('Usuario logueado correctamente');
         this.router.navigateByUrl(`conocenos`);
+        }
       },
       error => {
         console.error('Error al loguear el usuario', error);
       }
     );
-    //         } else {
-    //           if (r.message == "Autenticación por primera vez") {
-    //             const dialogRef = this.openModal.Open(5, ['Esta es la primera vez que ingresas a nuestro sistema,', 'para continuar es necesario que cambie su contraseña'],
-    //               '¡Bienvenido a Consulta de resultados!', '550px');
 
-    //             dialogRef.componentInstance!.acceptEvent?.subscribe(_ => {
-    //               this.router.navigateByUrl(`changePassword/${data.loginType}/first/${r.data.IdUser}`);
-    //               dialogRef.close();
-    //             });
-    //           }
-    //         }
-    //       },
-    //       error: (err: any) => {
-    //         this.openModal.Open(2, [err.error.message], undefined, '550px');
-    //       }
-    //     });
-    // }else{
-    //    this.form.markAllAsTouched();
-    // }
   }
 
   public RecoverPassword() {

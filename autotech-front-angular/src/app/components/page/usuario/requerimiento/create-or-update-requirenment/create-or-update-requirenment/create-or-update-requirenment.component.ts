@@ -151,8 +151,6 @@ private GetRequerimientos(): void {
         this.router.navigateByUrl(`/requirement`);
       });
     }else{
-
-      // this.spinnerSvc.show();
       this.requirenmentService.createNewRequerimiento(request).subscribe((r: any) => {
 
           console.log("Requerimiento creado correctamente");

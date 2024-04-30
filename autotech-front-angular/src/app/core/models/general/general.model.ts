@@ -11,12 +11,6 @@ export enum colors {
     red = 'rgb(209,62,73)',
 }
 
-export class SpinnerText{
-    text!: string;
-    text1?:string;
-    text2?:string;
-    class?:string;
-}
 export interface ListTipoDocumento {
   id_documento: number | string;
   descripcion: string;

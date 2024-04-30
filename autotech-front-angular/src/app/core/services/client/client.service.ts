@@ -3,15 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Cliente {
-  id: string;
+  id_cliente: number;
   nombres:string;
   apellidos: string;
-  direccion: string;
+  Direccion: string;
   telefono:string;
   email: string;
   documento_identidad: string;
   fecha_nacimiento:String;
+  id_estado:number;
 }
+
+
 export interface ClienteReq {
   id_cliente: number;
   nombres:string;
@@ -48,7 +51,7 @@ export class ClientService {
       return this.http.put<void>(`${this.apiUrl}/clientes/${id}`, client);
     }
 
-    deleteClienteById(id: string): Observable<void> {
+    deleteClienteById(id: number): Observable<void> {
       return this.http.delete<void>(`${this.apiUrl}/clientes/${id}`);
     }
 

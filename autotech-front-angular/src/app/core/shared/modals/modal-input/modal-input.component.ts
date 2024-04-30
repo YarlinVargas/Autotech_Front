@@ -1,10 +1,8 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, EventEmitter, Inject, Output, inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize } from 'rxjs';
 import { ModalInput } from 'src/app/core/models/modals/modal-input.model';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 
 @Component({
   selector: 'app-modal-get-email',
@@ -19,7 +17,6 @@ export class ModalInputComponent {
 
   public form: FormGroup = new FormGroup({});
 
-  private spinnerSvc = inject(SpinnerService);
 
   constructor(
     public dialogRef: DialogRef<ModalInputComponent>,
@@ -52,7 +49,6 @@ export class ModalInputComponent {
   }
 
   public ValidPassword() {
-    this.spinnerSvc.show();
 
     this.authSvc.ValidatePassword(
       3,
@@ -68,7 +64,6 @@ export class ModalInputComponent {
           error: (err: any) => {
             this.form.controls[this.data.input.name].setErrors({ equalsPassword: true });
             this.form.controls[this.data.input.name].markAsTouched();
-            this.spinnerSvc.hide();
           }
         });
   }

@@ -5,13 +5,10 @@ import { Router } from '@angular/router';
 import { Subject, filter, finalize, takeUntil, tap } from 'rxjs';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
 import { openModals } from 'src/app/core/global/modals/openModal';
-import { ListClients } from 'src/app/core/models/client/list-client.model';
 import { ToggleListEnum } from 'src/app/core/models/enums/toggleList.enum';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { FilterClientsPipe } from 'src/app/core/pipes/filter/filter-clients.pipe';
 import { ClientService, Cliente } from 'src/app/core/services/client/client.service';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 
 @Component({
   selector: 'app-gestor-cliente',
@@ -34,7 +31,6 @@ export class GestorClienteComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private clientService = inject(ClientService);
-  private spinnerSvc = inject(SpinnerService);
 
   listClients:Cliente[] = [];
   public optionsSearch: string[] = [];
@@ -98,12 +94,12 @@ export class GestorClienteComponent {
     this.currentLargeTextCard = TextLargeWindow.get(15, 20, 15, 25);
     this.currentLargeTextTable = TextLargeWindow.get(15);
   }
+
 // trae la lista de clientes
 public getClientes(){
   this.clientService.getClientes().subscribe((r: any) => {
       if (r.length > 0) {
         this.listClients = r;
-
       } else {
         console.log("No hay clientes registrados en el sistema");
       }
@@ -120,27 +116,6 @@ public getClientes(){
   public OpenMenu(){
     this.isOpen = !this.isOpen;
   }
-  public changeStatus(event: [boolean, number]) {
-    if (event[1] == undefined) return;
-
-    if (event[0] == false) {
-      const dialog = this.openModal.OpenLogout(
-        [`El cliente "${this.listClients[event[1]].nombres}" no podrá acceder al sistema`],
-        '30rem',
-        '¿Esta seguro de deshabilitar este usuario?',
-      );
-
-      dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-        this.ActiveOrDeactiveUser(event[1], event[0]);
-      });
-    } else this.ActiveOrDeactiveUser(event[1], event[0]);
-  }
-
-  public ActiveOrDeactiveUser(index: number, status: boolean): void {
-  }
-
-
-
 
   public getValueForm = (id: string): string => this.formClient.get(id)?.value;
 
@@ -148,29 +123,27 @@ public getClientes(){
     if (event?.header === 'Editar')
       this.router.navigate([url, event.id]);
     else if (event?.header === 'Eliminar')
-      this.deleteClient(event.id);
-    // else if (event?.header === 'Detalles')
-    //   this.showDetails(event.id);
+      this.deleteCliente(event.id);
     else
       this.router.navigateByUrl(url);
   }
 
  // Eliminar cliente
- public deleteClient(idClient: string) {
-  const currentClient = this.listClients.find((client: Cliente) => client.id == idClient);
-  if (!currentClient) return;
+ public deleteCliente(idCliente: number) {
+  const currentCliente = this.listClients.find((cliente: Cliente) => cliente.id_cliente == idCliente);
+  if (!currentCliente) return;
 
   const dialog = this.openModal.OpenLogout(
-    [`El Cliente "${currentClient?.nombres}" no podrá acceder al sistema`],
+    [`El cliente "${currentCliente?.nombres}" no podrá acceder al sistema`],
     '30rem',
     '¿Esta seguro que desea eliminar este cliente?',
     'Esta acción es permanente'
   );
 
   dialog.componentInstance!.logoutEvent?.subscribe(_ => {
-    this.clientService.deleteClienteById(currentClient.id)
+    this.clientService.deleteClienteById(currentCliente.id_cliente)
     .subscribe((r: any) => {
-          this.openModal.Open(1, [],`Cliente "${currentClient?.nombres}" eliminado correctamente!`, '25rem');
+          this.openModal.Open(1, [],`Cliente "${currentCliente?.nombres}" eliminado correctamente!`, '25rem');
           this.getClientes();
       });
   });

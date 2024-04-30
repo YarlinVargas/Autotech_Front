@@ -1,10 +1,6 @@
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { Component, EventEmitter, Inject, Output, inject } from '@angular/core';
-import { dataModal } from 'src/app/core/models/modals/moda-data.model';
 import { ModalMsjComponent } from '../../modal-msj/modal-msj.component';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
-import { finalize } from 'rxjs';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
 import { ProductoService } from 'src/app/core/services/productos/productos.service';
 import { Producto } from 'src/app/core/models/productos/producto.model';
 
@@ -14,7 +10,7 @@ import { Producto } from 'src/app/core/models/productos/producto.model';
   styleUrls: ['./modal-detalle-producto.component.scss']
 })
 export class ModalDetalleProductoComponent {
-  private spinnerSvc = inject(SpinnerService);
+
   public detail : Producto[] =[];
   id_producto: number = 0;
   descripcion: string = "";

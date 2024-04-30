@@ -2,11 +2,9 @@ import { Component, HostListener, Input, OnDestroy, OnInit, inject } from '@angu
 
 import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
 import { Subject, finalize, tap } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { openModals } from 'src/app/core/global/modals/openModal';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
 import { OrdenTrabajoService } from 'src/app/core/services/ordenTrabajo/ordenTrabajo.service';
@@ -220,8 +218,6 @@ private GetOrdenes(): void {
         this.router.navigateByUrl(`/orders`);
       });
     }else{
-
-      // this.spinnerSvc.show();
       this.ordenTrabajoService.createNewOrdenTrabajo(request).subscribe((r: any) => {
 
           console.log("Orden creado correctamente");

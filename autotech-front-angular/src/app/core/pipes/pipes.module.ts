@@ -7,6 +7,7 @@ import { FilterRequerimentsPipe } from "./filter/filter-requirenments.pipe";
 import { FilterClientsPipe } from "./filter/filter-clients.pipe";
 import { FilterProductoPipe } from "./filter/filter_product.pipe";
 import { FilterOrdenPipe } from "./filter/filter_orden.pipe";
+import { FilterNotificationPipe } from "./filter/filter-notification.pipe";
 
 @NgModule({
   providers: [
@@ -14,7 +15,8 @@ import { FilterOrdenPipe } from "./filter/filter_orden.pipe";
     FilterRequerimentsPipe,
     FilterClientsPipe,
     FilterProductoPipe,
-    FilterOrdenPipe
+    FilterOrdenPipe,
+    FilterNotificationPipe
   ],
   declarations: [
     SafePipe,
@@ -23,7 +25,8 @@ import { FilterOrdenPipe } from "./filter/filter_orden.pipe";
     FilterRequerimentsPipe,
     FilterClientsPipe,
     FilterProductoPipe,
-    FilterOrdenPipe
+    FilterOrdenPipe,
+    FilterNotificationPipe
   ],
   imports: [CommonModule],
   exports: [
@@ -33,7 +36,8 @@ import { FilterOrdenPipe } from "./filter/filter_orden.pipe";
     FilterRequerimentsPipe,
     FilterClientsPipe,
     FilterProductoPipe,
-    FilterOrdenPipe
+    FilterOrdenPipe,
+    FilterNotificationPipe
   ]
 })
 export class PipesModule { }

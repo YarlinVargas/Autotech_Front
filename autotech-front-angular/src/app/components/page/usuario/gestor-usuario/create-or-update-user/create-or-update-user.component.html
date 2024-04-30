@@ -70,6 +70,25 @@
         </app-field-input>
       </div>
       <div>
+        <label class="block text-xs xl:text-sm 3xl:text-lg font-medium leading-6 pl-3 text-sky500 ring-sky500 focus:ring-sky500">
+          Perfil
+        </label>
+        <div class="relative mt-1 rounded-md shadow-sm">
+          <select fieldName="id_perfil" formControlName="id_perfil"
+            class="block w-full rounded-3xl border-0 py-1.5 pl-4 pr-11 text-xs xl:text-sm 3xl:text-lg sm:leading-6 text-neutral700 ring-1 ring-inset placeholder:text-neutral400"
+          >
+            <option *ngIf="defaultValue" selected>{{ defaultValue }}</option>
+            <ng-container *ngIf="listPerfil?.length" >
+              <ng-container *ngFor="let select of listPerfil">
+                <option [value]="select.id_perfil">
+                  {{ select.descripcion_perfil }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div>
         <app-field-input [parentForm]="form" fieldName="login" formControlName="login" holder="Escribir nombre usuario">
           Nombre de usuario
         </app-field-input>

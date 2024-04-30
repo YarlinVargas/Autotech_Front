@@ -24,7 +24,6 @@ import { ModalDetalleUsuarioComponent } from './modals/modal-detalle-usuario/mod
 import { PipesModule } from '../pipes/pipes.module';
 import { DirectivesModule } from '../directives/directives.module';
 import {DetalleResultadoComponent} from './detalle-resultado/detalle-resultado.component';
-import { SpinnerComponent } from './spinner/spinner.component';
 import { FieldInputEmailComponent } from './field-input-email/field-input-email.component';
 import { GoUpComponent } from './go-up/go-up.component';
 import { ModalInputComponent } from './modals/modal-input/modal-input.component';
@@ -49,7 +48,6 @@ import { ModalDetalleProductoComponent } from './modals/modal-detalle-producto/m
     FooterComponent,
     ModalDetalleUsuarioComponent,
     DetalleResultadoComponent,
-    SpinnerComponent,
     FieldInputEmailComponent,
     GoUpComponent,
     ModalInputComponent,
@@ -79,11 +77,10 @@ import { ModalDetalleProductoComponent } from './modals/modal-detalle-producto/m
     CardViewComponent,
     FieldSelectOptionComponent,
     FieldSelectComponent,
-    ModalMsjComponent,  
+    ModalMsjComponent,
     CardExamComponent,
     FooterComponent,
     DetalleResultadoComponent,
-    SpinnerComponent,
     FieldInputEmailComponent,
     GoUpComponent
   ]

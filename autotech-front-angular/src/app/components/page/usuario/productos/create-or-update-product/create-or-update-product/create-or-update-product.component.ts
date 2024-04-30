@@ -128,8 +128,6 @@ export class CreateOrUpdateProductComponent {
       this.router.navigateByUrl(`/productos`);
     });
   }else{
-
-    // this.spinnerSvc.show();
     this.productoService.createNewProduct(request).subscribe((r: any) => {
 
         console.log("Productos creados correctamente");

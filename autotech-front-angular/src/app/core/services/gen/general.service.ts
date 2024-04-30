@@ -4,6 +4,7 @@ import { ConfigService } from '../config/config.service';
 import { Observable, zip } from 'rxjs';
 import { RespService } from '../../models/general/resp-service.model';
 import { TipoDocumento } from '../../models/general/tipo_documento.model';
+import { PerfilModel } from '../../models/general/perfil.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,11 @@ export class GeneralService {
 
   ListCompanies(): Observable<any> {
     return this.http.get<RespService>(`${this.config.base}general/listCompany`);
+  }
+
+
+  getPerfiles(): Observable<PerfilModel[]> {
+    return this.http.get<PerfilModel[]>(`${this.apiUrl}/perfiles`);
   }
 
   ListPlans(id: string): Observable<any> {

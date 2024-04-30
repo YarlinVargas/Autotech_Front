@@ -1,10 +1,31 @@
 export interface ReportModel {
-  id: number,
-  contractName: string,
-  attentionCenter: string,
-  requestDate: string,
-  requestNumber: string,
-  patientName: string,
-  requestStatus: string,
+  id_report: number,
+  initialDate: string,
+  finalDate: string,
+  placa:string
+}
+export interface FiltroReport {
+  initialDate: string,
+  finalDate: string,
+  placa:string
+}
 
+export interface ReportProductoModel {
+  codigo: string,
+  descripcion: string,
+  cantidad: number,
+  imagen:string
+}
+export interface ReportProducto {
+  codigo: string,
+  descripcion: string,
+  cantidad: string,
+  imagen:string
+}
+export interface ReportVehiculoModel {
+  placa: string,
+  nombre_completo: string,
+  fecha: string,
+  requerimiento: string,
+  trabajo_realizado: string,
 }

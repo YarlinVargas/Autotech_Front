@@ -1,6 +1,6 @@
 <nav class="bg-gray-800">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="relative flex h-16 items-center justify-between">
+    <div class="relative flex h-16">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
         <!-- Mobile menu button-->
         <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false" (click)="OpenMenu()">
@@ -32,14 +32,14 @@
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a href="/gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
-            <a href="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-            <a href="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
-            <a href="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
-            <a href="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
-            <a href="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-            <a href="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-            <a href="/reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+            <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
+            <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
+            <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+            <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
+            <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
+            <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
+            <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+            <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
           </div>
         </div>
       </div>
@@ -77,14 +77,101 @@
   <div class="sm:hidden" id="mobile-menu">
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-      <a href="/gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
-      <a href="/client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-      <a href="/notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
-      <a href="/requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
-      <a href="/orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
-      <a href="/conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-      <a href="/productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-      <a href="/reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+      <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
+      <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
+      <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+      <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
+      <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
+      <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
+      <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+      <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
     </div>
   </div>
 </nav>
+
+
+  <div class="flex flex-col w-full max-w-full md:h-full relative bg-white py-5 lg:p-5 xl:py-6 xl:px-12">
+    <form [formGroup]="form" class="items-end grid grid-cols-1 grid-rows-7 gap-y-6 mt-4 md:mt-0 md:grid-cols-4 md:grid-rows-2 lg:gap-y-6 lg:gap-x-8 xl:gap-x-12 animate-fade-down">
+      <div>
+        <label class="block text-xs xl:text-sm 3xl:text-lg font-medium leading-6 pl-3 text-sky500 ring-sky500 focus:ring-sky500">
+          Seleccione reporte
+        </label>
+        <div class="relative mt-1 rounded-md shadow-sm">
+          <select fieldName="id_report" formControlName="id_report"
+            class="block w-full rounded-3xl border-0 py-1.5 pl-4 pr-11 text-xs xl:text-sm 3xl:text-lg sm:leading-6 text-neutral700 ring-1 ring-inset placeholder:text-neutral400"
+          >
+            <option *ngIf="defaultValue" selected>{{ defaultValue }}</option>
+            <ng-container *ngIf="reports?.length" >
+              <ng-container *ngFor="let select of reports">
+                <option [value]="select.id">
+                  {{ select.title }}
+                </option>
+              </ng-container>
+            </ng-container>
+          </select>
+        </div>
+      </div>
+      <div>
+        <app-field-input [parentForm]="form" fieldName="placa" formControlName="placa" holder="Escribir placa">
+          Placa
+        </app-field-input>
+      </div>
+      <div>
+        <app-field-input [parentForm]="form" fieldName="initialDate" formControlName="initialDate" holder="Escribir fecha inicio">
+          Fecha inicio
+        </app-field-input>
+      </div>
+      <div>
+        <app-field-input [parentForm]="form" fieldName="finalDate" formControlName="finalDate" holder="Escribir fecha fin">
+          Fecha fin
+        </app-field-input>
+      </div>
+      <div>
+        <app-buttons [typeBtn]="'submit'" [color]="'sky'" [width]="'64'" [height]="'8'" [button]="2"
+        label="Generar reporte" (click)="report()" ></app-buttons>
+      </div>
+    </form>
+
+    <hr class="w-full mt-12 md:mt-4 mb-3 border-2 border-transparent border-b-neutral500">
+    <!-- Tabla productos -->
+    <div *ngIf="isProducto"
+    class="md-overflow-scroll gestor-clients-table pr-3 animate-fade-down">
+    <div class="w-full">
+      <app-table [headers]="['Codigo', 'Descripcion', 'Cantidad', 'Imagen']"
+        [data]="(lstProducto)"
+        [keyMap]="{
+        'Codigo': 'codigo',
+        'Descripcion': 'descripcion',
+        'Cantidad': 'cantidad',
+        'Imagen': 'imagen',
+        }"
+        positionTable='left'
+        maxWidthTable='98%'
+        [acortadorTexto]="currentLargeTextTable"
+        [opcionesParaTooltip]="tooltip">
+      </app-table>
+    </div>
+  </div>
+  <!-- Tabla historial vehiculos -->
+  <div *ngIf="isVehiculo"
+        class="md-overflow-scroll gestor-clients-table pr-3 animate-fade-down">
+        <div class="w-full">
+          <app-table [headers]="['Placa', 'Nombre', 'Fecha', 'Requerimiento','Trabajo realizado']"
+            [data]="(listVehiculos)"
+            [keyMap]="{
+            'Placa': 'placa',
+            'Nombre': 'nombre_completo',
+            'Fecha': 'fecha',
+            'Requerimiento': 'requerimiento',
+            'Trabajo realizado': 'trabajo_realizado',
+            }"
+            positionTable='left'
+            maxWidthTable='98%'
+            [acortadorTexto]="currentLargeTextTable"
+            [opcionesParaTooltip]="tooltip">
+          </app-table>
+        </div>
+      </div>
+
+  </div>
+

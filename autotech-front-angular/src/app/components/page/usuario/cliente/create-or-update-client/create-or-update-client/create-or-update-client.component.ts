@@ -1,16 +1,14 @@
 import { Component, HostListener, Input, OnDestroy, OnInit, inject } from '@angular/core';
-
 import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
 import { Subject, finalize, tap } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { openModals } from 'src/app/core/global/modals/openModal';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
-import { CreateUpdateClient } from 'src/app/core/services/client/models/create-update-client.model';
 import { ClientService, Cliente } from 'src/app/core/services/client/client.service';
+import { PerfilModel } from 'src/app/core/models/general/perfil.model';
+import { GeneralService } from 'src/app/core/services/gen/general.service';
 
 
 @Component({
@@ -35,14 +33,15 @@ export class CreateOrUpdateClientComponent {
   };
 
   public clientToUpdate: Cliente = {
-    id: '',
+    id_cliente: 0,
     nombres:'',
     apellidos: '',
-    direccion: '',
+    Direccion: '',
     telefono:'',
     email: '',
     documento_identidad: '',
     fecha_nacimiento:'',
+    id_estado:0,
   };
 
 
@@ -51,7 +50,6 @@ export class CreateOrUpdateClientComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private spinnerSvc = inject(SpinnerService);
 
   @Input() color = 'sky';
   @Input() id_client: string = 'select';
@@ -78,6 +76,7 @@ export class CreateOrUpdateClientComponent {
     this.currentLargeText = TextLargeWindow.get(15);
   }
 
+
   private GetClient(): void {
     const idClient = this.activatedRoute.snapshot.paramMap.get('id');
     this.idClient = parseInt(idClient!);
@@ -100,10 +99,10 @@ export class CreateOrUpdateClientComponent {
 
   public setFormClient(client: Cliente) {
     this.form = this.fb.group({
-      id: [client.id],
+      id: [client.id_cliente],
       nombres: [client.nombres, [Validators.required, Validators.minLength(1)]],
       apellidos: [client.apellidos, [Validators.required, Validators.minLength(1)]],
-      direccion: [client.direccion, Validators.required],
+      direccion: [client.Direccion, Validators.required],
       telefono: [client.telefono, Validators.required],
       email: [
         client.email,
@@ -136,7 +135,6 @@ export class CreateOrUpdateClientComponent {
       });
     }else{
 
-      // this.spinnerSvc.show();
       this.clientService.createNewCliente(request).subscribe((r: any) => {
 
           console.log("Cliente creado correctamente");
