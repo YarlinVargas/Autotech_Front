@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { faIdCard, faFileLines, faAngleDown, faChevronRight, faMaximize, faMinimize } from '@fortawesome/free-solid-svg-icons';
 import { DataDetail, DataExam } from 'src/app/core/models/general/data-exam.model';
 import { PatientService } from 'src/app/core/services/patient/patient.service';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { RespService } from 'src/app/core/models/general/resp-service.model';
 import { finalize } from 'rxjs';
 import { ResultService } from '../../services/result/result.service';
@@ -62,7 +61,6 @@ export class DetalleResultadoComponent implements OnInit, AfterContentInit, OnDe
   listResult!: DataDetail;
   typeUser: string = 'Empresa';
 
-  private spinnerSvc = inject(SpinnerService);
   public openModal : openModals = new openModals(this.dialog);
 
   constructor(
@@ -107,12 +105,8 @@ export class DetalleResultadoComponent implements OnInit, AfterContentInit, OnDe
   viewDocument(status: boolean) {
     this.checkViewDocument = status;
     if (status) {
-      this.spinnerSvc.show()
       this.resultSvc.PDF(this.idRequest)
-        .pipe(
-          finalize(() => {
-            this.spinnerSvc.hide();
-          }))
+
           .subscribe(
             {
               next: (r: RespService) => {
@@ -278,13 +272,8 @@ export class DetalleResultadoComponent implements OnInit, AfterContentInit, OnDe
   }
 
   public SendPdf(email?: string) {
-    this.spinnerSvc.show();
+
       this.resultSvc.EmailToPDF({ id: this.idRequest }, email)
-        .pipe(
-          finalize(() => {
-            this.spinnerSvc.hide();
-          })
-        )
         .subscribe(
           {
             next: () => {
@@ -310,12 +299,8 @@ export class DetalleResultadoComponent implements OnInit, AfterContentInit, OnDe
     var id = $event.row['id'];
     this.changeButton = $event.idn
     if (id != null && id > 0) {
-      this.spinnerSvc.show();
+
       this.patientSvc.ConsultResultExam(id)
-        .pipe(
-          finalize(() => {
-            this.spinnerSvc.hide();
-          }))
         .subscribe((resp: RespService) => {
           const data: DataDetail = {
             ...resp.data.exam, result: resp.data.results
@@ -330,12 +315,8 @@ export class DetalleResultadoComponent implements OnInit, AfterContentInit, OnDe
   }
 
   private consultExamRequest(id: number) {
-    this.spinnerSvc.show();
+
     this.patientSvc.ConsultExam_Request(id)
-      .pipe(
-        finalize(() => {
-          this.spinnerSvc.hide();
-        }))
       .subscribe((resp: RespService) => {
         this.dataPatient = resp.data.patient;
 

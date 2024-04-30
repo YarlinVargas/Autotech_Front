@@ -6,13 +6,9 @@ import { Subject, filter, finalize, takeUntil, tap } from 'rxjs';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
 import { openModals } from 'src/app/core/global/modals/openModal';
 import { ToggleListEnum } from 'src/app/core/models/enums/toggleList.enum';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
-import { dataModal } from 'src/app/core/models/modals/moda-data.model';
 import { Producto } from 'src/app/core/models/productos/producto.model';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
-import { ListUser, ListUsuario } from 'src/app/core/models/user/list-user.model';
 import { FilterProductoPipe } from 'src/app/core/pipes/filter/filter_product.pipe';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { ProductoService } from 'src/app/core/services/productos/productos.service';
 import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
 import { ModalDetalleProductoComponent } from 'src/app/core/shared/modals/modal-detalle-producto/modal-detalle-producto/modal-detalle-producto.component';
@@ -39,7 +35,7 @@ export class GestorProductosComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private productoService = inject(ProductoService);
-  private spinnerSvc = inject(SpinnerService);
+
 
   public listProductos: Producto[] = [];
 
@@ -140,7 +136,7 @@ export class GestorProductosComponent {
     else
       this.router.navigateByUrl(url);
   }
-  
+
   public deleteUser(idProduct: number) {
     const currentProduct = this.listProductos.find((product: Producto) => product.id_producto == idProduct);
     if (!currentProduct) return;
@@ -189,7 +185,7 @@ export class GestorProductosComponent {
   }
 
   Detail(idProducto: number) {
-    this.spinnerSvc.show();
+
     this.productoService.getProductById(idProducto)
     .subscribe((r: any) => {
       if (r != null) {

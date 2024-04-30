@@ -1,16 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import { WelcomeComponent } from './paciente/welcome/welcome.component';
-// import { WelcomeCompanyComponent } from './empresa/welcome-company/welcome-company.component';
-// import { ListResultadosPatientComponent } from './paciente/list-resultados-patient/list-resultados-patient.component';
-// import { PerfilComponent } from './perfil/perfil.component';
 import { GestorUsuarioComponent } from './usuario/gestor-usuario/gestor-usuario.component';
-// import { ResultComponent } from './paciente/result/result.component';
-// import { ListResultadosCompanyComponent } from './empresa/list-resultados-company/list-resultados-company.component';
-// import { DetailResultComponent } from './empresa/detail-result/detail-result.component';
 import { CreateOrUpdateUserComponent } from './usuario/gestor-usuario/create-or-update-user/create-or-update-user.component';
 import { GestorClienteComponent } from './usuario/cliente/gestor-cliente/gestor-cliente.component';
-
 import { GestorNotificacionComponent } from './usuario/notificacion/gestor-notificacion/gestor-notificacion.component';
 import { GestorRequerimientosComponent } from './usuario/requerimiento/gestor-requerimientos.component';
 import { GestorOrdenTrabajoComponent } from './usuario/orden-trabajo/gestor-orden-trabajo/gestor-orden-trabajo.component';

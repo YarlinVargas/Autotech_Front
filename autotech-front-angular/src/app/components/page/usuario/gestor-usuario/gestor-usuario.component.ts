@@ -9,8 +9,6 @@ import { ToggleListEnum } from 'src/app/core/models/enums/toggleList.enum';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { ListUsuario } from 'src/app/core/models/user/list-user.model';
 import { FilterUsersPipe } from 'src/app/core/pipes/filter/filter-users.pipe';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
-import { UserService } from 'src/app/core/services/user/user.service';
 import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
 
 @Component({
@@ -33,8 +31,6 @@ export class GestorUsuarioComponent implements OnInit, OnDestroy {
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  private userService = inject(UserService);
-  private spinnerSvc = inject(SpinnerService);
 
   public listUsuarios: ListUsuario[] = [];
   public listUser: Usuario[] = [];

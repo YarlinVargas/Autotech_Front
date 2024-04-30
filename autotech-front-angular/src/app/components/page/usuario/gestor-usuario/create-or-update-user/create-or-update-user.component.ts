@@ -3,25 +3,14 @@ import { ListModel, ListTipoDocumento } from 'src/app/core/models/general/genera
 import { GeneralService } from '../../../../../core/services/gen/general.service';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { RespService } from 'src/app/core/models/general/resp-service.model';
-import { Subject, distinctUntilChanged, filter, finalize, forkJoin, map, switchMap, takeUntil, tap } from 'rxjs';
-import { UserService } from 'src/app/core/services/user/user.service';
-import { Company } from 'src/app/core/models/general/company.model';
-import { CreateUpdateUser } from 'src/app/core/services/user/models/create-update-user.model';
-import { PlansByCompany } from 'src/app/core/services/user/models/plans-by-company.model';
+import { Subject } from 'rxjs';
 import { Dialog } from '@angular/cdk/dialog';
 import { openModals } from 'src/app/core/global/modals/openModal';
-import { SpinnerService } from 'src/app/core/services/gen/spinner.service';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { TextLargeWindow } from 'src/app/core/constants/textLargeWindow';
 import { Usuario, UsuarioService } from 'src/app/core/services/usuario/usuario.service';
+import { PerfilModel } from 'src/app/core/models/general/perfil.model';
 
-interface FiltersContracts {
-  waitingResult: boolean;
-  partialResult: boolean;
-  finishedResult: boolean;
-  [key: string]: boolean;
-}
 
 @Component({
   selector: 'app-create-or-update-user',
@@ -33,6 +22,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
 
   public idUser: number = 0;
   public listDocument!: ListTipoDocumento[];
+  listPerfil:PerfilModel[] = [];
   public isEdit: boolean = false;
   public destroy$: Subject<boolean> = new Subject<boolean>();
   public currentCompanyNit: string = '';
@@ -64,11 +54,9 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
   public form: FormGroup = new FormGroup({});
 
   private genSvc = inject(GeneralService);
-  private userService = inject(UserService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private spinnerSvc = inject(SpinnerService);
 
   @Input() color = 'sky';
   @Input() id_usuario: string = 'select';
@@ -79,14 +67,15 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
   public openModal: openModals = new openModals(this.dialog);
   public currentLargeText = 10;
 
-  constructor(public dialog: Dialog, private _usuarioService: UsuarioService) {
+  constructor(public dialog: Dialog, private _usuarioService: UsuarioService, private genService: GeneralService) {
     this.setFormUser(this.userToUpdate);
     this.getTiposDocumento();
+
   }
 
   public ngOnInit(): void {
     this.currentLargeText = TextLargeWindow.get(15);
-
+    this.getPerfiles();
     if (this.router.url.includes('updateUser')) {
       this.isEdit = true;
       this.GetUser();
@@ -100,7 +89,6 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
   }
 
 
-
   public getTiposDocumento(){
     this.genSvc.getTiposDocumento().subscribe((r: any) => {
         if (r.length > 0) {
@@ -111,6 +99,20 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  // trae la lista de perfiles
+  public getPerfiles(){
+    this.genService.getPerfiles().subscribe((r: any) => {
+      debugger
+        if (r.length > 0) {
+          this.listPerfil = r;
+          debugger
+        } else {
+          console.log("No hay perfiles registrados en el sistema");
+        }
+      });
+  }
+
   private GetUser(): void {
     const idUser = this.activatedRoute.snapshot.paramMap.get('id');
     this.idUser = parseInt(idUser!);
@@ -145,12 +147,13 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       ],
       direccion: [user.direccion, Validators.required],
       id_tipo_documento: [user.id_tipo_documento == null || user.id_tipo_documento == undefined ? '' : user.id_tipo_documento, [Validators.required]],
-      id_perfil: 0,
+      id_perfil:  [user.id_perfil],
       id_estado: 0,
       login: [user.login, Validators.required],
       password: [user.password, Validators.required],
       eliminado:0
     });
+    debugger
   }
 
   public back = () => this.router.navigateByUrl('gestionUsuario');
@@ -161,7 +164,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       return;
     }
     let request: Usuario = this.form.value;
-    
+
   if(this.isEdit ){
 
     this._usuarioService.updateUsuarioById(this.idUser, request).subscribe((r: any) => {
@@ -171,7 +174,6 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
     });
   }else{
 
-    // this.spinnerSvc.show();
     this._usuarioService.createNewUsuario(request).subscribe((r: any) => {
 
         console.log("Usuarios creado correctamente");
