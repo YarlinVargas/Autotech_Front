@@ -78,13 +78,8 @@ export class ReportesComponent {
     }else{
       this.isVehiculo= true;
       this.isProducto=false;
-      const data = {
 
-        placa:this.form.value.placa,
-        initialDate :this.form.value.initialDate,
-        finalDate : this.form.value.finalDate
-      }
-      this.getHistorial(data);
+      this.getHistorial();
     }
   }
   //CONSULTAR TODOS LOS PRODUCTOS SIN STOCK
@@ -105,9 +100,9 @@ export class ReportesComponent {
   }
 
     //CONSULTAR HISTORIAL DE VEHICULOS POR PLACA Y FECHA
-    public getHistorial(data:FiltroReport){
+    public getHistorial(){
 
-      this.reporteService.getHistorialVehiculoxPlacaxFechas(data).subscribe((r: any) => {
+      this.reporteService.getHistorialVehiculoxPlacaxFechas(this.form.value.placa,this.form.value.initialDate, this.form.value.finalDate).subscribe((r: any) => {
           if (r.length > 0) {
             this.listVehiculos = r;
 
