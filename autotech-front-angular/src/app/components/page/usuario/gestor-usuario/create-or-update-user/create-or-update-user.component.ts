@@ -103,10 +103,9 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
   // trae la lista de perfiles
   public getPerfiles(){
     this.genService.getPerfiles().subscribe((r: any) => {
-      debugger
         if (r.length > 0) {
           this.listPerfil = r;
-          debugger
+
         } else {
           console.log("No hay perfiles registrados en el sistema");
         }
@@ -153,7 +152,7 @@ export class CreateOrUpdateUserComponent implements OnInit, OnDestroy {
       password: [user.password, Validators.required],
       eliminado:0
     });
-    debugger
+
   }
 
   public back = () => this.router.navigateByUrl('gestionUsuario');

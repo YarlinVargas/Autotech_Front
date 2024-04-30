@@ -1,6 +1,6 @@
 <nav class="bg-gray-800">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-    <div class="relative flex h-16 items-center justify-between">
+    <div class="relative flex h-16">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
         <!-- Mobile menu button-->
         <button type="button" class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
@@ -92,10 +92,13 @@
       <h2 class="md:hidden font-bold text-lg">
         Listado
       </h2>
+      <app-buttons class="text-right animate-fade-right" typeBtn="button" [color]="'primary'" [button]="15" label="Agregar notificacion"
+        (click)="navigate('createNotification')">
+      </app-buttons>
     </div>
 
-    <form [formGroup]="formClient" class="block md:flex md:flex-row md:items-center animate-fade-down">
-      <app-field-input [parentForm]="formClient" fieldName="search" formControlName="search" class="w-full md:w-6/12"
+    <form [formGroup]="form" class="block md:flex md:flex-row md:items-center animate-fade-down">
+      <app-field-input [parentForm]="form" fieldName="search" formControlName="search" class="w-full md:w-6/12"
         type="text" holder="Búsqueda" [permitirIcono]="true" [sugerencias]="optionsSearch" (selectSuggestion)="setSuggestion($event)"></app-field-input>
       <hr class="w-full my-5 md:my-0 md:ml-5 border-2 border-transparent border-b-neutral500 md:w-9/12">
     </form>
@@ -105,13 +108,12 @@
     <div [ngClass]="{'hidden': currentView == false, 'block': currentView == true}"
       class="md-overflow-scroll gestor-clients-table animate-fade-down">
       <app-card-view
-        [headers]="['Nombre', 'Email', 'Numero de Celular', 'Fecha','Editar', 'Eliminar']"
-        [data]="(listNotification )"
+        [headers]="['Nombre', 'Email', 'Fecha','Editar', 'Eliminar']"
+        [data]="(lstRecordatorio )"
         [keyMap]="{
             'id_recordatorio': 'id_recordatorio',
-            'Nombre': 'name',
+            'Nombre': 'nombre',
             'Email': 'email',
-            'Numero de celular': 'phoneNumber',
             'Fecha': 'fecha',
           }"
           [cantidadFilas]="2"
@@ -119,7 +121,7 @@
           nombreCampoAEmitir="id_recordatorio"
           [acortadorTexto]="currentLargeTextCard"
           [opcionesParaTooltip]="tooltip"
-          (resultWithHeader)="navigate('updateClient', $event)"
+          (resultWithHeader)="navigate('updateNotification', $event)"
         >
         </app-card-view>
       </div>
@@ -127,13 +129,12 @@
       <div [ngClass]="{'hidden': currentView == true, 'block': currentView == false}"
         class="md-overflow-scroll gestor-clients-table pr-3 animate-fade-down">
         <div class="w-full">
-          <app-table [headers]="['Nombre', 'Email', 'Numero de Celular', 'Fecha','Editar', 'Eliminar']"
-            [data]="(listNotification)"
+          <app-table [headers]="['Nombre', 'Email', 'Fecha','Editar', 'Eliminar']"
+            [data]="(lstRecordatorio)"
             [keyMap]="{
             'id_recordatorio': 'id_recordatorio',
-            'Nombre': 'name',
+            'Nombre': 'nombre',
             'Email': 'email',
-            'Numero de celular': 'phoneNumber',
             'Fecha': 'fecha',
             }"
             positionTable='left'
@@ -141,7 +142,7 @@
             nombreCampoAEmitir="id_recordatorio"
             [acortadorTexto]="currentLargeTextTable"
             [opcionesParaTooltip]="tooltip"
-            (resultWithHeader)="navigate('updateClient', $event)">
+            (resultWithHeader)="navigate('updateNotification', $event)">
           </app-table>
         </div>
       </div>

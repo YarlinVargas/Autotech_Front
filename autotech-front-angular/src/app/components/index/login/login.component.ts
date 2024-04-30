@@ -59,7 +59,6 @@ export class LoginComponent implements OnInit {
 
       if (data) {
         this.openTab = data.id;
-debugger
         if (this.openTab === data.id) {
           this.form.controls['idIdentificationType'].setValue(data.idIdentificationType);
           this.form.controls['userName'].setValue(data.userName);
@@ -71,21 +70,7 @@ debugger
   }
 
   ngOnInit(): void {
-    // this.indexDbService.getAllImages().then((r: any) => {
-    //   if (!r?.length) {
-        // this.genSvc.ImgEnterprise().subscribe((r: RespService) => {
-        //   this.indexDbService.addImage(r.data);
-        //   debugger
-        //   this.imgEnterprise = r.data;
-        // })
-      // } else {
-      //   this.imgEnterprise = r[0].data;
-      // }
-    // });
-    // this.genSvc.ListFiltersConsult().subscribe((r: RespService) => {
-    //   this.listDocument = r.data;
-    // });
-    //this.ListFiltersConsult();
+
   }
 
 
@@ -120,7 +105,6 @@ debugger
       const data: AuthModel = {...this.form.value};
 
     this._usuarioService.authenticateUsuario(data.userName, data.password).subscribe((r: any) => {
-        debugger
         if (r != null) {
           localStorage.setItem('perfilUser', JSON.stringify(r.usuario.id_perfil));
         console.log('Usuario logueado correctamente');

@@ -2,7 +2,7 @@ import { Dialog } from '@angular/cdk/dialog';
 import { Component, Input, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { openModals } from 'src/app/core/global/modals/openModal';
-import { FiltroReport, ReportModel, ReportProductoModel, ReportVehiculoModel } from 'src/app/core/models/report/report.model';
+import { FiltroReport, ReportModel, ReportProducto, ReportProductoModel, ReportVehiculoModel } from 'src/app/core/models/report/report.model';
 import { TootilpOption } from 'src/app/core/models/tooltip-options.model';
 import { ReporteService } from 'src/app/core/services/reporte/reporte.service';
 
@@ -38,6 +38,8 @@ export class ReportesComponent {
     { id: 2, title: 'Historial Vehiculo'},
   ]
   listProductos:ReportProductoModel[] = [];
+  listProducto:ReportProducto[] =[];
+  lstProducto:ReportProducto[] =[];
   listVehiculos:ReportVehiculoModel[] = [];
 
   private fb = inject(FormBuilder);
@@ -82,7 +84,6 @@ export class ReportesComponent {
         initialDate :this.form.value.initialDate,
         finalDate : this.form.value.finalDate
       }
-      debugger
       this.getHistorial(data);
     }
   }
@@ -91,6 +92,11 @@ export class ReportesComponent {
     this.reporteService.getProductosSinStock().subscribe((r: any) => {
         if (r.length > 0) {
           this.listProductos = r;
+          for (let index = 0; index < this.listProductos.length; index++) {
+
+            this.listProducto.push({codigo:this.listProductos[index].codigo, descripcion:this.listProductos[index].descripcion ,cantidad:this.listProductos[index].cantidad.toString(), imagen:this.listProductos[index].imagen});
+            this.lstProducto = this.listProducto;
+          }
 
         } else {
           console.log("No hay productos sin stock registrados en el sistema");
@@ -102,7 +108,6 @@ export class ReportesComponent {
     public getHistorial(data:FiltroReport){
 
       this.reporteService.getHistorialVehiculoxPlacaxFechas(data).subscribe((r: any) => {
-        debugger
           if (r.length > 0) {
             this.listVehiculos = r;
 

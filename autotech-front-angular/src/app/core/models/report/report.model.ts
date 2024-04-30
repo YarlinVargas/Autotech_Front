@@ -16,6 +16,12 @@ export interface ReportProductoModel {
   cantidad: number,
   imagen:string
 }
+export interface ReportProducto {
+  codigo: string,
+  descripcion: string,
+  cantidad: string,
+  imagen:string
+}
 export interface ReportVehiculoModel {
   placa: string,
   nombre_completo: string,

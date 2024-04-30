@@ -13,6 +13,7 @@ import { GestorProductosComponent } from './usuario/productos/gestor-productos/g
 import { CreateOrUpdateProductComponent } from './usuario/productos/create-or-update-product/create-or-update-product/create-or-update-product.component';
 import { CreateOrUpdateOrdenComponent } from './usuario/orden-trabajo/create-or-update-orden/create-or-update-orden/create-or-update-orden.component';
 import { ReportesComponent } from './usuario/reportes/reportes.component';
+import { CreateOrUpdateNotificacionComponent } from './usuario/notificacion/create-or-update-notificacion/create-or-update-notificacion/create-or-update-notificacion.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,16 @@ const routes: Routes = [
     path: 'notification',
     component: GestorNotificacionComponent,
     title: 'Vista notificaciones'
+  },
+  {
+    path: 'createNotification',
+    component: CreateOrUpdateNotificacionComponent,
+    title: 'Crear Notificacion'
+  },
+  {
+    path: 'updateNotification/:id',
+    component: CreateOrUpdateNotificacionComponent,
+    title: 'Editar Notificacion'
   },
   {
     path: 'requirement',

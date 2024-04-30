@@ -79,7 +79,6 @@ export class CreateOrUpdateClientComponent {
 
   private GetClient(): void {
     const idClient = this.activatedRoute.snapshot.paramMap.get('id');
-    debugger
     this.idClient = parseInt(idClient!);
     if (!idClient)
       this.router.navigateByUrl('/client');
