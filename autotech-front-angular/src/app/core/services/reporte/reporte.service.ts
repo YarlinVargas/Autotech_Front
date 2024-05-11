@@ -21,7 +21,12 @@ export class ReporteService {
   }
 
   //CONSULTAR HISTORIAL DE VEHICULOS POR PLACA Y FECHA
-  getHistorialVehiculoxPlacaxFechas(data:FiltroReport): Observable<ReportVehiculoModel[]> {
-    return this.http.get<ReportVehiculoModel[]>(`${this.apiUrl}/reportes/getHistorialVehiculoxPlacaxFechas/${data}`);
+  getHistorialVehiculoxPlacaxFechas(placa:String,fechainicial:String, fechafin:string): Observable<ReportVehiculoModel[]> {
+    const data = {
+      placa: placa,
+      fecha_inicio: fechainicial,
+      fecha_fin: fechafin
+    };
+    return this.http.post<ReportVehiculoModel[]>(`${this.apiUrl}/reportes/getHistorialVehiculoxPlacaxFechas`,data);
   }
 }

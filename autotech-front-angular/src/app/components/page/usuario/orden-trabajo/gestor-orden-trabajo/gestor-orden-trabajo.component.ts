@@ -67,7 +67,9 @@ export class GestorOrdenTrabajoComponent {
   vehiculo:string= "";
   usuario:string= "";
 
+
   public optionsSearch: string[] = [];
+  public perfilUser: any;
 
   public currentLargeTextCard = 10;
   public currentLargeTextTable = 10;
@@ -109,7 +111,9 @@ export class GestorOrdenTrabajoComponent {
   }
 
   public ngOnInit(): void {
-
+if (localStorage.getItem('perfilUser')) {
+      this.perfilUser = JSON.parse(localStorage.getItem('perfilUser')!);
+    }
     this.getClientes();
     this.form.get('search')?.valueChanges
 

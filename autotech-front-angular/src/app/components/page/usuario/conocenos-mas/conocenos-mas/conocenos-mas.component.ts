@@ -7,6 +7,16 @@ import { Component } from '@angular/core';
 })
 export class ConocenosMasComponent {
   public isOpen:boolean=false;
+  public perfilUser: any;
+
+  //inicializar componente
+  public ngOnInit(): void {
+
+    if (localStorage.getItem('perfilUser')) {
+      this.perfilUser = JSON.parse(localStorage.getItem('perfilUser')!);
+    }
+
+  }
 
   public OpenMenu(){
     this.isOpen = !this.isOpen;

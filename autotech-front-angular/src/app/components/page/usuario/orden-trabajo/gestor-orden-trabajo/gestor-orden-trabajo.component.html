@@ -26,12 +26,12 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
             <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-            <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+            <a *ngIf="perfilUser !=2" href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
             <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
             <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
             <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-            <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-            <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+            <a *ngIf="perfilUser !=2" href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+            <a *ngIf="perfilUser !=2" href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
           </div>
         </div>
       </div>
@@ -72,12 +72,12 @@
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
       <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-      <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+      <a *ngIf="perfilUser !=2" href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
       <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
       <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
       <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-      <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-      <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+      <a *ngIf="perfilUser !=2" href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+      <a *ngIf="perfilUser !=2" href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
     </div>
   </div>
 </nav>
@@ -109,7 +109,7 @@
 
     <div [ngClass]="{'hidden': currentView == false, 'block': currentView == true}"
       class="md-overflow-scroll gestor-clients-table animate-fade-down">
-      <app-card-view
+      <app-card-view *ngIf="perfilUser != 2"
         [headers]="['Orden trabajo', 'Cliente','vehiculo', 'Usuario','Tipo orden','Soporte','Requerimiento', 'Editar', 'Eliminar']"
         [data]="(listaOrden | filterOrden: form.get('search')!.value)?.results"
         [keyMap]="{
@@ -130,12 +130,53 @@
           (resultWithHeader)="navigate('updateordenes', $event)"
         >
         </app-card-view>
+
+        <app-card-view *ngIf="perfilUser == 2"
+        [headers]="['Orden trabajo', 'Cliente','vehiculo', 'Usuario','Tipo orden','Soporte','Requerimiento']"
+        [data]="(listaOrden | filterOrden: form.get('search')!.value)?.results"
+        [keyMap]="{
+            'id_orden_trabajo': 'id_orden_trabajo',
+            'Orden trabajo': 'descripcion',
+            'Cliente': 'cliente',
+            'vehiculo': 'vehiculo',
+            'Usuario': 'usuario',
+            'Tipo orden': 'tipo_orden',
+            'Soporte': 'soporte',
+            'Requerimiento': 'requerimiento',
+          }"
+          [cantidadFilas]="2"
+          [cantidadColumnas]="2"
+          nombreCampoAEmitir="id_orden_trabajo"
+          [acortadorTexto]="currentLargeTextCard"
+          [opcionesParaTooltip]="tooltip"
+        >
+        </app-card-view>
       </div>
 
       <div [ngClass]="{'hidden': currentView == true, 'block': currentView == false}"
         class="md-overflow-scroll gestor-clients-table pr-3 animate-fade-down">
         <div class="w-full">
-          <app-table [headers]="['Orden trabajo', 'Cliente','vehiculo', 'Usuario','Tipo orden','Soporte','Requerimiento', 'Editar', 'Eliminar']"
+          <app-table *ngIf="perfilUser != 2" [headers]="['Orden trabajo', 'Cliente','vehiculo', 'Usuario','Tipo orden','Soporte','Requerimiento', 'Editar', 'Eliminar']"
+            [data]="(listaOrden | filterOrden: form.get('search')!.value)?.results"
+            [keyMap]="{
+             'id_orden_trabajo': 'id_orden_trabajo',
+            'Orden trabajo': 'descripcion',
+            'Cliente': 'cliente',
+            'vehiculo': 'vehiculo',
+            'Usuario': 'usuario',
+            'Tipo orden': 'tipo_orden',
+            'Soporte': 'soporte',
+            'Requerimiento': 'requerimiento',
+            }"
+            positionTable='left'
+            maxWidthTable='98%'
+            nombreCampoAEmitir="id_orden_trabajo"
+            [acortadorTexto]="currentLargeTextTable"
+            [opcionesParaTooltip]="tooltip"
+            (resultWithHeader)="navigate('updateordenes', $event)">
+          </app-table>
+
+          <app-table *ngIf="perfilUser == 2" [headers]="['Orden trabajo', 'Cliente','vehiculo', 'Usuario','Tipo orden','Soporte','Requerimiento', 'Editar', 'Eliminar']"
             [data]="(listaOrden | filterOrden: form.get('search')!.value)?.results"
             [keyMap]="{
              'id_orden_trabajo': 'id_orden_trabajo',

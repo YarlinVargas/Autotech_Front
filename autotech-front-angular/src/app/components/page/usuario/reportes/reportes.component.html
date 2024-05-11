@@ -34,12 +34,12 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
             <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-            <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+            <a *ngIf="perfilUser !=2" href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
             <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
             <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
             <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-            <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-            <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+            <a *ngIf="perfilUser !=2" href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+            <a *ngIf="perfilUser !=2" href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
           </div>
         </div>
       </div>
@@ -79,12 +79,12 @@
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
       <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-      <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+      <a *ngIf="perfilUser !=2" href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
       <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
       <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
       <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-      <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-      <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+      <a *ngIf="perfilUser !=2" href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+      <a *ngIf="perfilUser !=2" href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
     </div>
   </div>
 </nav>
@@ -130,8 +130,15 @@
         <app-buttons [typeBtn]="'submit'" [color]="'sky'" [width]="'64'" [height]="'8'" [button]="2"
         label="Generar reporte" (click)="report()" ></app-buttons>
       </div>
+      <div>
+        <app-buttons [typeBtn]="'submit'" [color]="'sky'" [button]="10" label="Descargar" (click)="Dowload()">
+        </app-buttons>
+      </div>
     </form>
-
+   <!-- Visualizar PDF -->
+   <!-- <div class="mt-2" style="width: 100%; overflow: auto; height: 90%;">
+    <iframe style="width: 100%; height: 100%;" [src]="pdfb64 | safe"></iframe>
+  </div> -->
     <hr class="w-full mt-12 md:mt-4 mb-3 border-2 border-transparent border-b-neutral500">
     <!-- Tabla productos -->
     <div *ngIf="isProducto"

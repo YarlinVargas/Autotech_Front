@@ -31,6 +31,7 @@ export class GestorProductosComponent {
   };
 
   public detail : Producto[] =[];
+  public perfilUser: any;
 
   private fb = inject(FormBuilder);
   private router = inject(Router);
@@ -84,6 +85,9 @@ export class GestorProductosComponent {
   }
 
   public ngOnInit(): void {
+    if (localStorage.getItem('perfilUser')) {
+      this.perfilUser = JSON.parse(localStorage.getItem('perfilUser')!);
+    }
     this.getProductos();
     this.form.get('search')?.valueChanges
       .pipe(

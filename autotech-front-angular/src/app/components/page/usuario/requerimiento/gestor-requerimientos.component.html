@@ -25,12 +25,12 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
             <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-            <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+            <a *ngIf="perfilUser !=2" href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
             <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
             <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
             <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-            <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-            <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+            <a *ngIf="perfilUser !=2" href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+            <a *ngIf="perfilUser !=2" href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
           </div>
         </div>
       </div>
@@ -69,13 +69,13 @@
     <div class="space-y-1 px-2 pb-3 pt-2">
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
-      <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-      <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
-      <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
-      <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
-      <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-      <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-      <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+            <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
+            <a *ngIf="perfilUser !=2" href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+            <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
+            <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
+            <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
+            <a *ngIf="perfilUser !=2" href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+            <a *ngIf="perfilUser !=2" href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
     </div>
   </div>
 </nav>
@@ -107,7 +107,7 @@
 
     <div [ngClass]="{'hidden': currentView == false, 'block': currentView == true}"
       class="md-overflow-scroll gestor-requirenment-table animate-fade-down">
-      <app-card-view
+      <app-card-view *ngIf="perfilUser != 2"
         [headers]="['Fecha ingreso', 'Cliente','Usuario','Descripcion', 'Editar', 'Eliminar']"
         [data]="(listaReq | filterRequeriments: form.get('search')!.value)?.results"
         [keyMap]="{
@@ -125,12 +125,30 @@
           (resultWithHeader)="navigate('updateRequirement', $event)"
         >
         </app-card-view>
+
+        <app-card-view *ngIf="perfilUser == 2"
+        [headers]="['Fecha ingreso', 'Cliente','Usuario','Descripcion']"
+        [data]="(listaReq | filterRequeriments: form.get('search')!.value)?.results"
+        [keyMap]="{
+            'id_requerimiento': 'id_requerimiento',
+            'Fecha ingreso': 'fecha',
+            'Cliente':'cliente',
+            'Usuario': 'usuario',
+            'Descripcion': 'descripcion_requerimiento',
+          }"
+          [cantidadFilas]="2"
+          [cantidadColumnas]="2"
+          nombreCampoAEmitir="id_requerimiento"
+          [acortadorTexto]="currentLargeTextCard"
+          [opcionesParaTooltip]="tooltip"
+        >
+        </app-card-view>
       </div>
 
       <div [ngClass]="{'hidden': currentView == true, 'block': currentView == false}"
         class="md-overflow-scroll gestor-requirenment-table pr-3 animate-fade-down">
         <div class="w-full">
-          <app-table [headers]="['Fecha ingreso', 'Cliente','Usuario','Descripcion', 'Editar', 'Eliminar']"
+          <app-table *ngIf="perfilUser != 2" [headers]="['Fecha ingreso', 'Cliente','Usuario','Descripcion', 'Editar', 'Eliminar']"
             [data]="(listaReq | filterRequeriments: form.get('search')!.value)?.results"
             [keyMap]="{
             'id_requerimiento': 'id_requerimiento',
@@ -145,6 +163,22 @@
             [acortadorTexto]="currentLargeTextTable"
             [opcionesParaTooltip]="tooltip"
             (resultWithHeader)="navigate('updateRequirenment', $event)">
+          </app-table>
+
+          <app-table *ngIf="perfilUser == 2" [headers]="['Fecha ingreso', 'Cliente','Usuario','Descripcion']"
+            [data]="(listaReq | filterRequeriments: form.get('search')!.value)?.results"
+            [keyMap]="{
+            'id_requerimiento': 'id_requerimiento',
+            'Fecha ingreso': 'fecha',
+            'Cliente':'cliente',
+            'Usuario': 'usuario',
+            'Descripcion': 'descripcion_requerimiento',
+            }"
+            positionTable='left'
+            maxWidthTable='98%'
+            nombreCampoAEmitir="id_requerimiento"
+            [acortadorTexto]="currentLargeTextTable"
+            [opcionesParaTooltip]="tooltip">
           </app-table>
         </div>
       </div>
