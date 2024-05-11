@@ -52,6 +52,7 @@ export class GestorRequerimientosComponent {
 
   cliente:string= "";
   usuario:string= "";
+  public perfilUser: any;
 
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
@@ -88,7 +89,9 @@ export class GestorRequerimientosComponent {
   }
 
   public ngOnInit(): void {
-
+    if (localStorage.getItem('perfilUser')) {
+      this.perfilUser = JSON.parse(localStorage.getItem('perfilUser')!);
+    }
     this.getClientes();
 
     this.form.get('search')?.valueChanges

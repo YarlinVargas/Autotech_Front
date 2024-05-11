@@ -25,12 +25,12 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
             <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-            <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+            <a *ngIf="perfilUser !=2" href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
             <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
             <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
             <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-            <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-            <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+            <a *ngIf="perfilUser !=2" href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+            <a *ngIf="perfilUser !=2" href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
           </div>
         </div>
       </div>
@@ -70,12 +70,12 @@
       <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <a href="#gestionUsuario" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Usuarios</a>
       <a href="#client" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Clientes</a>
-      <a href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
+      <a *ngIf="perfilUser !=2" href="#notification" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Notificaciones</a>
       <a href="#requirement" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Requerimientos</a>
       <a href="#orders" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Ordenes de trabajo</a>
       <a href="#conocenos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Conocenos mas</a>
-      <a href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
-      <a href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
+      <a *ngIf="perfilUser !=2" href="#productos" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Productos</a>
+      <a *ngIf="perfilUser !=2" href="#reportes" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Reportes</a>
     </div>
   </div>
 </nav>

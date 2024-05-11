@@ -31,6 +31,10 @@ export class ReportesComponent {
     placa:''
   };
 
+    /* Documento */
+    pdfb64: string = '';
+    public perfilUser: any;
+
   public form: FormGroup = new FormGroup({});
 
   reports = [
@@ -55,6 +59,15 @@ export class ReportesComponent {
 
   constructor(public dialog: Dialog, public reporteService: ReporteService) {
     this.setFormOrden(this.reportToUpdate);
+  }
+
+  //inicializar componente
+  public ngOnInit(): void {
+
+    if (localStorage.getItem('perfilUser')) {
+      this.perfilUser = JSON.parse(localStorage.getItem('perfilUser')!);
+    }
+
   }
 
   public setFormOrden(report: ReportModel) {
@@ -86,18 +99,62 @@ export class ReportesComponent {
   public getReportes(){
     this.reporteService.getProductosSinStock().subscribe((r: any) => {
         if (r.length > 0) {
+
           this.listProductos = r;
           for (let index = 0; index < this.listProductos.length; index++) {
 
             this.listProducto.push({codigo:this.listProductos[index].codigo, descripcion:this.listProductos[index].descripcion ,cantidad:this.listProductos[index].cantidad.toString(), imagen:this.listProductos[index].imagen});
             this.lstProducto = this.listProducto;
           }
+          if(this.listProducto.length > 0){
+            const sliceSize = 512
+          let byteCharacters = atob(r); //data.file there
+
+          let byteArrays = [];
+
+          for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+
+            let slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            let byteNumbers = new Array(slice.length);
+
+            for (var i = 0; i < slice.length; i++) {
+              byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            let byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
+
+          }
+
+          const data: Blob = new Blob(byteArrays, { type: 'application/pdf' });
+
+          const url = window.URL.createObjectURL(data);
+
+
+          this.pdfb64 = url + '#toolbar=0';
+
+
+          }
+          this.Dowload();
 
         } else {
           console.log("No hay productos sin stock registrados en el sistema");
         }
       });
   }
+
+
+
+  Dowload() {
+    const source = `${this.pdfb64}`;
+    const link = document.createElement("a");
+    link.href = source;
+    link.download = `resultado.pdf`
+    link.click();
+  }
+
 
     //CONSULTAR HISTORIAL DE VEHICULOS POR PLACA Y FECHA
     public getHistorial(){

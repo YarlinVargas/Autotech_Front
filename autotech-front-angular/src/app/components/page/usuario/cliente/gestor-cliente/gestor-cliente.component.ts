@@ -35,6 +35,8 @@ export class GestorClienteComponent {
   listClients:Cliente[] = [];
   public optionsSearch: string[] = [];
 
+  public perfilUser: any;
+
   public currentLargeTextCard = 10;
   public currentLargeTextTable = 10;
   public openModal: openModals = new openModals(this.dialog);
@@ -75,6 +77,9 @@ export class GestorClienteComponent {
   }
 
   public ngOnInit(): void {
+    if (localStorage.getItem('perfilUser')) {
+      this.perfilUser = JSON.parse(localStorage.getItem('perfilUser')!);
+    }
     this.getClientes();
     this.formClient.get('search')?.valueChanges
       .pipe(
